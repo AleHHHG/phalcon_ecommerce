@@ -1,0 +1,7 @@
+{
+    "require": {
+        "moltin/cart": "dev-master"
+    },
+  	"minimum-stability": "dev",
+	"prefer-stable": true
+}
