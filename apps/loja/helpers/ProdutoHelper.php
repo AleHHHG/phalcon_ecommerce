@@ -3,29 +3,33 @@ namespace Ecommerce\Loja\Helpers;
 use Ecommerce\Admin\Models\Produtos;
 use Ecommerce\Admin\Models\Avaliacoes;
 class ProdutoHelper extends BaseHelper {
-	const QUICK_VIEW = '<a href="javascript:;" class="quick-view" data-produto="%1Ss"><i class="fa fa-eye"></i></a>';
-	const WISH_LIST = '<a href="javascript:;" class="addToWishList" data-produto="%1Ss"><i class="fa fa-heart-o"></i></a>';
-	const COMPARE = '<a href="javascript:;" class="addToCompare" data-produto="%1Ss"><i class="fa fa-signal"></i></a>';
+	const QUICK_VIEW = '<a href="javascript:;"  data-produto="%1Ss" class="quick-view %2Ss">%3Ss</a>';
+	const WISH_LIST = '<a href="javascript:;"  data-produto="%1Ss" class="addToWishList %2Ss">%3Ss</a>';
+	const COMPARE = '<a href="javascript:;"  data-produto="%1Ss" class="addToCompare %2Ss">%3Ss</a>';
 	public $options = array(
 		'quantidade_itens' => 4,
 		'container'       => 'div',
 		'container_class' => '',
 		'container_id'    => '',
-		'produto_thumbail_container' => 'div',
-		'produto_thumbail_class' => '',
-		'produto_thumbail_id' => '',
-		'produto_info_container' => 'div',
-		'produto_info_class' => '',
-		'produto_info_id' => '',
-		'produto_info_titulo' => '<h4 class="%1Ss"><a href="%2Ss">%3Ss</a></h4>',
-		'produto_info_titulo_class' => '',
-		'produto_info_preco' => '<span class="%1Ss">R$ %2Ss</span>',
-		'produto_info_preco_class' => '',
+		'item_wrap' => '<li class="%1Ss">%2Ss<li>',
+		'item_class' => '',
+		'thumbnail_wrap' =>'<div class="%1Ss">%2Ss</div>',
+		'thumbnail_class' => '',
+		'info_wrap' => '<div class="%1Ss">%2Ss</div>',
+		'info_class' => '',
+		'info_titulo_wrap' => '<h4 class="%1Ss"><a href="%2Ss">%3Ss</a></h4>',
+		'info_titulo_class' => '',
+		'info_preco_wrap' => '<span class="%1Ss">R$ %2Ss</span>',
+		'info_preco_class' => '',
 		'overlay' => true,
-		'overlay_container' => 'div',
+		'overlay_wrap' => '<div class="%1Ss">%2Ss</div>',
 		'overlay_position' => 'THUMBNAIL_CONTAINER',
 		'overlay_class' => '',
-		'overlay_options' => array('QUICK_VIEW','WISH_LIST','COMPARE'),
+		'overlay_options' => array(
+			'QUICK_VIEW' => array('text' => '<i class="fa fa-eye"></i>','class' =>''),
+			'WISH_LIST' => array('text' => '<i class="fa fa-heart-o"></i>','class' =>''),
+			'COMPARE' => array('text' => '<i class="fa fa-signal"></i>','class' =>''),
+		),
 		'destaque' => 0,
 		'lancamento' => 0,
 		'categoria' => '',
@@ -52,22 +56,28 @@ class ProdutoHelper extends BaseHelper {
 		$produtos = $this->getData($array);
 		$html = '';
 		$html .= ($this->options['produto_container']) ? '<div id="produto_container">' : '';
+		$html .= "<{$array['container']} id='{$array['container_id']}' class='{$array['container_class']}'>";
 		foreach ($produtos as $key => $value) { 
-			$html .= "<{$array['container']} id='{$array['container_id']}' class='{$array['container_class']} produto_item'>";
-			$html .= $this->setThumbnail($array,$value);
-			$html .= $this->setInfo($array,$value);
-			$html .= "</{$array['container']}>";
+			$item = $this->setThumbnail($array,$value);
+			$item .= $this->setInfo($array,$value);
+			$html .= parent::replaceWraper(2,array(
+					'produto_item '.$this->options['item_class'],
+					$item
+				),
+				$this->options['item_wrap']
+			);
 			if(($key+1) % $array['quantidade_itens'] == 0 ){
 				$html .= '<br clear="all"/>';
 			}
 		}
+		$html .= "</{$array['container']}>";
 		$html .= ($this->options['produto_container']) ? '</div>' : '';
 		$html .= $this->getPagination($array['categoria'],$array['pagina']);
 		return $html;
 	}
 
 	public function setThumbnail($array,$obj){
-		$html = "<{$array['produto_thumbail_container']} id='{$array['produto_thumbail_id']}' class='{$array['produto_thumbail_class']}'>";
+		$html = '<a href="">';
 		if($this->ecommerce_options->produto_detalhes == '1'){
 			$index =  parent::arrayMultiSearch($this->detalhes,'label','cor');
 			if(!is_null($index)){
@@ -87,30 +97,33 @@ class ProdutoHelper extends BaseHelper {
 				$html .= "<img src='http://www.clker.com/cliparts/i/l/9/W/l/m/camera-icon-hi.png' />";
 			}
 		}
+		$html .= '</a>';
 		if($array['overlay_position'] == 'THUMBNAIL_CONTAINER' && $array['overlay']){
 			$html .= $this->setOverlay($array,$obj);
 		}
-		$html .= "</{$array['produto_thumbail_container']}>";
-		return $html;
+		return  parent::replaceWraper(2,array(
+				$this->options['thumbnail_class'],
+				$html
+			),
+			$this->options['thumbnail_wrap']
+		);
 	}
 
 	public function setInfo($array,$obj){
-		$opcoes = $this->getDI()->getShared('ecommerce_options');
-		$html = "<{$array['produto_info_container']} id='{$array['produto_info_id']}' class='{$array['produto_info_class']}'>";
-		$html .= parent::replaceWraper(3,array(
-				$array['produto_info_titulo_class'],
+		$html = parent::replaceWraper(3,array(
+				$array['info_titulo_class'],
 				parent::generateUrl($obj->nome,$obj->_id,'produto'),
 				$obj->nome
 			),
-			$array['produto_info_titulo']
+			$array['info_titulo_wrap']
 		);
 		foreach ($array['opcoes'] as $value) {
 			if($value == 'PRECO'){
 				$html .= parent::replaceWraper(2,array(
-							$array['produto_info_preco_class'],
-							($opcoes->produto_detalhes =='1') ? number_format($obj->detalhes[0]['valor'],2,',','.') : number_format($obj->valor,2,',','.')
+							$array['info_preco_class'],
+							($this->ecommerce_options->produto_detalhes =='1') ? number_format($obj->detalhes[0]['valor'],2,',','.') : number_format($obj->valor,2,',','.')
 						),
-						$array['produto_info_preco']
+						$array['info_preco_wrap']
 					);
 			}else if($value == 'CORES'){
 				$html .= $this->getCores($obj);
@@ -121,8 +134,12 @@ class ProdutoHelper extends BaseHelper {
 		if($array['overlay_position'] == 'INFO_CONTAINER' && $array['overlay']){
 			$html .= $this->setOverlay($array,$obj);
 		}
-		$html .= "</{$array['produto_info_container']}>";
-		return $html;
+		return  parent::replaceWraper(2,array(
+				$this->options['info_class'],
+				$html
+			),
+			$this->options['info_wrap']
+		);
 	}
 
 	protected function getCores($obj){
@@ -161,17 +178,23 @@ class ProdutoHelper extends BaseHelper {
 	}
 
 	public function setOverlay($array,$obj){
-		$html = "<{$array['overlay_container']} class='{$array['overlay_class']}'>";
+		$html = '';
 		foreach ($array['overlay_options'] as $key => $value) {
-			$overlay = parent::replaceWraper(1,array(
-			 			$obj->_id
+			$overlay = parent::replaceWraper(3,array(
+			 			$obj->_id,
+			 			$value['class'],
+			 			$value['text']
 					),
-					constant('self::'.$value)
+					constant('self::'.$key)
 				);
 			$html .= $overlay;
 		}
-		$html .= "</{$array['overlay_container']}>";
-		return $html;
+		return parent::replaceWraper(2,array(
+				$this->options['overlay_class'],
+				$html
+			),
+			$this->options['overlay_wrap']
+		);
 	}
 
 	protected function getData($array){
