@@ -1,3 +1,5 @@
 apps/documentacao
 apps/loja/vendor
+apps/loja/cache
+apps/admin/cache
 public/
