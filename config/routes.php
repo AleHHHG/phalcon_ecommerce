@@ -210,6 +210,12 @@ $router->add("/admin/produto/create", array(
     'action' => 'create',
 ));
 
+$router->add("/admin/produto/integracao", array(
+    'module'     => 'admin',
+    'controller' => 'produto',
+    'action' => 'integracao',
+));
+
 $router->add("/admin/produto/update/{id:[a-zA-Z0-9]+}", array(
     'module'     => 'admin',
     'controller' => 'produto',

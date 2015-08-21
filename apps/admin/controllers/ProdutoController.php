@@ -13,27 +13,6 @@ class ProdutoController extends ControllerBase
   	   	$this->view->produtos = Produtos::find();
     }
 
-    public function setCorAction(){
-        if($this->request->isPost()) {
-            if($this->request->isAjax()){
-                $this->view->disable();
-                $produto = Produtos::findById($this->request->getPost('produto'));
-                if($this->request->getPost('cor') != ''){
-                    if(isset($produto->imagem_detalhes) && !empty($produto->imagem_detalhes)){
-                        foreach ($produto->imagem_detalhes as $key => $value) {
-                            if($this->request->getPost('cor') != $key){
-                                $arr = array_diff($produto->imagem_detalhes[$key], array($this->request->getPost('imagem')));
-                                $produto->imagem_detalhes[$key] = $arr;
-                            }
-                        }
-                    }
-                    $produto->imagem_detalhes[$this->request->getPost('cor')][] =  $this->request->getPost('imagem'); 
-                    $produto->save();
-                }
-            } 
-        }
-
-    }
 
     public function createAction(){
         $this->view->categorias =  Categorias::getDados();
@@ -123,13 +102,107 @@ class ProdutoController extends ControllerBase
     protected function uploadeImagem(){
         $arr = array();
         foreach ($this->request->getUploadedFiles() as $file) {
-            //Print file details
             $arr[] = $file->getName();
-
-            //Move the file into the application
             $file->moveTo('files/produtos/' . $file->getName());
         }
         return $arr;
+    }
+
+    public function integracaoAction(){
+        // mysql_connect('mysql.maremansanautica.com.br','maremansanauti','mare2015') or die(mysql_error());
+        // mysql_select_db('maremansanauti');
+        // mysql_query("SET NAMES 'utf8'");
+        // mysql_query("SET CHARACTER SET utf8 ");
+        // $exec = mysql_query('SELECT produtos.*,produto_imagens.imagem_thumbnail FROM produtos LEFT JOIN produto_imagens ON produtos.produto_id = produto_imagens.imagem_id ');
+        // $dados = array();
+        // while ($row = mysql_fetch_assoc($exec)) {
+        //     $dados[] = $row;
+        // }
+        // foreach ($dados as $key => $value) {
+        //     $produto = new Produtos();
+        //     $arr = array('conditions' => array());
+        //     if($value['subcategoria_b_id'] != ''){
+        //         $arr['conditions'] = array('id_externo' => $value['subcategoria_b_id']); 
+        //         $categoria = Categorias::findFirst($arr);
+        //         if(empty($categoria)){
+        //             $arr['conditions'] = array('id_externo' => $value['subcategoria_id']); 
+        //             $categoria =  Categorias::findFirst($arr);
+        //         }
+        //     }else if($value['subcategoria_id'] != ''){
+        //         $arr['conditions'] = array('id_externo' => $value['subcategoria_id']); 
+        //     }else{
+        //         $arr['conditions'] = array('id_externo' => $value['categoria_id']) ; 
+        //     }
+        //     if(!isset($categoria)){
+        //         $categoria = Categorias::findFirst($arr);
+        //     }
+        //     $produto->nome = $value['produto_nome'];
+        //     $produto->descricao = $value['produto_descricao'];
+        //     $produto->peso = ($value['produto_peso'] != 0) ? $value['produto_peso']/100 : 0.00;
+        //     $produto->altura = 1;
+        //     $produto->largura = 1;
+        //     $produto->comprimento = 1;
+        //     $produto->ativo = 1;
+        //     $produto->detalhes = array(
+        //         'valor' => $value['produto_valor'],
+        //         'estoque' => 10,
+        //     );
+        //     $produto->id_externo = $value['produto_id'];
+        //     $produto->categoria = (string) $categoria->_id;
+        //     $produto->save();
+        // }
+        mysql_connect('localhost','root','2015') or die(mysql_error());
+        mysql_select_db('mare_old');
+        mysql_query("SET NAMES 'utf8'");
+        mysql_query("SET CHARACTER SET utf8 ");
+        $exec = mysql_query('SELECT tb_ic_explend_produtos.*,tb_ic_produtos.pro_destaque,tb_ic_produtos.pro_desc,tb_ic_produtos.pro_foto1,tb_ic_produtos.pro_foto2,tb_ic_produtos.pro_foto3,tb_ic_produtos.pro_foto4 FROM tb_ic_explend_produtos LEFT JOIN tb_ic_produtos ON tb_ic_produtos.pro_codexterno = tb_ic_explend_produtos.pro_id order by pro_nome asc') or die(mysql_error());
+        $dados = array();
+        while ($row = mysql_fetch_assoc($exec)) {
+            $dados[] = $row;
+        }
+        foreach ($dados as $key => $value) {
+            $produto = new Produtos();
+            $arr = array('conditions' => array());
+            if($value['pro_grupo2'] != ''){
+                $arr['conditions'] = array('id_externo' => $value['pro_grupo2']); 
+                $categoria = Categorias::findFirst($arr);
+                if(empty($categoria)){
+                    $arr['conditions'] = array('id_externo' => $value['pro_grupo1']); 
+                    $categoria =  Categorias::findFirst($arr);
+                }
+            }else if($value['pro_grupo1']){
+                $arr['conditions'] = array('id_externo' => $value['pro_grupo1']) ; 
+                $categoria = Categorias::findFirst($arr);
+            }else{
+                echo "<pre>";
+                echo $value['pro_nome'];
+                die(print_r($value));
+            }
+            $produto->nome = $value['pro_nome'];
+            $produto->descricao = $value['pro_desc'];
+            $produto->peso = floatval($value['pro_peso']);
+            $produto->altura = 1;
+            $produto->largura = 1;
+            $produto->comprimento = 1;
+            $produto->ativo = ($value['pro_status'] == 'A') ? '1' : '0';
+            $produto->destaque = ($value['pro_destaque'] == 'S') ? '1' : '0';
+            $produto->detalhes = array(
+                array(
+                    'valor' => floatval($value['pro_preco']),
+                    'estoque' => 10,
+                )
+            );
+            $produto->id_externo = $value['pro_id'];
+            $produto->categoria = (string) $categoria->_id;
+            $dados = array();
+            for ($i=1; $i <= 4 ; $i++) { 
+                if($value['pro_foto'.$i]){
+                    $dados[] = $value['pro_foto'.$i];
+                }
+            }
+            $produto->imagens = $dados;
+            $produto->save();
+        }
     }
 
 

@@ -78,25 +78,7 @@ class ProdutoHelper extends BaseHelper {
 
 	public function setThumbnail($array,$obj){
 		$html = '<a href="'.parent::generateUrl($obj->nome,$obj->_id,'produto').'">';
-		if($this->ecommerce_options->produto_detalhes == '1'){
-			$index =  parent::arrayMultiSearch($this->detalhes,'label','cor');
-			if(!is_null($index)){
-				$cor = $obj->detalhes[0]['cor'];
-				if(isset($obj->imagem_detalhes) && array_key_exists($cor,$obj->imagem_detalhes)){
-					$html .= "<img src='{$this->url_base}files/produtos/{$obj->imagem_detalhes[$cor][0]}' alt='{$obj->nome}' class='img-responsive'>";
-				}else{
-					$html .= "<img src='{$this->url_base}files/produtos/{$obj->imagens[0]}' alt='{$obj->nome}' class='img-responsive'>";
-				}
-			}else{
-				$html .= "<img src='{$this->url_base}files/produtos/{$obj->imagens[0]}' alt='{$obj->nome}' class='img-responsive'>";
-			}
-		}else{
-			if(!empty($obj->imagens)){
-				$html .= "<img src='{$this->url_base}files/produtos/{$obj->imagens[0]}' alt='{$obj->nome}' class='img-responsive'>";
-			}else{
-				$html .= "<img src='http://www.clker.com/cliparts/i/l/9/W/l/m/camera-icon-hi.png' />";
-			}
-		}
+		$html .= $this->getThumbnail($obj);
 		$html .= '</a>';
 		if($array['overlay_position'] == 'THUMBNAIL_CONTAINER' && $array['overlay']){
 			$html .= $this->setOverlay($array,$obj);
@@ -107,6 +89,28 @@ class ProdutoHelper extends BaseHelper {
 			),
 			$this->options['thumbnail_wrap']
 		);
+	}
+
+	protected function getThumbnail($obj){
+		if(!empty($obj->imagens)){
+			$imagem = $obj->imagens[0];
+		}else{
+			$imagem = 'no-image.png';
+		}
+		if($this->ecommerce_options->produto_detalhes == '1'){
+			$index =  parent::arrayMultiSearch($this->detalhes,'label','cor');
+			if(!is_null($index)){
+				if(isset($obj->detalhes[0]['cor'])){
+					$cor = $obj->detalhes[0]['cor'];
+					if(isset($obj->imagem_detalhes) && array_key_exists($cor,$obj->imagem_detalhes)){
+						$imagem = $obj->imagem_detalhes[$cor][0];
+					}
+				}
+			}
+		}
+		$size = explode('x', $this->ecommerce_options->thumbnail_size);
+		$src = "?src={$this->url_base}public/files/produtos/$imagem&q=90&w={$size[0]}&h={$size[1]}&zc=2";
+		return "<img src='{$this->url_base}public/timthumb$src' alt='{$obj->nome}' class='img-responsive'>";
 	}
 
 	public function setInfo($array,$obj){
