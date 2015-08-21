@@ -5,7 +5,19 @@
                 <div class="category-title">
                     <h1>{{nome}}</h1>
                 </div>
-                <br clear="all"/>
+                <div class="category-description std">
+                    <div class="slider-items-products">
+                        <div id="category-desc-slider" class="product-flexslider hidden-buttons">
+                            <div class="slider-items slider-width-col1"> 
+                              
+                              <!-- Item -->
+                              <div class="item"> <a href="#x"><img alt="" src="{{ecommerce_options.image_path}}women_banner.png"></a> </div>
+                              <!-- End Item --> 
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="category-products">
                     {{ partial("categoria/_produtos") }}
                 </div>

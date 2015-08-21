@@ -31,6 +31,7 @@ $di->set('db', function () use ($config) {
     return new DbAdapter($config->database->toArray());
 });
 
+ 
 $di->set('flash', function(){
     $flash = new FlashDirect(array(
         'error'   => 'alert alert-danger',
@@ -68,7 +69,7 @@ $di->set('router', function () {
 
 $di->set('mongo', function() {
     $mongo = new MongoClient();
-    return $mongo->selectDB("ecommerce");
+    return $mongo->selectDB("mare_mansa");
 }, true);
 
 

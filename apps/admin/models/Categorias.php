@@ -21,6 +21,7 @@ class Categorias extends \Phalcon\Mvc\Collection
             $pai = Categorias::findById($this->parent);
             if(!empty($pai)){
                 array_push($pai->subcategorias, $this->getId());
+                $pai->subcategorias = array_unique($pai->subcategorias);
                 $pai->save();
             }
         }

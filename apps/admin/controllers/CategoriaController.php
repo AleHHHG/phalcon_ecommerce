@@ -40,7 +40,5 @@ class CategoriaController extends ControllerBase
         }
         return $this->response->redirect("admin/categorias");
     }
-
-
 }
 

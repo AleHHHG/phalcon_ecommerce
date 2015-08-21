@@ -77,7 +77,7 @@ class ProdutoHelper extends BaseHelper {
 	}
 
 	public function setThumbnail($array,$obj){
-		$html = '<a href="">';
+		$html = '<a href="'.parent::generateUrl($obj->nome,$obj->_id,'produto').'">';
 		if($this->ecommerce_options->produto_detalhes == '1'){
 			$index =  parent::arrayMultiSearch($this->detalhes,'label','cor');
 			if(!is_null($index)){
