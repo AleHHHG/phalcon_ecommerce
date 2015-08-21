@@ -1,1 +1,0 @@
-<?php echo $this->partial('categoria/_produtos'); ?>
