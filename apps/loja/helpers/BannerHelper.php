@@ -29,7 +29,7 @@ class BannerHelper extends BaseHelper{
 		'navigation_id' => '',
 		'navigation_wrapper' => '',
 		'posicao' => 1,
-		
+		'categoria' => '',
 	);
 
 	public  function getHelper($options = array()){
@@ -50,12 +50,19 @@ class BannerHelper extends BaseHelper{
 
 	public function setData($array){
 		$itens = '';
-		foreach (Banners::find("posicao_id = {$array['posicao']}") as $key => $value) {
+		if($array['categoria'] == ''){
+			$criteria = array("posicao_id = {$array['posicao']} AND categoria_id = '0'");
+		}else{
+			$criteria = array("posicao_id = {$array['posicao']} AND categoria_id = '{$array['categoria']}'");
+		}
+		$criteria['order'] = 'ordem asc';
+		$banner = Banners::find($criteria);
+		foreach ($banner as $key => $value) {
 			$imagem = Imagens::findFirst("relacao = 'banners' and id_relacao = {$value->id}")->url;
 			$replaces = array(
 				$array['slide_item_id'],
 				$array['slide_item_class'],
-				"<img src='files/banners/$imagem'/>",
+				"<img src='{$this->url_base}/files/banners/$imagem' class='img-responsive'/>",
 				($array['caption'] ? $this->setCaption($value,$key) : '')
 			);
 			$itens .= parent::replaceWraper(4,
@@ -76,6 +83,7 @@ class BannerHelper extends BaseHelper{
 	}
 
 	public function getCaption($dados,$param,$chave){
+		$item = '';
 		if($param == 'title'){
 			if($dados->descricao != ''){
 				$item = $dados->nome;

@@ -20,7 +20,8 @@ class MenuHelper extends BaseHelper{
 		'submenu_id' => '',
 		'submenu_item_class' => '',
 		'submenu_item_link_class' => '',
-		'home_text' => 'Home',
+		'home' => true,
+		'home_text' => 'HOME',
 		'home_class' =>'',
 		'home_id' => '',
 		'mega_menu' => false,
@@ -40,7 +41,7 @@ class MenuHelper extends BaseHelper{
 	public function setHelper($array){
 		$html = '';
 		$html .= "<{$array['container']} id='{$array['container_id']}' class='{$array['container_class']}'>";
-		$replaces = array($array['menu_id'],$array['menu_class'],self::setData($array));
+		$replaces = array($array['menu_id'],$array['menu_class'],$this->setData($array));
 		$html .= parent::replaceWraper(3,$replaces,$array['menu_wrap']);
 		$html .= "</{$array['container']}>";
 		return $html;
@@ -48,14 +49,16 @@ class MenuHelper extends BaseHelper{
 
 	public function setData($array){
 		$itens = '';
-		$replaces = array(
-				$array['item_class'],
-				$array['home_class'],
-				$this->url_base,
-				$array['home_text'],
-				'',
-			);
-		$itens .= parent::replaceWraper(5,$replaces,$array['item_wrap']);
+		if($array['home']){
+			$replaces = array(
+					$array['item_class'],
+					$array['home_class'],
+					$this->url_base,
+					$array['home_text'],
+					'',
+				);
+			$itens .= parent::replaceWraper(5,$replaces,$array['item_wrap']);
+		}	
 		foreach (Categorias::getDadosMenu() as $key => $value) {
 			
 			if($array['submenu']){

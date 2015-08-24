@@ -63,13 +63,13 @@ class ComparacaoHelper extends BaseHelper{
 					if($this->ecommerce_options->produto_cubagem_detalhe == '1'){
 						$html .= $value['detalhes'][0]['altura'].' / '.$value['detalhes'][0]['largura'].' / '.$value['detalhes'][0]['comprimento'];
 					}else{
-						$html .= $value['detalhes']['altura'].' / '.$value['detalhes']['largura'].' / '.$value['detalhes']['comprimento'];
+						$html .= $value['altura'].' / '.$value['largura'].' / '.$value['comprimento'];
 					}
 				}else if($param == 'peso'){
 					if($this->ecommerce_options->produto_cubagem_detalhe == '1'){
 						$html .= $value['detalhes'][0][$param];
 					}else{
-						$html .= $value['detalhes'][0][$param];
+						$html .= $value[$param];
 					}
 					$html .= ' KG';
 				}else{

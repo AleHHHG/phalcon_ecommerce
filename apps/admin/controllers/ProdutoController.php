@@ -127,7 +127,6 @@ class ProdutoController extends ControllerBase
                 }
             } 
         }
-
     }
 
     public function integracaoAction(){

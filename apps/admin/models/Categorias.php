@@ -59,11 +59,13 @@ class Categorias extends \Phalcon\Mvc\Collection
     }
 
 
-    public static function getDadosMenu(){
-        $categorias = self::find(array(
-           'conditions' => array('parent' => null),
-        ));
-        
+    public static function getDadosMenu($principal = false){
+        $array = array();
+        $array['conditions']['parent'] = null;
+        if($principal){
+            $array['conditions']['menu_principal'] = '1';
+        }
+        $categorias = self::find($array);
         $dados = array_map(array('self','getChildrens'), $categorias);
         return array_reverse($dados);
     }

@@ -11,4 +11,5 @@
     {% endfor %}
     {{ stylesheet_link('css/loja/toastr.css') }}
     {{ stylesheet_link('css/loja/base.css') }}
+    {{ stylesheet_link('css/loja/custom.css') }}
 </head>

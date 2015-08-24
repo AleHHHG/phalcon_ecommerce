@@ -10,4 +10,6 @@
 {{ javascript_include('js/loja/checkout.js') }}
 {{ javascript_include('js/loja/filtros.js') }}
 {{ javascript_include('js/loja/options.js') }}
+{{ javascript_include('js/loja/custom.js') }}
 {{ javascript_include('js/loja/endereco.js') }}
+
