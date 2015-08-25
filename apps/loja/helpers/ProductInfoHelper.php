@@ -26,7 +26,6 @@ class ProductInfoHelper extends SingleHelper {
 
 		$html .= $this->getDetalhes();
 
-		// Seta o nome do produto
 		$html .= $this->setAddCart();
 
 		if($this->layout['social']){
@@ -82,20 +81,21 @@ class ProductInfoHelper extends SingleHelper {
 	}
 
 	protected function getDetalhes(){
-		$html = '';
+		$html = '<div class="col-md-4 no-padding-left"><h5><strong>Quantidade:</strong></h5><select name="quantidade" class="form-control quantidade" id="quantidade">';
+		$html .= '<option value="0">Selecione a quantidade</option>';
+		$estoque = (isset($this->layout['produto']->estoque)) ? $this->layout['produto']->estoque : $this->layout['produto']->detalhes[0]['estoque'];
+		for ($i=1; $i <=  $estoque; $i++) { 
+			$html .= "<option value='$i'>$i</option>";
+		}
+		$html .= '</select></div><br clear="all"/><br clear="all"/>';	
+		$html .= "<input type='hidden' name='produto_id' id='produto_id' value='{$this->layout['produto']->_id}' />";
 		if($this->ecommerce_options->produto_detalhes == '1'){
 			$detalhes = unserialize($this->ecommerce_options->produto_detalhe_options);
 			$array = array_values(array_unique(array_column($this->layout['produto']->detalhes,$detalhes[0]['label'])));
-			$itens = $this->groupDetalhes($detalhes[0],$array,$this->layout['produto']->detalhes);
-			$html .= $this->setDetalhes($itens,$detalhes,($this->layout['posicao'] == 0) ? 0 : $this->layout['posicao']);
-			
-		}else{
-			$html .= '<p>Quantidade:</p><select name="quantidade" class="quantidade form-control">';
-			$html .= '<option value="0">Selecione a quantidade</option>';
-			for ($i=1; $i <= $this->layout['produto']->estoque ; $i++) { 
-				$html .= "<option value='$i'>$i</option>";
+			if(!empty($array)){
+				$itens = $this->groupDetalhes($detalhes[0],$array,$this->layout['produto']->detalhes);
+				$html = $this->setDetalhes($itens,$detalhes,($this->layout['posicao'] == 0) ? 0 : $this->layout['posicao']);
 			}
-			$html .= '</select><br clear="all"/><br clear="all"/>';	
 		}
 		return $html;
 	}
@@ -174,7 +174,43 @@ class ProductInfoHelper extends SingleHelper {
 	}	
 
 	protected function setSocial(){
-
+		$itens = '';
+		foreach ($this->layout['social_itens'] as $value) {
+			if($value == 'facebook'){
+				$url = $this->url_base.substr($this->getDI()->getShared('router')->getRewriteUri(), 1);
+				$item = '<div class="fb-share-button" data-href="'.$url.'" data-layout="button"></div>';
+			}else if($value == 'gplus'){
+				$item = '<div class="g-plusone" data-size="medium" data-annotation="inline" data-width="300"></div>
+						<script type="text/javascript">
+						  window.___gcfg = {lang: "pt-BR"};
+						  (function() {
+						    var po = document.createElement("script"); po.type = "text/javascript"; po.async = true;
+						    po.src = "https://apis.google.com/js/platform.js";
+						    var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s);
+						  })();
+						</script>';
+			}else if($value == 'twitter'){
+				$item = "<a href='https://twitter.com/share' class='twitter-share-button' data-url='$url' data-lang='pt'>Tweetar</a>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
+			}else{
+				return false;
+			}
+			
+			$itens .= parent::replaceWraper(2,
+				array(
+					$this->layout['social_item_class'],
+					$item
+				),
+				$this->layout['social_item_wrap']
+			);
+		}
+		return parent::replaceWraper(2,
+				array(
+					$this->layout['social_wrap_class'],
+					$itens
+				),
+				$this->layout['social_wrap']
+			);
 	}
 
 	protected function setAddCart(){

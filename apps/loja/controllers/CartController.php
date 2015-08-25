@@ -94,12 +94,12 @@ class CartController extends ControllerBase
 		$array['id'] = $array['produto_id'];
 		$array['name'] = $produto['nome'];
 		$array['quantity'] = $array['quantidade'];
-		if($array['detalhe_id'] != ''){
+		if(isset($array['detalhe_id']) && $array['detalhe_id'] != ''){
 			$chave = $base->arrayMultiSearch($produto['detalhes'],'detalhe_id',$array['detalhe_id']);
 			$array['options']['detalhe_id'] = 	$array['detalhe_id'];
-			$array['price'] = $base->toFloat($produto['detalhes'][$chave]['valor']);
+			$array['price'] = $produto['detalhes'][$chave]['valor'];
 		}else{
-			$array['price'] = $base->toFloat($produto['valor']);
+			$array['price'] = (isset($produto['valor'])) ? $produto['valor'] : $produto['detalhes'][0]['valor'];
 		}
 		unset($array['produto_id']);
 		unset($array['detalhe_id']);

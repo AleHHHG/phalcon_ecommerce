@@ -26,7 +26,7 @@ class ProductImageHelper extends SingleHelper {
 			$item .= parent::replaceWraper(2,
 					array(
 						($this->layout['identificador']) ? $this->layout['item_class'].$int : $this->layout['item_class'],
-						$after."<img src='{$this->url_base}files/produtos/{$produto_imagens[0]}' class='{$this->layout['item_imagem_class']}'>".$before
+						$this->setImagem($produto_imagens[0],'item',$after,$before)
 					),
 					$this->layout['item_wrap']);
 		}else{
@@ -35,7 +35,7 @@ class ProductImageHelper extends SingleHelper {
 				$item .= parent::replaceWraper(2,
 					array(
 						($this->layout['identificador']) ? $this->layout['item_class'].$int : $this->layout['item_class'],
-						$after."<img src='{$this->url_base}files/produtos/$value' class='{$this->layout['item_imagem_class']}'>".$before
+						$this->setImagem($value,'item',$after,$before)
 					),
 					$this->layout['item_wrap']);
 			}
@@ -58,6 +58,20 @@ class ProductImageHelper extends SingleHelper {
 		return $html;
 	}
 
+	protected function setImagem($img,$param,$after,$before){
+		$imagem = ($param == 'item') ? $after : '';
+		$attr = '';
+		foreach ($this->layout[$param.'_imagem_attr'] as $key => $value) {
+			$attr .= $key.'='.$value.' ';
+		}
+		$imagem .= parent::replaceWraper(2,array(
+			"{$this->url_base}files/produtos/$img",
+			$attr
+			),$this->layout[$param.'_imagem_wrap']);
+		$imagem .= ($param == 'item') ? $before : '';
+		return $imagem;
+	}
+
 	protected function setNavigation($imagens){
 		$html = "<{$this->layout['navigation_container']}  class='{$this->layout['navigation_class']}'>";
 		$item = '';
@@ -67,7 +81,7 @@ class ProductImageHelper extends SingleHelper {
 				array(
 					($this->layout['identificador']) ? $this->layout['navigation_item_id'].$int : $this->layout['navigation_item_id'],
 					($this->layout['identificador']) ? $this->layout['navigation_item_class'].$int : $this->layout['navigation_item_class'],
-					"<img src='{$this->url_base}files/produtos/$value' class='{$this->layout['navigation_item_imagem_class']}'>"
+					$this->setImagem($value,'navigation','','')
 				),
 				$this->layout['navigation_item']);
 		}
@@ -88,9 +102,11 @@ class ProductImageHelper extends SingleHelper {
 			$index =  parent::arrayMultiSearch($detalhes,'label','cor');
 			if(!is_null($index)){
 				if($this->layout['detalhe'] == '0'){
-					$cor = $this->layout['produto']->detalhes[0]['cor'];
-					if(isset($this->layout['produto']->imagem_detalhes) && array_key_exists($cor,$this->layout['produto']->imagem_detalhes)){
-						$produto_imagens = $this->layout['produto']->imagem_detalhes[$cor];
+					if(isset($this->layout['produto']->detalhes[0]['cor'])){
+						$cor = $this->layout['produto']->detalhes[0]['cor'];
+						if(isset($this->layout['produto']->imagem_detalhes) && array_key_exists($cor,$this->layout['produto']->imagem_detalhes)){
+							$produto_imagens = $this->layout['produto']->imagem_detalhes[$cor];
+						}
 					}
 				}else{
 					$chave =  parent::arrayMultiSearch($this->layout['produto']->detalhes,$detalhes[0]['label'],$this->layout['detalhe']);
