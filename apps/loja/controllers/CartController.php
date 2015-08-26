@@ -21,11 +21,6 @@ class CartController extends ControllerBase
 
 	public function indexAction(){
 		$this->view->cart = $this->cart;
-		$this->view->subtotal = number_format($this->cart->total(),2,',','.');
-		if($this->session->has('frete')){
-			$this->view->frete = number_format($this->session->get('frete')['valor'],2,',','.');
-		}
-		$this->view->total = number_format($this->cart->total() + $this->session->get('frete')['valor'],2,',','.');
 	}
 
 	public function fragmentAction(){

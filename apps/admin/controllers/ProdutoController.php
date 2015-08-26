@@ -134,7 +134,7 @@ class ProdutoController extends ControllerBase
         mysql_select_db('mare_old');
         mysql_query("SET NAMES 'utf8'");
         mysql_query("SET CHARACTER SET utf8 ");
-        $exec = mysql_query('SELECT tb_ic_explend_produtos.*,tb_ic_produtos.pro_destaque,tb_ic_produtos.pro_desc,tb_ic_produtos.pro_foto1,tb_ic_produtos.pro_foto2,tb_ic_produtos.pro_foto3,tb_ic_produtos.pro_foto4 FROM tb_ic_explend_produtos LEFT JOIN tb_ic_produtos ON tb_ic_produtos.pro_codexterno = tb_ic_explend_produtos.pro_id order by pro_nome asc') or die(mysql_error());
+        $exec = mysql_query('SELECT tb_ic_explend_produtos.*,tb_ic_produtos.pro_destaque,tb_ic_produtos.pro_desc,tb_ic_produtos.pro_foto1,tb_ic_produtos.pro_foto2,tb_ic_produtos.pro_foto3,tb_ic_produtos.pro_foto4 FROM tb_ic_explend_produtos LEFT JOIN tb_ic_produtos ON tb_ic_produtos.pro_codexterno = tb_ic_explend_produtos.pro_id') or die(mysql_error());
         $dados = array();
         while ($row = mysql_fetch_assoc($exec)) {
             $dados[] = $row;
@@ -169,6 +169,7 @@ class ProdutoController extends ControllerBase
                 array(
                     'valor' => floatval($value['pro_preco']),
                     'estoque' => 10,
+                    'detalhe_id' => (string) new \MongoId()
                 )
             );
             $produto->id_externo = $value['pro_id'];

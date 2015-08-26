@@ -11,7 +11,6 @@ class ProductImageHelper extends SingleHelper {
 
 	protected function getProductImages(){
 		$html = "<div class='{$this->layout['size']}'>";
-		$html .= "<{$this->layout['container']}  class='{$this->layout['container_class']}'>";
 		$item = '';
 		$produto_imagens = $this->setProdutoImagens();
 		if($this->layout['navigation']){
@@ -53,7 +52,6 @@ class ProductImageHelper extends SingleHelper {
 		if($this->layout['navigation_position'] == 'BEFORE_ITEM'){
 			$html .= $navigation;
 		}
-		$html .= "</{$this->layout['container']}>";
 		$html .= "</div>";
 		return $html;
 	}

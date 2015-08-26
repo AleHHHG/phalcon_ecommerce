@@ -13,9 +13,6 @@ class CartHelper extends BaseHelper{
 	public $options = array(
 		'tipo' => array()
 	);
-	const TO_CART = '<a href="/ecommerce/cart">Visualizar Carrinho</a> ';
-	const CHECKOUT = '<a href="/ecommerce/chekout">Finalizar Compra</a>';
-
 	protected $layouts = array(
 		'HEADER_CART_LAYOUT' => array(
 			'container' => 'div',
@@ -45,15 +42,40 @@ class CartHelper extends BaseHelper{
 			'buttons' => true,
 			'buttons_container' => 'div',
 			'buttons_class' => '',
-			'buttons_links' => array('TO_CART','CHECKOUT')
+			'buttons_links' => array(
+				'TO_CART' => array('class' => '','text' => 'Carrinho'),
+				'CHECKOUT' => array('class' => '','text' => 'Finalizar'),
+			)
 		),
 		'CART_LAYOUT' => array(
 			'size' => 'col-md-8',
+			'container_id' => '',
 			'container_class' => '',
 			'item_class' => '',
 			'thead' => true,
 			'resumo' => false,
 
+		),
+		'CART_TOTAL' => array(
+			'size' => 'col-md-4',
+			'container_id' => '',
+			'container_class' => '',
+			'item_class' => '',
+			'cep_options' => array(
+				'text_wrap' => '<h4>Calcular Frete:</h4>',
+				'btn_class' => 'btn btn-primary',
+				'input_class' => 'form-control',
+				),
+			'actions' => array(
+				'CONTINUAR' => array(
+					'class' => 'btn btn-default',
+					'text' => 'Continuar Comprando'
+				),
+				'CHECKOUT' => array(
+					'class' => 'btn btn-danger',
+					'text' => 'Finalizar'
+				),
+			),
 		),
 	);
 
@@ -74,13 +96,17 @@ class CartHelper extends BaseHelper{
 		if($layout == 'HEADER_CART_LAYOUT'){
 			$id = $this->attr['container_id'];
 			$class = $this->attr['container_class'];
-			$html = "<{$this->options['container']} $id $class>";
+			$html = '<div class="cart-header-container">';
+			$html .= "<{$this->options['container']} $id $class>";
 			$html .= $this->setItens();
 			$html .= $this->getSubtotal();
 			$html .= $this->getActions();
 			$html .= "</{$this->options['container']}>";
-		}else{
+			$html .= '</div>';
+		}else if($layout == 'CART_LAYOUT'){
 			$html = $this->setTable();
+		}else if($layout == 'CART_TOTAL'){
+			$html = $this->setTotais();
 		}
 		return $html;
 	}
@@ -126,7 +152,7 @@ class CartHelper extends BaseHelper{
 		}
 		$html .= $this->getInfoTitle($produto);
 		$html .= $this->getPrice($item);
-		if($this->options['remove_link'] == 'INFO_CONTAINER' && $this->options['remove_link_position'] == 'INFO_CONTAINER'){
+		if($this->options['remove_link'] == 'INFO_CONTAINER'){
 
 			$html .= $this->getRemoveLink($item_id);
 
@@ -185,8 +211,15 @@ class CartHelper extends BaseHelper{
 		if($this->options['buttons']){
 			$buttons_class = $this->attr['buttons_class'];
 			$html .= "<{$this->options['buttons_container']} $buttons_class>";
-			foreach ($this->options['buttons_links'] as $value) {
-				$html .= constant('self::'.$value);
+			foreach ($this->options['buttons_links'] as $key => $value) {
+				if($key == 'TO_CART'){	
+					$link = $this->url_base.'cart';
+				}else if($key == 'CHECKOUT'){
+					$link = $this->url_base.'chekout';
+				}else{
+					return false;
+				}
+				$html .= "<a href='$link' class='{$value['class']}'>{$value['text']}</a>";
 			}
 			$html .= "</{$this->options['buttons_container']}>";
 		}
@@ -195,7 +228,8 @@ class CartHelper extends BaseHelper{
 
 	protected function setTable(){
 		$class = $this->attr['container_class'];
-		$html = "<table class='{$this->options['container_class']} {$this->options['size']}'>";
+		$id = $this->attr['container_id'];
+		$html = "<table $id class='{$this->options['container_class']} {$this->options['size']}'>";
 		if($this->options['thead']){
 			$html .= '<thead>
 						<th>Imagem</th>
@@ -219,11 +253,16 @@ class CartHelper extends BaseHelper{
 			$preco = number_format($value->price,2,',','.');
 			$total = number_format($value->price*$value->quantity,2,',','.');
 			if(!$this->options['resumo']){
-				$html .= "<td><img src='{$this->url_base}files/produtos/{$produto['imagens'][0]}' class='img-responsive'/></td>";
+				$html .= "<td><img src='{$this->url_base}files/produtos/{$produto['imagens'][0]}' class='img-responsive' style='width:100px'/></td>";
 				$html .= "<td>{$value->name}</td>";
 				$chave = parent::arrayMultiSearch($produto['detalhes'],'detalhe_id',$value->options['detalhe_id']);
 				$select = "<select class='form-control cart-update' data-identificador='$key'>";
-				for ($i=1; $i <= $produto['detalhes'][$chave]['estoque'] ; $i++) { 
+				if($this->ecommerce_options->produto_detalhes == '0'){
+					$estoque = $produto['estoque'];
+				}else{
+					$estoque =(isset($value->options)) ? $produto['detalhes'][$chave]['estoque'] : $produto['detalhes'][0]['estoque'];
+				}
+				for ($i=1; $i <= $estoque ; $i++) { 
 					$selected = ($value->quantity == $i) ? 'selected' : '';
 					$select .= "<option value='$i' $selected>$i</option>";
 				}
@@ -242,6 +281,68 @@ class CartHelper extends BaseHelper{
 				</td>";
 			}
 			$html .= '<tr/>';
+		}
+		return $html;
+	}
+
+
+	public function setTotais(){
+		$html = '<div class="'.$this->options['size'].'">';
+		$html .= '<table class="'.$this->options['container_id'].'" id="'.$this->options['container_class'].'">';
+		$html .= $this->getTotais();
+		$html .= '</table>';
+		$html .= '</div>';
+		return $html;
+	}
+
+	protected function getTotais(){
+		$html = '<tr><td>'.$this->getCepOption().'</td></tr>';
+		$html .= '<tr id="frete-opcoes" style="display:none"><td>'.$this->getCepOption().'</td></tr>';
+		$html .= '<tr><td><h5>SubTotal: <strong>R$ <span id="cart-subtotal">'. number_format($this->cart->total(),2,',','.').'</span> </strong></h5></td> </tr>';
+		$html .= $this->getFreteOption();
+		$html .= '<tr class="active"><td><h5>Total: <strong>R$ <span id="cart-total">'.number_format($this->cart->total() + $this->session->get('frete')['valor'],2,',','.').'</span> </strong></h5></td></tr>';
+		$html .= '<tr><td>'.$this->getActionsOptions().'</td></tr>';
+		return '<tbody>'.$html.'</tbody>';
+	}
+
+	protected function getCepOption(){
+		return $this->options['cep_options']['text_wrap'].'
+				<div class="row">
+                    <div class="col-md-6 no-padding-right">
+                         <input type="text" class="'.$this->options['cep_options']['input_class'].' frete-calcular" value="'.$this->session->get('cep').'" />
+                    </div>
+                    <div class="col-md-6">
+                        <button class="'.$this->options['cep_options']['btn_class'].' frete-calcular-btn">Calcular</button>
+                    </div>
+                </div>';
+	}
+
+	protected function getFreteOption(){
+		$style = ($this->session->has('frete')) ? 'style="disyplay:none"' : '';
+		return '<tr '.$style.'>
+                    <td>
+                        <h5>Frete: 
+                            <strong>R$
+                                <span id="cart-frete">
+                                   '.number_format($this->session->get('frete')['valor'],2,',','.').'
+                                </span>
+                            </strong>
+                        </h5>
+                    </td>
+                </tr>';
+	}
+
+	protected function getActionsOptions(){
+		$html = '';
+		foreach ($this->options['actions'] as $key => $value) {
+			if($key == 'CHECKOUT'){
+				$link = $this->url_base.'checkout';
+			}else if($key == 'CONTINUAR'){
+				$link = $this->url_base;
+			}else{
+				return false;
+			}
+			$html .=  '<a href="'.$link.'" class="'.$value['class'].'">'.$value['text'].'</a> ';
 		}
 		return $html;
 	}
