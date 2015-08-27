@@ -1,34 +1,32 @@
 <?php 
 
 namespace Ecommerce\Admin\Models;
-class Cores extends \Phalcon\Mvc\Model
+class Marcas extends \Phalcon\Mvc\Model
 {
 
     public $id;
     public $nome;
-    public $hexa;
-
+    public $logo;
 
     public function rules(){
         return array(
             'id' => array(
-                'primary' =>true,
+                'primary' => true,
                 'type' => 'text'
             ),
             'nome' => array(
-                'type'=> 'text'
+                'type'=> 'text',
             ),
-            'hexa' => array(
-                'type' => 'text',
-                'hide' => true
+            'logo' => array(
+                'type' => 'file' 
             ),
         );
     }
 
-
     public function getSource(){
-        return 'cores';
+        return 'marcas';
     }
+
     /**
      * Allows to query a set of records that match the specified conditions
      *

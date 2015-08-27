@@ -1,15 +1,19 @@
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
    <div class="page-title">
       <div class="pull-left">
-         <h1 class="title">Categorias</h1>
+         <h1 class="title">{{titulo}}</h1>
+         <?php $this->flashSession->output() ?>
       </div>
       <div class="pull-right hidden-xs">
          <ol class="breadcrumb">
             <li>
-               <a href="index-2.html"><i class="fa fa-home"></i>Home</a>
+               <a href="javascript:;"><i class="fa fa-home"></i>Home</a>
+            </li>
+             <li>
+               <a href="javascript:;">Atributos</a>
             </li>
             <li class='active'>
-               <a href="tables-basic.html">Categorias</a>
+               <a href="tables-basic.html">{{titulo|capitalize}}</a>
             </li>
          </ol>
       </div>
@@ -19,7 +23,7 @@
 <div class="col-lg-12">
 <section class="box ">
 <header class="panel_header">
-   {{ link_to('admin/categoria/create','Nova Categoria','class':'btn btn-primary btn-lg pull-right')}}
+   {{ link_to('admin/atributos/'~param~'/create','<i class="fa fa-plus"></i> '~titulo|capitalize,'class':'btn btn-primary btn-lg pull-right')}}
    <br clear="all"/>
 </header>
 <div class="content-body">
@@ -33,24 +37,17 @@
                </tr>
             </thead>
             <tbody>
-            {% for categoria in categorias %}
+            {% for item in dados %}
                <tr>
                   <td>
-                     {% if categoria.pai is defined %}
-                        {% for pai in categoria.pai%}
-                           {{pai.nome}} / 
-                        {% endfor %}
-                     {%endif%}
-                     <strong>{{categoria.nome}}</strong>
+                     <strong>{{item['nome']}}</strong>
                   </td>
                   <td class='text-center'>
-
-                     {{ link_to("admin/categoria/update/"~categoria._id ,'<i class="fa fa-pencil icon-square icon-default "></i>'
+                     {{ link_to("admin/atributos/"~param~"/update/"~item['id'] ,'<i class="fa fa-pencil icon-square icon-default "></i>'
                      )}}
 
-                     {{ link_to("admin/categoria/delete/"~categoria._id ,'<i class="fa fa-times icon-square icon-danger "></i>'
+                     {{ link_to("admin/atributos/"~param~"/delete/"~item['id'] ,'<i class="fa fa-times icon-square icon-danger "></i>'
                      )}}
-                    
                   </td>
                </tr>
             {% endfor %}

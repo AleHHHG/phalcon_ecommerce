@@ -5,10 +5,10 @@
    </div>
 {% endfor %}
 {% if dispatcher.getActionName() == 'update'%}
+		<h4>Imagem Atual</h4>
 		{% for imagem in imagens%}
-			<div class="col-md-3">
+			<div class="col-md-6 no-padding-left">
 				{{ image('files/banners/'~imagem.url,'class':'img-responsive')}}
-				<a href='#' class='btn btn-orange'><i class='fa fa-times'></i></a>
 			</div>
 		{% endfor %}
 {% endif %}

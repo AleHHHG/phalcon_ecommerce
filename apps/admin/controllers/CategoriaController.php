@@ -16,27 +16,38 @@ class CategoriaController extends ControllerBase
     	$this->view->form = new CategoriaForm();
     	if($this->request->isPost()) {
     		$model = new Categorias();
-    		$model->nome = $this->request->getPost('nome');
-    		if($this->request->getPost('parent') != ''){
-    			$model->parent = $this->request->getPost('parent');
-    		}
-    		if($model->save()){
-                $this->flash->success("Adicionado com sucesso");
-    			return $this->response->redirect("admin/categorias");
-    		}
+    		$this->save($model);
     	}
     }
 
-    public function editAction($id){
-        $this->categoria = Categorias::findById($id);
+    public function updateAction($id){
+        $this->view->categorias =  Categorias::getDados();
+        $model = Categorias::findById($id);
+        $this->view->form = new CategoriaForm($model,array('edit' => true));
+        if($this->request->isPost()) {
+            $this->save($model);
+        }
     }
 
     public function deleteAction($id){
         $categoria = Categorias::findById($id);
         if($categoria->delete()){
+            $this->flash->success("Deletado com sucesso");
+        }else{
+            $this->flash->error("Erro ao deletar sucesso");
+        }
+        return $this->response->redirect("admin/categorias");
+    }
+
+     protected function save($model){
+        $model->nome = $this->request->getPost('nome');
+        if($this->request->getPost('parent') != ''){
+            $model->parent = $this->request->getPost('parent');
+        }
+        if($model->save()){
             $this->flash->success("Adicionado com sucesso");
         }else{
-            $this->flash->error("Adicionado com sucesso");
+            $this->flash->success("Houve um erro");
         }
         return $this->response->redirect("admin/categorias");
     }

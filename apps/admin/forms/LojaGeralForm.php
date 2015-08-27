@@ -33,7 +33,7 @@ class LojaGeralForm extends Form
         $this->add($produtos_por_pagina);
 
         $produtos_destaque_quantidade = new Numeric("produtos_destaque_quantidade");
-        $produtos_destaque_quantidade->setLabel('Quantidade de destaques exebidor por vez:');
+        $produtos_destaque_quantidade->setLabel('Quantidade de destaques exibidos por vez:');
         $this->add($produtos_destaque_quantidade);
 
     }

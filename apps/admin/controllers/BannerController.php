@@ -51,12 +51,19 @@ class BannerController extends ControllerBase
             if($this->request->hasFiles() == true) {
                 foreach ($this->request->getUploadedFiles() as $file)
                 {
-                    $file->moveTo('files/banners/' . $file->getName());
-                    $imagem = new Imagens();
-                    $imagem->url =  $file->getName();
-                    $imagem->relacao = 'banners';
-                    $imagem->id_relacao = $model->id;
-                    $imagem->save();
+                    if($file->getName() != ''){
+                        $file->moveTo('files/banners/' . $file->getName());
+                        $imagem = Imagens::findFirst("id_relacao = '$model->id' and relacao = 'banners'");
+                        if(!empty($imagem)){
+                            $imagem->url =  $file->getName();
+                        }else{
+                            $imagem = new Imagens();
+                            $imagem->url =  $file->getName();
+                            $imagem->relacao = 'banners';
+                            $imagem->id_relacao = $model->id;
+                        }
+                        $imagem->save();
+                    }
                 }
             }
             $this->flash->success("Operação realizada com sucesso");

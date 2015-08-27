@@ -196,6 +196,18 @@ $router->add("/admin/categoria/create", array(
     'action' => 'create'
 ));
 
+$router->add("/admin/categoria/update/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'categoria',
+    'action' => 'update'
+));
+
+$router->add("/admin/categoria/delete/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'categoria',
+    'action' => 'delete'
+));
+
 #Rota Produtos
 
 $router->add("/admin/produtos", array(
@@ -274,6 +286,31 @@ $router->add("/admin/banner/delete/{id:[a-zA-Z0-9]+}", array(
     'action' => 'delete',
 ));
 
+# Atributos
+
+$router->add("/admin/atributos/{param:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'atributos',
+    'action' => 'index',
+));
+
+$router->add("/admin/atributos/{param:[a-zA-Z0-9]+}/create", array(
+    'module'     => 'admin',
+    'controller' => 'atributos',
+    'action' => 'create',
+));
+
+$router->add("/admin/atributos/{param:[a-zA-Z0-9]+}/update/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'atributos',
+    'action' => 'update',
+));
+
+$router->add("/admin/atributos/{param:[a-zA-Z0-9]+}/delete/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'atributos',
+    'action' => 'delete',
+));
 
 #UPLOAD ROTA
 

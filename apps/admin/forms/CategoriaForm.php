@@ -19,7 +19,6 @@ class CategoriaForm extends Form
      */
     public function initialize($entity = null, $options = array())
     {
-
         if (isset($options['edit'])) {
             $this->add(new Hidden("id"));
         }
@@ -28,19 +27,15 @@ class CategoriaForm extends Form
         $nome->setLabel("Nome");
         $nome->setFilters(array('striptags', 'string'));
         $nome->setAttribute('class','form-control');
-        $nome->addValidators(array(
-            new PresenceOf(array(
-                'message' => 'Nome e obrigatorio'
-            ))
-        ));
         $this->add($nome);
-
+        
         $categoria = new Select("parent", Categorias::returnArrayForSelect(), array(
             'using' => array('_id', 'nome'),
             'useEmpty' => true,
             'emptyText'  => 'Nenhuma',
             'emptyValue' => ''
         ));
+
         $categoria->setLabel("Selecione a categoria pai*");
         $categoria->setAttribute('class','form-control');
         $this->add($categoria);

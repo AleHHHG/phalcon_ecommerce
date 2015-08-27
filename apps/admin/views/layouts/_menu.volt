@@ -42,6 +42,20 @@
          <li class="">
             <a href="#">
                <i class="fa fa-sliders"></i>
+               <span class="title">Atributos</span>
+            </a>
+            <ul class="sub-menu" >
+               {% for attr in atributos %}
+                  <li>
+                     {{ link_to('/admin/atributos/'~attr['label'],base_helper.pluralize(attr['label'])|capitalize)}}
+                  </li>
+               {% endfor %}
+            </ul>
+         </li>
+
+         <li class="">
+            <a href="#">
+               <i class="fa fa-gears"></i>
                <span class="title">Loja</span>
             </a>
             <ul class="sub-menu" >
@@ -55,7 +69,6 @@
                   <a href="javascript:;">Design</a>
                   <ul class="sub-menu" >
                      <li>{{ link_to('/admin/banners','Banners')}}</li>
-                     <li><a href='#'><span>Layouts</span></a></li>
                   </li>
                </li>
             </ul>

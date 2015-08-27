@@ -4,6 +4,7 @@ namespace Ecommerce\Admin\Forms;
 
 use Ecommerce\Admin\Models\Posicao;
 use Ecommerce\Admin\Models\Produtos;
+use Ecommerce\Admin\Models\Categorias;
 use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Hidden;
@@ -34,8 +35,17 @@ class BannerForm extends Form
             'emptyText'  => 'Nenhum ...',
             'emptyValue' => null,
         ));
-        $produto->setLabel('Produtos');
+        $produto->setLabel('Produto');
         $this->add($produto);
+
+        $categoria = new Select("categoria_id", Categorias::returnArrayForSelect(), array(
+            'using' => array('_id', 'nome'),
+            'useEmpty'   => true,
+            'emptyText'  => 'Nenhum ...',
+            'emptyValue' => null,
+        ));
+        $categoria->setLabel('Categoria');
+        $this->add($categoria);
 
         $posicao = new Select("posicao_id", Posicao::find(), array(
             'using' => array('id', 'nome'),
@@ -53,7 +63,7 @@ class BannerForm extends Form
          $this->add(new Numeric("ordem"));
 
         $imagem = new File("imagem");
-        $imagem->setLabel("Imagens");
+        $imagem->setLabel("Imagem");
         $this->add($imagem);
     }
 }

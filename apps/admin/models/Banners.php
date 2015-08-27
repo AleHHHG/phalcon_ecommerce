@@ -18,9 +18,15 @@ class Banners extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
+     * @var string
      */
     public $produto_id;
+
+    /**
+     *
+     * @var string
+     */
+    public $categoria_id;
 
     /**
      *
