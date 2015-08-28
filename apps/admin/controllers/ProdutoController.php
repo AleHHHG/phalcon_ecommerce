@@ -75,12 +75,8 @@ class ProdutoController extends ControllerBase
 
     public function deleteAction($id){
         $produtos = Produtos::findById($id);
-        if($produtos->delete()){
-            $this->flash->success("Deletaco com sucesso");
-        }else{
-            $this->flash->error("Não foi possivel deletar");
-        }
-        return $this->response->redirect("admin/produtos");
+        $exec = $produto->delete();
+        parent::notifica($exec,"admin/produtos");
     }
 
     protected function save($produto){
@@ -91,12 +87,8 @@ class ProdutoController extends ControllerBase
             $produto->imagens = $this->session->get('produto_imagens');
             $this->session->remove("produto_imagens");
         }
-        if($produto->save()){
-            $this->flash->success("Adicionado com sucesso");
-        }else{
-            $this->flash->success("Houve um erro");
-        }
-        return $this->response->redirect("admin/produtos");
+        $exec = $produto->save();
+        parent::notifica($exec,"admin/produtos");
     }
 
     protected function uploadeImagem(){

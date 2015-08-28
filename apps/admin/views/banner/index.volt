@@ -14,6 +14,7 @@
          </ol>
       </div>
    </div>
+   <?php $this->flashSession->output() ?>
 </div>
 <div class="clearfix"></div>
 <div class="col-lg-12">

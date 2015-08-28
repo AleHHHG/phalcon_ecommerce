@@ -31,12 +31,8 @@ class CategoriaController extends ControllerBase
 
     public function deleteAction($id){
         $categoria = Categorias::findById($id);
-        if($categoria->delete()){
-            $this->flash->success("Deletado com sucesso");
-        }else{
-            $this->flash->error("Erro ao deletar sucesso");
-        }
-        return $this->response->redirect("admin/categorias");
+        $exec = $categoria->delete();
+        parent::notifica($exec,"admin/categorias");
     }
 
      protected function save($model){
@@ -44,12 +40,8 @@ class CategoriaController extends ControllerBase
         if($this->request->getPost('parent') != ''){
             $model->parent = $this->request->getPost('parent');
         }
-        if($model->save()){
-            $this->flash->success("Adicionado com sucesso");
-        }else{
-            $this->flash->success("Houve um erro");
-        }
-        return $this->response->redirect("admin/categorias");
+        $exec = $model->save();
+        parent::notifica($exec,"admin/categorias");
     }
 }
 

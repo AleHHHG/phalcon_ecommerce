@@ -35,12 +35,8 @@ class BannerController extends ControllerBase
 
     public function deleteAction($id){
         $model = Banners::findById($id);
-        if($model->delete()){
-            $this->flash->success("Deletado com sucesso");
-        }else{
-            $this->flash->error("Houve um erro");
-        }
-        return $this->response->redirect("admin/banners");
+        $exec = $model->delete();
+        parent::notifica($exec,"admin/banners");
     }
 
     protected function save($model){
@@ -66,9 +62,9 @@ class BannerController extends ControllerBase
                     }
                 }
             }
-            $this->flash->success("Operação realizada com sucesso");
+            $this->flashSession->success("Operação realizada com sucesso");
         }else{
-            $this->flash->error("Houve um erro");
+            $this->flashSession->error("Houve um erro");
         }
         return $this->response->redirect("admin/banners");
     }

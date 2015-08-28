@@ -2,7 +2,6 @@
    <div class="page-title">
       <div class="pull-left">
          <h1 class="title">{{titulo}}</h1>
-         <?php $this->flashSession->output() ?>
       </div>
       <div class="pull-right hidden-xs">
          <ol class="breadcrumb">
@@ -18,6 +17,7 @@
          </ol>
       </div>
    </div>
+   <?php $this->flashSession->output() ?>
 </div>
 <div class="clearfix"></div>
 <div class="col-lg-12">
