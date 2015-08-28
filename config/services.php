@@ -92,6 +92,7 @@ $di->set('helper',function(){
     $helper->cart = new Ecommerce\Loja\Helpers\CartHelper;
     $helper->topBar = new Ecommerce\Loja\Helpers\TopBarHelper;
     $helper->comparacao = new Ecommerce\Loja\Helpers\ComparacaoHelper;
+    $helper->footer = new Ecommerce\Loja\Helpers\FooterHelper;
     return $helper;
 });
 
