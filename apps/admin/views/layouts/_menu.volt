@@ -24,6 +24,19 @@
                <span class="title">Painel</span>
             </a>
          </li>
+
+         <li class="">
+            <a href="#">
+               <i class="fa fa-shopping-cart"></i>
+               <span class="title">Vendas</span>
+            </a>
+            <ul class="sub-menu" >
+               <li><a>Pedidos</a></li>
+               <li><a>Usuários</a></li>
+               <li><a>Cupom de Desconto</a></li>
+            </ul>
+         </li>
+
          <li class=""> 
             {{ link_to('/admin/categorias',
                '<i class="fa fa-th"></i>

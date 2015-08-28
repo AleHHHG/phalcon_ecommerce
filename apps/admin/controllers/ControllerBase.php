@@ -13,9 +13,7 @@ class ControllerBase extends Controller
 	public function initialize(){
 		$this->helper = new BaseHelper;
 		$this->view->setTemplateAfter('main');
-		if($this->ecommerce_options->produto_detalhes == '1'){
-			$attrs = unserialize($this->ecommerce_options->produto_detalhe_options);
-		}
+		$attrs = ($this->ecommerce_options->produto_detalhes == '1') ? unserialize($this->ecommerce_options->produto_detalhe_options) : array();
 		if($this->ecommerce_options->produto_options != ''){
 			$attrs = array_merge($attrs,unserialize($this->ecommerce_options->produto_options));
 		}

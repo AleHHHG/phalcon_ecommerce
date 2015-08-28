@@ -81,7 +81,7 @@ class ProdutoDetalheForm extends Form
         }
         if(!is_null($obj)){
             $detalhe_id = new hidden("detalhes[detalhe_id][]");
-            $detalhe_id->setAttribute('class','form-control detalhe_id');
+            $detalhe_id->setAttribute('class','form-control detalhe_id dynamicId');
             $detalhe_id->setDefault($obj->detalhe_id);
             $this->add($detalhe_id); 
         }

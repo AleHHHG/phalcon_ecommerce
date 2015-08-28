@@ -22,27 +22,40 @@ class ProdutoForm extends Form
      */
     public function initialize($entity = null, $options = array())
     {
-
         if (isset($options['edit'])) {
-            $this->add(new Hidden("_id"));
+            $item = new Hidden("_id");
+            $item->setAttribute('class','dynamicId');
+            $this->add($item);
         }
         $nome = new Text("nome");
         $nome->setLabel("Nome");
-        $nome->setFilters(array('striptags', 'string'));
         $nome->setAttribute('class','form-control');
-        $nome->addValidators(array(
-            new PresenceOf(array(
-                'message' => 'Nome e obrigatorio'
-            ))
-        ));
         $this->add($nome);
-
         $categoria = new Select("categoria", Categorias::returnArrayForSelect(), array(
             'using' => array('_id', 'nome')
         ));
         $categoria->setLabel("Categoria");
         $categoria->setAttribute('class','form-control');
         $this->add($categoria);
+
+        #Opçõs setadas dinamicamente
+        $detalhes = unserialize($this->ecommerce_options->produto_options);
+        foreach ($detalhes as $key => $value) {
+            $chave = $key;
+            $chave = new Select("detalhes[{$value['label']}][]", $value['referencia']::find(array('order' => 'nome ASC')), array(
+                'using' => array('nome', 'nome'),
+                'useEmpty'   => true,
+                'emptyText'  => 'Nenhum ...',
+                'emptyValue' => null,
+            ));
+            $chave->setLabel($value['label']);
+            $chave->setAttribute('class','form-control '.$value['label']);
+            if(!is_null($obj)){
+                $chave->setDefault($obj->$value['label']);
+            }
+            $this->add($chave);
+        }
+
         #Caso detalhes do produto esteja habilitado
         if($this->ecommerce_options->produto_detalhes == '0'){
             $valor = new Text("valor");
@@ -59,7 +72,7 @@ class ProdutoForm extends Form
 
         $descricao = new TextArea("descricao");
         $descricao->setLabel("Descrição");
-        $descricao->setAttribute('class','form-control bootstrap-wysihtml5-textarea');
+        $descricao->setAttribute('class','form-control summernote');
         $descricao->setAttribute('rows','10');
         $this->add($descricao);
         

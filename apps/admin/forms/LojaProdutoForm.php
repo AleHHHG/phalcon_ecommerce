@@ -34,12 +34,5 @@ class LojaProdutoForm extends Form
         $produto_cubagem_detalhe->setLabel('Cubagem no detalhe ?');
         $this->add($produto_cubagem_detalhe);
 
-        $produto_detalhe_imagem = new Select("produto_detalhe_imagem", array(
-            '0' => 'Não',
-            '1' => 'Sim'
-        ));
-        $produto_detalhe_imagem->setLabel('Imagens em cada detalhe ?');
-        $this->add($produto_detalhe_imagem);
-
     }
 }

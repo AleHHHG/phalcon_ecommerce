@@ -29,10 +29,10 @@
 
 {{ stylesheet_link("plugin/admin/datatables/extensions/Responsive/bootstrap/3/dataTables.bootstrap.css") }}
 
-{{ stylesheet_link("plugin/admin/bootstrap3-wysihtml5/css/bootstrap3-wysihtml5.min.css") }}
-
 
 {{ stylesheet_link("css/admin/style.css") }}
+
+{{ stylesheet_link("css/admin/summernote.css") }}
 
 {{ stylesheet_link("css/admin/responsive.css") }}
 
