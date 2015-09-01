@@ -29,17 +29,21 @@ class FooterHelper extends BaseHelper{
 			'item_wrap' => '<li class="%1Ss"><a href="%2Ss">%3Ss</a></li>',
 			'item_wrap_class' => ''
 		),
-		'SOCIAl_LAYOUT' => array(
+		'SOCIAL_LAYOUT' => array(
 			'container_wrap' => '<div class="%1Ss">%2Ss</div>',
 			'container_class' => '',
-			'wrap' => '',
+			'wrap' => '<ul class="%1Ss">%2Ss</ul>',
 			'wrap_class' => '',
-			'item_wrap' => '',
-			'item_class' => '',
+			'item_wrap' => '<li class="%1Ss"><a href="%2Ss">%3Ss</a></li>',
+			'item_wrap_class' => '',
+			'icone_layout' => 'default',
+			'size' => 'medium',
+			'color' => 'white'
 		),
 		'COPYRIGHT_LAYOUT' => array(
 			'logo' => true,
-			'logo_color' => 'white'
+			'logo_color' => 'white',
+			'logo_size' => '200x46'
 		),
 	);
 
@@ -60,7 +64,7 @@ class FooterHelper extends BaseHelper{
 				}
 			}else if($value['layout'] == 'PAGAMENTO_LAYOUT'){
 				$html .= $this->getPagamentos($layout);
-			}else if($value['layout'] == 'SOCIAl_LAYOUT'){
+			}else if($value['layout'] == 'SOCIAL_LAYOUT'){
 				$html .= $this->getSocial($layout);
 			}else{
 				$html .= $this->getCopyright($layout);
@@ -69,10 +73,72 @@ class FooterHelper extends BaseHelper{
 		return $html;
 	}
 
+	public function getSocial($layout){
+		$item = '';
+		$array = array('facebook','google_plus','twitter');
+		foreach ($array as $value) {
+			if($layout['size'] == 'medium'){
+				$size = 'fa-3x';
+			}else if($layout['size'] == 'large'){
+				$size = 'fa-5x';
+			}else if($layout['size'] == 'small'){
+				$size = 'fa-2x';
+			}else{
+				$size = 'fa-lg';
+			}
+			$icone_layout = ($layout['icone_layout'] != 'default') ? "-{$layout['icone_layout']}" : '';
+	 		$i = '<i class="fa fa-'.str_replace('_', '-', $value).$icone_layout.' '.$size.'" style="color:'.$layout['color'].'"></i>';
+	 		if($this->ecommerce_options->$value != ''){
+		 		$item .=  parent::replaceWraper(3,
+						array(
+							$layout['item_wrap_class'],
+							$this->ecommerce_options->$value,
+							$i
+						),
+						$layout['item_wrap']
+				);
+			} 
+		}
+		$item  = parent::replaceWraper(2,
+						array(
+							$layout['wrap_class'],
+							$item
+						),
+						$layout['wrap']
+				);
+		return parent::replaceWraper(2,array(
+				$layout['container_class'],
+				$item
+			),
+			$layout['container_wrap']
+		);
+	}
+
 	public function getPagamentos($layout){
 		$item = '';
 		foreach (unserialize($this->ecommerce_options->bandeiras) as $value) {
-			$item .= '<img src="'.$this->url_base.'img/loja/bandeiras/'.$value.'.png" class="'.$layout['img_class'].'" />'; 
+			$i = '<img src="'.$this->url_base.'img/loja/bandeiras/'.$value.'.png" class="'.$layout['img_class'].'" />';
+			if($layout['isItem']){
+				$item .=  parent::replaceWraper(3,
+					array(
+						$layout['item_wrap_class'],
+						'javascript:;',
+						$i
+					),
+					$layout['item_wrap']
+				); 
+			}else{
+				$item .= $i;
+			}
+		}
+		if($layout['isItem']){
+			$item  = parent::replaceWraper(2,
+					array(
+						$layout['wrap_class'],
+						$item
+					),
+					$layout['wrap']
+			);
 		}
 		return parent::replaceWraper(2,array(
 				$layout['container_class'],
@@ -83,9 +149,13 @@ class FooterHelper extends BaseHelper{
 	}
 
 	public function getCopyright($layout){
- 		$item =  '&copy;'.date('Y').' '.$this->ecommerce_options->titulo.', Desenvolvido por ';
+ 		$item =  '&copy; '.date('Y').' '.$this->ecommerce_options->titulo.' - Desenvolvido por ';
  		$item .= '<a href="http://www.webearte.com.br/">';
- 		$item .= ($layout['logo']) ? '<img src="https://www.webearte.com.br/images/site/colors/orange/logo.png" alt="Webearte">' : 'Webearte';
+ 		if($layout['logo']){
+	 		$size = explode('x', $layout['logo_size']);
+			$src = "?src={$this->url_base}public/img/loja/webearte_{$layout['logo_color']}.png&q=90&w={$size[0]}&h={$size[1]}&zc=2";
+		}
+ 		$item .= ($layout['logo']) ? '&nbsp<img src="'.$this->url_base.'public/timthumb'.$src.'" alt="Webearte">' : 'Webearte';
  		$item .= '</a>';
  		return $item;
 	}
