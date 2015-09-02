@@ -13,6 +13,10 @@ class ControllerBase extends Controller
 	public function initialize(){
 		$this->helper = new BaseHelper;
 		$this->view->setTemplateAfter('main');
+		if (!$this->session->has("admin_logado")){
+			$this->flashSession->error('Acesso negado : Faça o login para proseguir');
+			return $this->response->redirect('admin');
+		}
 		$attrs = ($this->ecommerce_options->produto_detalhes == '1') ? unserialize($this->ecommerce_options->produto_detalhe_options) : array();
 		if($this->ecommerce_options->produto_options != ''){
 			$attrs = array_merge($attrs,unserialize($this->ecommerce_options->produto_options));

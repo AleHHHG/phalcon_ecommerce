@@ -178,7 +178,23 @@ $router->add("/admin", array(
     'controller' => 'login',
 ));
 
-$router->add("/admin/inicio", array(
+#LOGIN
+
+$router->add("/admin/login", array(
+    'module'     => 'admin',
+    'controller' => 'login',
+    'action' => 'create',
+));
+
+$router->add("/admin/logout", array(
+    'module'     => 'admin',
+    'controller' => 'login',
+    'action' => 'logout',
+));
+
+# PAINEL
+
+$router->add("/admin/dashboard", array(
     'module'     => 'admin',
     'controller' => 'index',
 ));

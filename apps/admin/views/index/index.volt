@@ -1,7 +1,7 @@
 <div class="col-md-12">
    <div class="page-title">
       <div class="pull-left">
-         <h1 class="title">Dashboard</h1>
+         <h1 class="title">Painel</h1>
       </div>
    </div>
    <div class="row">

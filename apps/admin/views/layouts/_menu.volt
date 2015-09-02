@@ -19,10 +19,11 @@
       <!-- USER INFO - END -->
       <ul class='wraplist'>
          <li class="open"> 
-            <a href="javascript:;">
-               <i class="fa fa-dashboard"></i>
-               <span class="title">Painel</span>
-            </a>
+            {{ link_to('/admin/dashboard',
+               '<i class="fa fa-dashboard"></i>
+               <span class="title">Painel</span>'
+               )
+            }}
          </li>
 
          <li class="">

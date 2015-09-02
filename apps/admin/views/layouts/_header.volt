@@ -158,10 +158,8 @@
                      </a>
                   </li>
                   <li class="last">
-                     <a href="ui-login.html">
-                     <i class="fa fa-lock"></i>
-                     Sair
-                     </a>
+                     {{ link_to('admin/logout','<i class="fa fa-lock"></i>
+                     Sair')}}
                   </li>
                </ul>
             </li>
