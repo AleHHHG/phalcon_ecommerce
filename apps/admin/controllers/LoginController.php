@@ -8,8 +8,6 @@ class LoginController extends Controller
 {
 
 	function initialize(){
-		$string = 'ola';
-		$string = ucwords($string);
 		$this->view->setTemplateAfter('login');
 	}
 
