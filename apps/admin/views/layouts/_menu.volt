@@ -26,15 +26,11 @@
          </li>
 
          <li class="">
-            <a href="#">
-               <i class="fa fa-shopping-cart"></i>
-               <span class="title">Vendas</span>
-            </a>
-            <ul class="sub-menu" >
-               <li><a>Pedidos</a></li>
-               <li><a>Usuários</a></li>
-               <li><a>Cupom de Desconto</a></li>
-            </ul>
+            {{ link_to('/admin/pedidos',
+               '<i class="fa fa-shopping-cart"></i>
+               <span class="title">Pedidos</span>'
+               )
+            }}
          </li>
 
          <li class=""> 

@@ -312,6 +312,26 @@ $router->add("/admin/atributos/{param:[a-zA-Z0-9]+}/delete/{id:[a-zA-Z0-9]+}", a
     'action' => 'delete',
 ));
 
+
+#ROTA PEDIDOS
+
+$router->add("/admin/pedidos", array(
+    'module'     => 'admin',
+    'controller' => 'pedido'
+));
+
+$router->add("/admin/pedido/detalhes/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'pedido',
+    'action' => 'show'
+));
+
+$router->add("/admin/pedido/update", array(
+    'module'     => 'admin',
+    'controller' => 'pedido',
+    'action' => 'update'
+));
+
 #UPLOAD ROTA
 
 $router->add("/admin/upload", array(

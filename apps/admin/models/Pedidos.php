@@ -57,9 +57,10 @@ class Pedidos extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->belongsTo('frete_codigo', 'Ecommerce\Admin\Models\FreteTipos', 'codigo', array('alias' => 'FreteTipos'));
-        $this->belongsTo('usuario_id', 'Ecommerce\Admin\Models\Usuarios', 'id', array('alias' => 'Usuarios'));
+        $this->belongsTo('usuario_id', 'Ecommerce\Admin\Models\Usuarios', 'id', array('alias' => 'Usuario'));
         $this->belongsTo('status_id', 'Ecommerce\Admin\Models\PedidoStatus', 'id', array('alias' => 'PedidoStatus'));
         $this->belongsTo('forma_pagamento', 'Ecommerce\Admin\Models\Widgets', 'id', array('alias' => 'Widgets'));
+        $this->hasMany('id', 'Ecommerce\Admin\Models\PedidoItens', 'id', array('alias' => 'Itens'));
     }
 
     /**

@@ -43,6 +43,11 @@ class PedidoItens extends \Phalcon\Mvc\Model
         return 'pedido_itens';
     }
 
+    public function initialize()
+    {
+        $this->belongsTo('pedido_id', 'Ecommerce\Admin\Models\Pedidos', 'id', array('alias' => 'Pedido'));
+    }
+
     /**
      * Allows to query a set of records that match the specified conditions
      *

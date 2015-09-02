@@ -187,14 +187,16 @@ class FooterHelper extends BaseHelper{
 			$array = array('termos_de_uso','politica_de_privacidade','politica_de_entrega');
 			foreach ($array as $key => $value) {
 				$nome = str_replace('politica','política',str_replace('_', ' ', $value));
-				$item .=  parent::replaceWraper(3,
-					array(
-						$layout['item_wrap_class'],
-						'javascript:;',
-						ucfirst($nome).'<span class="display:none">'.$this->ecommerce_options->$value.'</span>'
-					),
-					$layout['item_wrap']
-				);
+				if($this->ecommerce_options->$value != ''){
+					$item .=  parent::replaceWraper(3,
+						array(
+							'launch-modal '.$layout['item_wrap_class'],
+							'javascript:;',
+							ucfirst($nome).'<span data-title="'.ucfirst($nome).'" style="display:none">'.$this->ecommerce_options->$value.'</span>'
+						),
+						$layout['item_wrap']
+					);
+				}
 			}
 		}else if($valor == 'contato'){
 			$array = array('email','telefone','endereco');

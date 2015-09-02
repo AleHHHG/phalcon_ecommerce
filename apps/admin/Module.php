@@ -37,6 +37,10 @@ class Module implements ModuleDefinitionInterface{
      */
     public function registerServices(DiInterface $di)
     {
+        // Assign our new tag a definition so we can call it
+        $di->set('Utilitarios', function () {
+            return new \Ecommerce\Admin\Helpers\UtilitariosHelper();
+        });
         
         $di->set('dispatcher', function() {
             $dispatcher = new Dispatcher();

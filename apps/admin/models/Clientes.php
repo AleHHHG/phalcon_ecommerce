@@ -1,8 +1,6 @@
 <?php
 namespace Ecommerce\Admin\Models;
-use Phalcon\Mvc\Model\Validator\Email as Email;
-
-class Usuarios extends \Phalcon\Mvc\Model
+class Clientes extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -11,62 +9,44 @@ class Usuarios extends \Phalcon\Mvc\Model
      */
     public $id;
 
+      /**
+     *
+     * @var integer
+     */
+    public $usuario_id;
+
+    /**
+     *
+     * @var string
+     */
+    public $telefone;
+
+     /**
+     *
+     * @var string
+     */
+    public $celular;
+
+      /**
+     *
+     * @var string
+     */
+    public $documento;
+
     /**
      *
      * @var integer
      */
-    public $nivel_id;
-
-    /**
-     *
-     * @var string
-     */
-    public $nome;
-
-    /**
-     *
-     * @var string
-     */
-    public $email;
-
-    /**
-     *
-     * @var string
-     */
-    public $senha;
-
-    /**
-     * Validations and business logic
-     *
-     * @return boolean
-     */
-    public function validation()
-    {
-        $this->validate(
-            new Email(
-                array(
-                    'field'    => 'email',
-                    'required' => true,
-                )
-            )
-        );
-
-        if ($this->validationHasFailed() == true) {
-            return false;
-        }
-
-        return true;
-    }
+    public $pessoa_juridica;
 
     /**
      * Initialize method for model.
      */
     public function initialize()
     {
-        $this->hasMany('id', 'Ecommerce\Admin\Models\Pedidos', 'usuario_id', array('alias' => 'Pedidos'));
-        $this->belongsTo('nivel_id', 'Ecommerce\Admin\Models\Niveis', 'id', array('alias' => 'Nivel'));
+        $this->belongsTo('usuario_id', 'Ecommerce\Admin\Models\Usuarios', 'id', array('alias' => 'Usuario'));
     }
-
+    
     /**
      * Returns table name mapped in the model.
      *
@@ -74,14 +54,14 @@ class Usuarios extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'usuarios';
+        return 'clientes';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Usuarios[]
+     * @return Enderecos[]
      */
     public static function find($parameters = null)
     {
@@ -92,7 +72,7 @@ class Usuarios extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Usuarios
+     * @return Enderecos
      */
     public static function findFirst($parameters = null)
     {

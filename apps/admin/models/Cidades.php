@@ -1,6 +1,6 @@
 <?php
 namespace Ecommerce\Admin\Models;
-class Enderecos extends \Phalcon\Mvc\Model
+class Cidades extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -17,58 +17,15 @@ class Enderecos extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
-     */
-    public $cidades_id;
-
-    /**
-     *
-     * @var integer
-     */
-    public $id_relacao;
-
-    /**
-     *
      * @var string
      */
-    public $relacao;
+    public $nome;
 
-    /**
-     *
-     * @var string
-     */
-    public $cep;
-
-    /**
-     *
-     * @var string
-     */
-    public $logradouro;
-
-    /**
-     *
-     * @var string
-     */
-    public $bairro;
-
-    /**
-     *
-     * @var integer
-     */
-    public $numero;
-
-    /**
-     *
-     * @var string
-     */
-    public $complemento;
-
-    /**
+     /**
      * Initialize method for model.
      */
     public function initialize()
     {
-        $this->belongsTo('cidades_id', 'Ecommerce\Admin\Models\Cidades', 'id', array('alias' => 'Cidade'));
         $this->belongsTo('estado_id', 'Ecommerce\Admin\Models\Estados', 'id', array('alias' => 'Estado'));
     }
 
@@ -79,7 +36,7 @@ class Enderecos extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'enderecos';
+        return 'cidades';
     }
 
     /**
