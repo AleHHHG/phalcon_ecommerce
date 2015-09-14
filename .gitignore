@@ -1,0 +1,8 @@
+apps/documentacao
+apps/loja/vendor
+apps/loja/cache
+apps/loja/customs
+apps/loja/views
+apps/admin/cache
+apps/admin/vendor
+public/
