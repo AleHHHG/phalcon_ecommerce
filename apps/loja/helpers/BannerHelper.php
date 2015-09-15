@@ -57,12 +57,12 @@ class BannerHelper extends BaseHelper{
 		}
 		$criteria['order'] = 'ordem asc';
 		$banner = Banners::find($criteria);
-		foreach ($banner as $key => $value) {
-			$imagem = Imagens::findFirst("relacao = 'banners' and id_relacao = {$value->id}")->url;
+		foreach ($banner as $key => $value) {;
+			$imagem = Imagens::findFirst("id in (".implode(',', unserialize($value->imagens)).")")->url;
 			$replaces = array(
 				$array['slide_item_id'],
 				$array['slide_item_class'],
-				"<img src='{$this->url_base}/files/banners/$imagem' class='img-responsive'/>",
+				"<img src='".$this->url_base.$imagem."' class='img-responsive'/>",
 				($array['caption'] ? $this->setCaption($value,$key) : '')
 			);
 			$itens .= parent::replaceWraper(4,
@@ -89,7 +89,7 @@ class BannerHelper extends BaseHelper{
 				$item = $dados->nome;
 			}
 		}else if($param == 'description'){
-			$item = $dados->descricao;
+			$item = nl2br($dados->descricao);
 		}else if($param == 'link'){
 			$item = "<a href='$dados->link'>Mais Detalhes</a>";
 		}else{

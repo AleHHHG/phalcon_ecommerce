@@ -37,7 +37,7 @@ class BannerForm extends Form
             'using' => array('_id', 'nome'),
             'useEmpty'   => true,
             'emptyText'  => 'Nenhum ...',
-            'emptyValue' => null,
+            'emptyValue' => 0,
         ));
         $categoria->setLabel('Categoria');
         $this->add($categoria);
@@ -56,7 +56,5 @@ class BannerForm extends Form
         $this->add($descricao);
         
         $this->add(new Numeric("ordem"));
-
-        $this->add(new Hidden("imagens"));
     }
 }

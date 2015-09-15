@@ -12,7 +12,6 @@ class CategoriaController extends ControllerBase
     }
 
     public function createAction(){
-		$this->view->categorias =  Categorias::getDados();
     	$this->view->form = new CategoriaForm();
     	if($this->request->isPost()) {
     		$model = new Categorias();
@@ -21,8 +20,9 @@ class CategoriaController extends ControllerBase
     }
 
     public function updateAction($id){
-        $this->view->categorias =  Categorias::getDados();
         $model = Categorias::findById($id);
+        $this->view->categoria = $model;
+        $this->view->categorias = Categorias::returnArrayForSelect();
         $this->view->form = new CategoriaForm($model,array('edit' => true));
         if($this->request->isPost()) {
             $this->save($model);

@@ -22,11 +22,6 @@ class ProdutoForm extends Form
      */
     public function initialize($entity = null, $options = array())
     {
-        if (isset($options['edit'])) {
-            $item = new Hidden("_id");
-            $item->setAttribute('class','dynamicId');
-            $this->add($item);
-        }
         $nome = new Text("nome");
         $nome->setLabel("Nome");
         $nome->setAttribute('class','form-control');

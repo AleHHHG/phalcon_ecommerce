@@ -27,4 +27,23 @@ class UtilitariosHelper extends Tag
         }
         return $itens;
     }
+
+    public function getUploadCenter($name,$action,$uploads = null, $imagens = null){
+        $url = $this->getDI()->getShared('url');
+        $html = '<label>'.ucwords($name).'</label><br/>';
+        $valores = ($action == 'update') ? implode(',', unserialize($uploads)) : "";
+        $html .= '<input type="hidden" class="upload-target-values" value="'.$valores.'" name="'.$name.'">'; 
+        $html .= '<a href="#target-upload" id="call-upload" data-url="'.$url->getBaseUri().'admin/upload" data-toggle="modal" class="btn btn-info">Adicionar Imagem</a>';
+        $html .= '<hr/>';
+        $html .= '<div id="selected-content">';
+        if($action == 'update'){
+            foreach ($imagens as $key => $value) {
+                $html .= '<div class="col-md-3 thumbnail" style="padding:20px">
+                            <img src="'.$url->getBaseUri().$value->url.'" class="img-reponsive" />
+                         </div>';
+            }
+        }
+        $html .= '</div>';
+        return $html;
+    }
 }

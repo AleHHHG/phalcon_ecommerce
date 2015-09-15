@@ -350,18 +350,18 @@ $router->add("/admin/pedido/update", array(
 
 #UPLOAD ROTA
 
-$router->add("/admin/upload/{tabela:[a-zA-Z0-9]+}/{coluna:[a-zA-Z0-9]+}", array(
+$router->add("/admin/upload", array(
     'module'     => 'admin',
     'controller' => 'upload',
 ));
 
-$router->add("/admin/upload/create/{tabela:[a-zA-Z0-9]+}/{coluna:[a-zA-Z0-9]+}", array(
+$router->add("/admin/upload/create", array(
     'module'     => 'admin',
     'controller' => 'upload',
     'action' => 'create'
 ));
 
-$router->add("/admin/upload/show/{tabela:[a-zA-Z0-9]+}/{coluna:[a-zA-Z0-9]+}", array(
+$router->add("/admin/upload/show", array(
     'module'     => 'admin',
     'controller' => 'upload',
     'action' => 'show'

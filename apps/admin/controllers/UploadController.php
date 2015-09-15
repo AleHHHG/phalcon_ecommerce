@@ -8,14 +8,12 @@ use Aws\Exception\MultipartUploadException;
 class UploadController extends ControllerBase
 {
 
-    public function indexAction($tabela,$coluna){
+    public function indexAction(){
         $this->view->disableLevel(View::LEVEL_AFTER_TEMPLATE);
         $this->view->imagens = Imagens::find();
-        $this->view->tabela = $tabela;
-        $this->view->coluna = $coluna;
     }
 
-    public function createAction($tabela,$coluna){
+    public function createAction(){
         if($this->request->isAjax()){
             $this->view->disable();
             if($this->request->hasFiles() == true) {
@@ -69,11 +67,9 @@ class UploadController extends ControllerBase
         }
     }
      
-    public function showAction($tabela,$coluna){
+    public function showAction(){
         $this->view->disableLevel(View::LEVEL_AFTER_TEMPLATE);
         $this->view->imagens = Imagens::find();
-        $this->view->tabela = $tabela;
-        $this->view->coluna = $coluna;
     }
 
     public function deleteAction()

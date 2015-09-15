@@ -120,8 +120,6 @@ class Categorias extends \Phalcon\Mvc\Collection
         return $arr;
     }
 
-
-
     public static function returnArrayForSelect()
     {
         $array = array();

@@ -19,7 +19,7 @@
 <div class="col-lg-12">
    <section class="box ">
          <div class="content-body">
-            {{ form("admin/categoria/update",'mehtod':'post') }}
+            {{ form("admin/categoria/update/"~categoria._id,'mehtod':'post') }}
 
                {{ partial('categoria/_form')}}
 

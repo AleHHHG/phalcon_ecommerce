@@ -31,7 +31,7 @@
                <div id="progress" class="progress">
                 <div class="progress-bar progress-bar-primary"></div>
                </div>
-               {{ form("admin/upload/create/"~tabela~'/'~coluna,'enctype': 'multipart/form-data','id':'upload-form','data-tabela':tabela,'data-coluna':coluna) }}
+               {{ form("admin/upload/create",'enctype': 'multipart/form-data','id':'upload-form') }}
                   {{ file_field('files[]','id':'fileupload','multiple':'multiple')}}
                   <br/>
                   {{ submit_button('Upload','class':'btn btn-primary btn-lg')}}

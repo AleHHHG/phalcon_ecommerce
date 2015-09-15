@@ -17,27 +17,23 @@ class CategoriaForm extends Form
     /**
      * Initialize the products form
      */
-    public function initialize($entity = null, $options = array())
+    public function initialize($model = null, $options = array())
     {
-        if (isset($options['edit'])) {
-            $this->add(new Hidden("id"));
-        }
-
         $nome = new Text("nome");
         $nome->setLabel("Nome");
         $nome->setFilters(array('striptags', 'string'));
         $nome->setAttribute('class','form-control');
         $this->add($nome);
-        
-        $categoria = new Select("parent", Categorias::returnArrayForSelect(), array(
-            'using' => array('_id', 'nome'),
-            'useEmpty' => true,
-            'emptyText'  => 'Nenhuma',
-            'emptyValue' => ''
-        ));
-
-        $categoria->setLabel("Selecione a categoria pai*");
-        $categoria->setAttribute('class','form-control');
-        $this->add($categoria);
+        if(is_null($model)){
+            $categoria = new Select("parent", Categorias::returnArrayForSelect(), array(
+                'using' => array('_id', 'nome'),
+                'useEmpty' => true,
+                'emptyText'  => 'Nenhuma',
+                'emptyValue' => ''
+            ));
+            $categoria->setLabel("Selecione a categoria pai*");
+            $categoria->setAttribute('class','form-control');
+            $this->add($categoria);
+        }
     }
 }
