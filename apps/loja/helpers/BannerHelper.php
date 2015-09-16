@@ -57,7 +57,7 @@ class BannerHelper extends BaseHelper{
 		}
 		$criteria['order'] = 'ordem asc';
 		$banner = Banners::find($criteria);
-		foreach ($banner as $key => $value) {;
+		foreach ($banner as $key => $value) {
 			$imagem = Imagens::findFirst("id in (".implode(',', unserialize($value->imagens)).")")->url;
 			$replaces = array(
 				$array['slide_item_id'],

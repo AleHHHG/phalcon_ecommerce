@@ -1,15 +1,12 @@
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
    <div class="page-title">
       <div class="pull-left">
-         <h1 class="title">Produtos</h1>
+         <h1 class="title">{{ nivel == 2 ? 'Usuários' : 'Clientes' }}</h1>
       </div>
       <div class="pull-right hidden-xs">
          <ol class="breadcrumb">
             <li>
-               <a href="index-2.html"><i class="fa fa-home"></i>Home</a>
-            </li>
-            <li class='active'>
-               <a href="tables-basic.html">Produtos</a>
+               {{ link_to('admin','<i class="fa fa-home"></i>Home</a>')}}
             </li>
          </ol>
       </div>
@@ -19,10 +16,6 @@
 <div class="clearfix"></div>
 <div class="col-lg-12">
    <section class="box ">
-      <header class="panel_header">
-         {{ link_to('admin/produto/create','Novo Produto','class':'btn btn-primary btn-lg pull-right')}}
-         <br clear="all"/>
-      </header>
       <div class="content-body">
          <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -30,21 +23,29 @@
                   <thead>
                      <tr>
                         <th>Nome</th>
-                        <th>Opções</th>
+                        <th>E-mail</th>
+                        <th>Opçoes</th>
                      </tr>
                   </thead>
                   <tbody>
-                  {% for produto in produtos %}
+                  {% for dado in dados %}
                      <tr>
                         <td>
-                           <strong>{{produto.nome}}</strong>
+                           {{dado.nome}}
+                        </td>
+                        <td>
+                           {{dado.email}}
                         </td>
                         <td class='text-center'>
-                           {{ link_to("admin/produto/update/"~produto._id ,'<i class="fa fa-pencil icon-square icon-default "></i>'
-                           )}}
-
-                           {{ link_to("admin/produto/delete/"~produto._id ,'<i class="fa fa-times icon-square icon-danger "></i>'
-                           )}}
+                           {% if dado.nivel_id == 3 %}
+                              {{ link_to("admin/usuario/detalhe/"~dado.id ,'<i class="fa fa-file-text-o icon-square icon-default "></i>'
+                              )}}
+                           {% else %}
+                              {% if session.get('admin_nivel') == 1 %}
+                                 {{ link_to("admin/usuario/uodate/"~dado.id ,'<i class="fa fa-times icon-square icon-danger "></i>'
+                                 )}}
+                              {% endif %}
+                           {% endif %}
                         </td>
                      </tr>
                   {% endfor %}

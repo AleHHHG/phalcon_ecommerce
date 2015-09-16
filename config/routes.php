@@ -367,6 +367,51 @@ $router->add("/admin/upload/show", array(
     'action' => 'show'
 ));
 
+#Usuarios ROTA
+
+$router->add("/admin/usuarios/{nivel:[0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'usuarios',
+));
+
+$router->add("/admin/usuario/detalhe/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'usuarios',
+    'action' => 'show'
+));
+
+#Newsletter ROTA
+
+$router->add("/admin/newsletter", array(
+    'module'     => 'admin',
+    'controller' => 'newsletter',
+));
+
+$router->add("/admin/newsletter/xls", array(
+    'module'     => 'admin',
+    'controller' => 'newsletter',
+    'action' => 'xls'
+));
+
+#Avaliacoes ROTA
+
+$router->add("/admin/avaliacoes", array(
+    'module'     => 'admin',
+    'controller' => 'avaliacoes',
+));
+
+$router->add("/admin/avaliacao/detalhe/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'avaliacoes',
+    'action' => 'show'
+));
+
+$router->add("/admin/avaliacoes/update/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'avaliacoes',
+    'action' => 'update'
+));
+
 
 
 ######################################################

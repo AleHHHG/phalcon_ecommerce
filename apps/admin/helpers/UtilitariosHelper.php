@@ -31,7 +31,15 @@ class UtilitariosHelper extends Tag
     public function getUploadCenter($name,$action,$uploads = null, $imagens = null){
         $url = $this->getDI()->getShared('url');
         $html = '<label>'.ucwords($name).'</label><br/>';
-        $valores = ($action == 'update') ? implode(',', unserialize($uploads)) : "";
+        if($action == 'update'){
+            if(is_string($uploads)){
+                $valores = implode(',', unserialize($uploads));
+            }else{
+                $valores = implode($uploads);
+            }
+        }else{
+            $valores = '';
+        }
         $html .= '<input type="hidden" class="upload-target-values" value="'.$valores.'" name="'.$name.'">'; 
         $html .= '<a href="#target-upload" id="call-upload" data-url="'.$url->getBaseUri().'admin/upload" data-toggle="modal" class="btn btn-info">Adicionar Imagem</a>';
         $html .= '<hr/>';

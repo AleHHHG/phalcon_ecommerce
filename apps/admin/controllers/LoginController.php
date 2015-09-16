@@ -26,6 +26,7 @@ class LoginController extends Controller
 				$this->session->set("admin_id",$user->id);
 				$this->session->set("admin_email",$user->email);
 				$this->session->set("admin_nome",$user->nome);
+				$this->session->set("admin_nivel",$user->nivel_id);
 				return $this->response->redirect('admin/dashboard');
             }else{
             	$this->flashSession->error('Senha inválida');
@@ -42,6 +43,7 @@ class LoginController extends Controller
 		$this->session->remove("admin_id");
 		$this->session->remove("admin_email");
 		$this->session->remove("admin_nome");
+		$this->session->remove("admin_nivel");
 		return $this->response->redirect('admin');
     }
 

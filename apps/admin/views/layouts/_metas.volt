@@ -32,6 +32,8 @@
 
 {{ stylesheet_link("css/admin/style.css") }}
 
+{{ stylesheet_link("css/admin/custom.css") }}
+
 {{ stylesheet_link("css/admin/summernote.css") }}
 
 {{ stylesheet_link("css/admin/responsive.css") }}

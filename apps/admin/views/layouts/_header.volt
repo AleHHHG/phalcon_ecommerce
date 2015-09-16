@@ -44,7 +44,7 @@
          <ul class="info-menu right-links list-inline list-unstyled">
             <li class="profile">
                <a href="#" data-toggle="dropdown" class="toggle">
-                  <span>Jason Bourne <i class="fa fa-angle-down"></i></span>
+                  <span>{{ session.get('admin_nome')}} <i class="fa fa-angle-down"></i></span>
                </a>
                <ul class="dropdown-menu profile animated fadeIn">
                   <li>

@@ -1,5 +1,5 @@
-<button class="btn btn-orange pull-right"><i class="fa fa-angle-left"></i>&nbsp Voltar</button> 
-<button class="btn btn-info pull-right"><i class="fa fa-save"></i> {% if acao == 'update' %} Editar {% else %} Salvar {% endif %}</button>
+<a href="" class="btn btn-orange pull-right"><i class="fa fa-angle-left"></i>&nbsp Voltar</a> 
+<button class="btn btn-info pull-right"><i class="fa fa-save"></i> {{ acao == 'update' ? 'Editar' : 'Salvar' }}</button>
 <br clear"all"/>
 <ul class="nav nav-tabs">
     <li class="active">
@@ -92,24 +92,8 @@
     </div>
     <div class="tab-pane fade" id="step3">
       <br clear="all"/>
-      <div id="upload">
-        <div id="drop">
-          Arraste as imagens ou
-          <a>Procurar Imagens</a>
-          <input type="file" name="imagens" multiple />
-        </div>
-      </div>
-      <div class="produto_imagens">
-        {% for imagem in produto.imagens  %}
-          <div class="col-md-3 imagem-container" data-imagem ="{{ imagem}}">
-            {{image('files/produtos/'~imagem,'class':'img-responsive')}}
-          </div>
-        {% endfor %}
-        <input type="hidden" name="produto_id" id="produto_id" value="{{ produto._id}}" />
-      </div>
-      <br clear="all" />
-      <hr/>
-      <br clear="all" />
+      {{ Utilitarios.getUploadCenter('imagens',dispatcher.getActionName(),produto is defined ? produto.imagens : null,imagens is defined ? imagens : null) }}
+      <br clear="all"/>
     </div>
  </div>
 <div class="clearfix"></div>

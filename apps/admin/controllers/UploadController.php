@@ -28,15 +28,15 @@ class UploadController extends ControllerBase
                 foreach ($this->request->getUploadedFiles() as $file)
                 {
                     if($file->getName() != ''){
-                        $file->moveTo('files/'.$tabela.'/' . $file->getName());
+                        $file->moveTo('files/'.$file->getName());
                         $imagem = new Imagens;
-                        $imagem->url = 'files/'.$tabela.'/' . $file->getName();
+                        $imagem->url = 'files/'.$file->getName();
                         $imagem->save();
                         $this->response->setContent(json_encode(array('status' => true,'mensagem' => 'Upload concluido com sucesso')));
                         //Comentado pois não funciona locacal
                         // $uploader = new MultipartUploader($s3, $file->getTempName(), [
                         //     'bucket' => $this->ecommerce_options->aws_bucket,
-                        //     'key'    => 'files/'.$tabela.'/'.$file->getName(),
+                        //     'key'    => 'files/'.$file->getName(),
                         //     'before_initiate' => function (\Aws\Command $command) {
                         //         // $command is a CreateMultipartUpload operation
                         //         $command['CacheControl'] = 'max-age=3600';
@@ -54,7 +54,7 @@ class UploadController extends ControllerBase
                         // try {
                         //     $result = $uploader->upload();
                         //     $imagem = new Imagens;
-                        //     $imagem->url =  'https://s3-sa-east-1.amazonaws.com/'.$this->ecommerce_options->aws_bucket.'/files/'.$tabela.'/'.$file->getName();
+                        //     $imagem->url =  'https://s3-sa-east-1.amazonaws.com/'.$this->ecommerce_options->aws_bucket.'/files/'.$file->getName();
                         //     $imagem->save();
                         //     $this->response->setContent(json_encode(array('status' => true,'mensagem' => 'Upload concluido com sucesso')));
                         // } catch (MultipartUploadException $e) {

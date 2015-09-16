@@ -39,8 +39,10 @@
                <span class="title">Marketing</span>
             </a>
             <ul class="sub-menu" >
-               <li><a href="#">Cumpons de desconto</a></li>
-               <li><a href="#">Newletter</a></li>
+               <li><a href="#">Cupons de desconto</a></li>
+               <li>
+                  {{ link_to('/admin/newsletter','Newsletter')}}
+               </li>
             </ul>
          </li>
 
@@ -52,9 +54,6 @@
             <ul class="sub-menu" >
                <li>
                   {{ link_to('/admin/banners','Banners')}}
-               </li>
-               <li>
-                  {{ link_to('/admin/banners','Cor')}}
                </li>
             </ul>
          </li>
@@ -83,13 +82,13 @@
                   {{ link_to('/admin/loja/geral','Geral')}}
                </li>
                <li>
-                  {{ link_to('/admin/loja/geral','Usuarios')}}
+                  {{ link_to('/admin/usuarios/2','Usuarios')}}
                </li>
                <li>
-                  {{ link_to('/admin/loja/geral','Avaliações')}}
+                  {{ link_to('/admin/avaliacoes','Avaliações')}}
                </li>
                 <li>
-                  {{ link_to('/admin/loja/geral','Clientes')}}
+                  {{ link_to('/admin/usuarios/3','Clientes')}}
                </li>
                <li>
                   {{ link_to('/admin/loja/produtos','Produtos')}}
