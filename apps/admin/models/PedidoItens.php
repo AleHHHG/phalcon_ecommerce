@@ -1,5 +1,6 @@
 <?php
 namespace Ecommerce\Admin\Models;
+use Ecommerce\Admin\Models\Produtos;
 class PedidoItens extends \Phalcon\Mvc\Model
 {
 
@@ -46,6 +47,23 @@ class PedidoItens extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->belongsTo('pedido_id', 'Ecommerce\Admin\Models\Pedidos', 'id', array('alias' => 'Pedido'));
+    }
+
+    public static function getMaisVendidos(){
+        $produtos = self::sum(
+            array(
+                "column" => "quantidade",
+                "group"  => "produto_id",
+                "order"  => "sumatory DESC",
+                "limit" => 20,
+            )
+        );
+        $arr = array();
+        for ($i=0; $i < count($produtos) ; $i++) { 
+            $arr[$i]['produto'] = Produtos::findById( $produtos[$i]->produto_id)->nome;
+            $arr[$i]['quantidade'] = $produtos[$i]->sumatory;
+        }
+        return $arr;
     }
 
     /**

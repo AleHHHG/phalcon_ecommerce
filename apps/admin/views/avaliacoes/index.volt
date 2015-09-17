@@ -24,6 +24,7 @@
                      <tr>
                         <th>Nome</th>
                         <th>Descrição</th>
+                        <th>Nota</th>
                         <th>Opções</th>
                      </tr>
                   </thead>

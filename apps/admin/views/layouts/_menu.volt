@@ -43,6 +43,9 @@
                <li>
                   {{ link_to('/admin/newsletter','Newsletter')}}
                </li>
+               <li>
+                  {{ link_to('/admin/fretes','Frete Grátis')}}
+               </li>
             </ul>
          </li>
 
