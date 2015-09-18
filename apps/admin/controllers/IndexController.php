@@ -22,19 +22,15 @@ class IndexController extends ControllerBase
     		'usuarios' => Usuarios::count('nivel_id = 3'),
     	);
     	$this->view->ultimos_pedidos = Pedidos::find(array('limit' => 10,'order' => 'data desc'));
-        $this->view->pedidos = array(
-            'concluidos' => Pedidos::count(
-                 array(
-                    "conditions" => "status_id in (3,4,5)"
-                )
-            ),
-            'realizados' => Pedidos::count(
-                 array(
-                    "conditions" => "status_id in (1,2,6,7)"
-                )
-            ),
-        );
+        $this->view->pedidos = Pedidos::getEstatisticas('pedido');
         $this->view->mais_vendidos = PedidoItens::getMaisVendidos();
+    }
+
+    public function relatoriosAction(){
+        $this->view->mais_vendidos = PedidoItens::getMaisVendidos(30);
+        $this->view->pedidos = Pedidos::getEstatisticas('pedido');
+        $this->view->estados = Pedidos::getEstatisticas('estado');
+        $this->view->pagamento = Pedidos::getEstatisticas('pagamento');
     }
 
 

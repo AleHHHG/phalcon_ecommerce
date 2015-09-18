@@ -1,5 +1,7 @@
 <?php
 namespace Ecommerce\Admin\Models;
+use Ecommerce\Admin\Models\Enderecos;
+use Ecommerce\Admin\Models\Widgets;
 class Pedidos extends \Phalcon\Mvc\Model
 {
 
@@ -95,6 +97,61 @@ class Pedidos extends \Phalcon\Mvc\Model
     public static function find($parameters = null)
     {
         return parent::find($parameters);
+    }
+
+    public static function getEstatisticas($tipo){
+        if($tipo == 'pedido'){
+            return self::getEstatisticasPedido();
+        }elseif($tipo == 'estado'){
+            return self::getEstatisticasEstado();
+        }else{
+            return self::getEstatisticasPagamento();
+        }
+    }
+
+    protected static function getEstatisticasPedido(){
+        return array(
+            'concluidos' => self::count(
+                 array(
+                    "conditions" => "status_id in (3,4,5)"
+                )
+            ),
+            'realizados' => self::count(
+                 array(
+                    "conditions" => "status_id in (1,2,6,7)"
+                )
+            ),
+        );
+    }
+
+    protected static function getEstatisticasEstado(){
+        $endereco = Enderecos::count(
+            array(
+                'group'  => 'estado_id',
+                'conditions' => 'relacao = "pedidos"'
+            )
+        );
+        $arr = array();
+        for ($i=0; $i < count($endereco) ; $i++) { 
+            $arr[$i]['estado'] = Estados::findFirst('id = '.$endereco[$i]->estado_id)->sigla;
+            $arr[$i]['quantidade'] = $endereco[$i]->rowcount;
+        }
+        return $arr;
+    }
+
+    protected static function getEstatisticasPagamento(){
+        $dados = self::count(
+            array(
+                'group'  => 'forma_pagamento',
+                'conditions' => 'status_id in (3,4,5)'
+            )
+        );
+        $arr = array();
+        for ($i=0; $i < count($dados) ; $i++) { 
+            $arr[$i]['forma_pagamento'] = Widgets::findFirst('id = '.$dados[$i]->forma_pagamento)->nome;
+            $arr[$i]['quantidade'] = $dados[$i]->rowcount;
+        }
+        return $arr;
     }
 
     /**

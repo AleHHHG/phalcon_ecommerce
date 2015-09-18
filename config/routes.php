@@ -199,6 +199,12 @@ $router->add("/admin/dashboard", array(
     'controller' => 'index',
 ));
 
+$router->add("/admin/relatorios", array(
+    'module'     => 'admin',
+    'controller' => 'index',
+    'action' => 'relatorios'
+));
+
 #Rota Categorias
 
 $router->add("/admin/categorias", array(
@@ -412,6 +418,31 @@ $router->add("/admin/avaliacoes/update/{id:[a-zA-Z0-9]+}", array(
     'action' => 'update'
 ));
 
+#CUPONS
+
+$router->add("/admin/cupons", array(
+    'module'     => 'admin',
+    'controller' => 'cupom',
+    'action' => 'index',
+));
+
+$router->add("/admin/cupom/create", array(
+    'module'     => 'admin',
+    'controller' => 'cupom',
+    'action' => 'create',
+));
+
+$router->add("/admin/cupom/update/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'cupom',
+    'action' => 'update',
+));
+
+$router->add("/admin/cupom/delete/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'cupom',
+    'action' => 'delete',
+));
 
 
 ######################################################

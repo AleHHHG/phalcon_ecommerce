@@ -49,13 +49,13 @@ class PedidoItens extends \Phalcon\Mvc\Model
         $this->belongsTo('pedido_id', 'Ecommerce\Admin\Models\Pedidos', 'id', array('alias' => 'Pedido'));
     }
 
-    public static function getMaisVendidos(){
+    public static function getMaisVendidos($limit = 10){
         $produtos = self::sum(
             array(
                 "column" => "quantidade",
                 "group"  => "produto_id",
                 "order"  => "sumatory DESC",
-                "limit" => 20,
+                "limit" => $limit,
             )
         );
         $arr = array();

@@ -1,12 +1,16 @@
+
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
    <div class="page-title">
       <div class="pull-left">
-         <h1 class="title">{{ nivel == 2 ? 'Usuários' : 'Clientes' }}</h1>
+         <h1 class="title">Novo Cupom</h1>
       </div>
       <div class="pull-right hidden-xs">
          <ol class="breadcrumb">
-            <li>
+             <li>
                {{ link_to('admin','<i class="fa fa-home"></i>Home</a>')}}
+            </li>
+            <li class='active'>
+               {{ link_to('admin/cupons','Cupons de Desconto')}}
             </li>
          </ol>
       </div>
@@ -16,6 +20,10 @@
 <div class="clearfix"></div>
 <div class="col-lg-12">
    <section class="box ">
+      <header class="panel_header">
+         {{ link_to('admin/cupom/create','Novo Cupom','class':'btn btn-primary btn-lg pull-right')}}
+         <br clear="all"/>
+      </header>
       <div class="content-body">
          <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -23,7 +31,9 @@
                   <thead>
                      <tr>
                         <th>Nome</th>
-                        <th>E-mail</th>
+                        <th>Codigo</th>
+                        <th>Cupons restantes</th>
+                        <th>Ativo</th>
                         <th>Opçoes</th>
                      </tr>
                   </thead>
@@ -34,18 +44,17 @@
                            {{dado.nome}}
                         </td>
                         <td>
-                           {{dado.email}}
+                           {{dado.codigo}}
+                        </td>
+                        <td>
+                           {{dado.quantidade}}
+                        </td>
+                        <td>
+                           {{dado.ativo ? 'SIM' : 'NÃO' }}
                         </td>
                         <td class='text-center'>
-                           {% if dado.nivel_id == 3 %}
-                              {{ link_to("admin/usuario/detalhe/"~dado.id ,'<i class="fa fa-file-text-o icon-square icon-default "></i>'
-                              )}}
-                           {% else %}
-                              {% if session.get('admin_nivel') == 1 %}
-                                 {{ link_to("admin/usuario/delete/"~dado.id ,'<i class="fa fa-times icon-square icon-danger "></i>'
-                                 )}}
-                              {% endif %}
-                           {% endif %}
+                           {{ link_to("admin/cupom/update/"~dado.id ,'<i class="fa fa-pencil icon-square icon-default "></i>'
+                           )}}
                         </td>
                      </tr>
                   {% endfor %}

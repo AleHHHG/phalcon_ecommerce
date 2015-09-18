@@ -10,7 +10,7 @@
             }}
          </li>
 
-         <li class="">
+         <li>
             {{ link_to('/admin/pedidos',
                '<i class="fa fa-shopping-cart"></i>
                <span class="title">Pedidos</span>'
@@ -18,14 +18,14 @@
             }}
          </li>
 
-         <li class=""> 
+         <li> 
             {{ link_to('/admin/categorias',
                '<i class="fa fa-th"></i>
                <span class="title">Categorias</span>'
                )
             }}
          </li>
-        <li class=""> 
+        <li> 
             {{ link_to('/admin/produtos',
                '<i class="fa fa-cube"></i>
                <span class="title">Produtos</span>'
@@ -33,18 +33,20 @@
             }}
          </li>
 
-         <li class="">
+         <li>
             <a href="#">
                <i class="fa fa-bullhorn"></i>
                <span class="title">Marketing</span>
             </a>
             <ul class="sub-menu" >
-               <li><a href="#">Cupons de desconto</a></li>
+               <li>
+                  {{ link_to('/admin/cupons','Cupons de desconto')}}
+               </li>
                <li>
                   {{ link_to('/admin/newsletter','Newsletter')}}
                </li>
                <li>
-                  {{ link_to('/admin/fretes','Frete Grátis')}}
+                  {{ link_to('/admin/fretes','Frete grátis')}}
                </li>
             </ul>
          </li>
@@ -61,7 +63,7 @@
             </ul>
          </li>
 
-         <li class="">
+         <li>
             <a href="#">
                <i class="fa fa-sliders"></i>
                <span class="title">Atributos</span>
@@ -75,23 +77,39 @@
             </ul>
          </li>
 
-         <li class="">
+         <li>
+             {{ link_to('/admin/relatorios',
+                '<i class="fa fa-line-chart"></i>
+                <span class="title">Relatórios</span>'
+             )}}
+         </li>
+
+         <li>
+            <a href="#">
+               <i class="fa fa-gear"></i>
+               <span class="title">Minha Loja</span>
+            </a>
+            <ul class="sub-menu" >
+                <li>
+                  {{ link_to('/admin/avaliacoes','Avaliações')}}
+               </li>
+               <li>
+                  {{ link_to('/admin/usuarios/3','Clientes')}}
+               </li>
+               <li>
+                  {{ link_to('/admin/usuarios/2','Administradores')}}
+               </li>
+            </ul>
+         </li>
+
+          <li>
             <a href="#">
                <i class="fa fa-gears"></i>
-               <span class="title">Loja</span>
+               <span class="title">Configurações</span>
             </a>
             <ul class="sub-menu" >
                <li>
                   {{ link_to('/admin/loja/geral','Geral')}}
-               </li>
-               <li>
-                  {{ link_to('/admin/usuarios/2','Usuarios')}}
-               </li>
-               <li>
-                  {{ link_to('/admin/avaliacoes','Avaliações')}}
-               </li>
-                <li>
-                  {{ link_to('/admin/usuarios/3','Clientes')}}
                </li>
                <li>
                   {{ link_to('/admin/loja/produtos','Produtos')}}

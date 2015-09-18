@@ -1,7 +1,9 @@
 <div class="col-md-12">
    <div class="page-title">
       <div class="pull-left">
-         <h1 class="title">Painel</h1>
+         <h1 class="title">
+            Painel
+         </h1>
       </div>
    </div>
    <div class="row">
@@ -104,7 +106,7 @@
    </div>
 </div>
 
- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(drawChart);
