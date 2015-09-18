@@ -51,6 +51,11 @@ class CupomForm extends Form
         $quantidade->setAttribute('class','form-control');
         $this->add($quantidade);
 
+        $quantidade_uso = new Numeric("quantidade_uso");
+        $quantidade_uso->setLabel("quantas utilização por usuário?");
+        $quantidade_uso->setAttribute('class','form-control');
+        $this->add($quantidade_uso);
+
         $valor = new Text("valor");
         $valor->setAttribute('class','form-control money');
         $this->add($valor);

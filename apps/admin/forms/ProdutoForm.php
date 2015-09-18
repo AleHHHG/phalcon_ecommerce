@@ -45,7 +45,7 @@ class ProdutoForm extends Form
             ));
             $chave->setLabel($value['label']);
             $chave->setAttribute('class','form-control '.$value['label']);
-            if(!is_null($obj)){
+            if(isset($obj) && !is_null($obj)){
                 $chave->setDefault($obj->$value['label']);
             }
             $this->add($chave);

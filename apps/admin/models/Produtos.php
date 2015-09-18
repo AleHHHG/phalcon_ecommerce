@@ -11,6 +11,7 @@ class Produtos extends \Phalcon\Mvc\Collection
     public $meta_description;
     public $meta_keywords;
     public $descricao;
+    public $relacionados = array();
 
     public function beforeSave(){
         $opcoes = $this->getDI()->getShared('ecommerce_options');

@@ -12,6 +12,18 @@ class ProdutoController extends ControllerBase
     public function indexAction()
     {
   	   	$this->view->produtos = Produtos::find();
+        if($this->request->isPost()) {
+            $this->view->disable();
+            $arr = array();
+            $param =  $this->request->getPost('q');
+            $produtos = Produtos::find(array('conditions' => array('nome' =>  new \MongoRegex("/$param/i")))); 
+            foreach ($produtos  as $key => $value) {
+                $arr[$key]['id'] =  (string) $value->_id;
+                $arr[$key]['name'] =  $value->nome;
+            }
+            $this->response->setHeader("Content-Type", "application/json"); 
+            return $this->response->setContent(json_encode($arr));
+        }
     }
 
 
@@ -54,12 +66,17 @@ class ProdutoController extends ControllerBase
 
     protected function save($produto){
         $imagens = $_POST['imagens'];
+        $relacionados = $_POST['relacionados'];
+        unset($_POST['relacionados']);
         unset($_POST['imagens']);
         foreach ($this->request->getPost() as $key => $value) {
             $produto->$key = $value;
         }
         if($imagens != ''){
             $produto->imagens = explode(',',$imagens);
+        }
+        if($relacionados != ''){
+            $produto->relacionados = array_unique(explode(',', $relacionados));
         }
         $exec = $produto->save();
         parent::notifica($exec,"admin/produtos");

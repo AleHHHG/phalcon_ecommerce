@@ -238,6 +238,7 @@ $router->add("/admin/produtos", array(
     'action' => 'index',
 ));
 
+
 $router->add("/admin/produto/create", array(
     'module'     => 'admin',
     'controller' => 'produto',

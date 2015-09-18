@@ -38,3 +38,6 @@
 
 {{ stylesheet_link("css/admin/responsive.css") }}
 
+{{ stylesheet_link("css/admin/token-input.css") }}
+
+

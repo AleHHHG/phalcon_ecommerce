@@ -14,6 +14,11 @@
        </a>
     </li>
     {% endif %}
+     <li>
+       <a href="#relacionados" data-toggle="tab">
+       <i class="fa fa fa-retweet"></i>Relacionar produtos
+       </a>
+    </li>
     <li>
        <a href="#step3" data-toggle="tab">
        <i class="fa fa-picture-o"></i> Imagens do Produto
@@ -87,6 +92,14 @@
               {% endfor %}
             {% endif %}
         </div>
+      </div>
+      <br clear="all"/>
+    </div>
+    <div class="tab-pane fade" id="relacionados">
+      <br clear="all"/>
+      <div class="form-group">
+        <label>Produtos Relacionados</label>
+        <input type="text" id="produtos_relacionados" data-url="{{ url.getBaseUri()}}admin/produtos" name="relacionados" class="form-control" id="teste" />
       </div>
       <br clear="all"/>
     </div>

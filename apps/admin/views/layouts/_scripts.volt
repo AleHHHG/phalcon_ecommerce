@@ -49,6 +49,8 @@
 
 {{ javascript_include('js/admin/summernote-pt-br.js') }}
 
+{{ javascript_include('js/admin/jquery.tokeninput.js') }}
+
 
 {{ javascript_include('js/admin/scripts.js') }}
 
