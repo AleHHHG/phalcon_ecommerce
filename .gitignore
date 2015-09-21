@@ -1,5 +1,5 @@
 apps/documentacao
-!apps/loja/vendor
+apps/loja/vendor
 !apps/loja/vendor/correios
 !apps/loja/vendor/pagamentos
 apps/loja/cache
