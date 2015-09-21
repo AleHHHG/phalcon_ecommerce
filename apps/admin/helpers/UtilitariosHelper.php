@@ -8,8 +8,11 @@ class UtilitariosHelper extends Tag
         return number_format($param,2,',','.');
     }
 
-    public function dateFormat($param){
-        return date('d/m/Y H:i:s',strtotime($param));
+    public function dateFormat($param,$format = null){
+        if(is_null($format)){
+            $format = "d/m/Y H:i:s";
+        }
+        return date($format,strtotime($param));
     }
 
     public function getProduto($param){

@@ -16,7 +16,7 @@ class Produtos extends \Phalcon\Mvc\Collection
     public function beforeSave(){
         $opcoes = $this->getDI()->getShared('ecommerce_options');
         if($opcoes->produto_detalhes == '0'){
-            $this->valor = $_POST['valor'];
+            $this->valor = Produtos::toFloat($_POST['valor']);
             $this->estoque = $_POST['estoque'];
         }else{
             $arr = array();

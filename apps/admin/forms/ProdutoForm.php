@@ -54,12 +54,14 @@ class ProdutoForm extends Form
         #Caso detalhes do produto esteja habilitado
         if($this->ecommerce_options->produto_detalhes == '0'){
             $valor = new Text("valor");
-            $valor->setLabel("Valor");
             $valor->setAttribute('class','form-control money');
             $this->add($valor);
 
+            $desconto = new Text("desconto");
+            $desconto->setAttribute('class','form-control money');
+            $this->add($desconto);
+
             $estoque = new Numeric("estoque");
-            $estoque->setLabel("Estoque");
             $estoque->setAttribute('class','form-control');
             $estoque->setAttribute('rows','5');
             $this->add($estoque);

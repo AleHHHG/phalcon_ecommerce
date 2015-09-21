@@ -37,6 +37,16 @@ class ProdutoDetalheForm extends Form
 
         $this->add($valor);
 
+        #Input desconto
+        $desconto = new Text("detalhes[desconto][]");
+        $desconto->setLabel("desconto");
+        $desconto->setAttribute('class','form-control money');
+        if(!is_null($obj)){
+            $desconto->setDefault($obj->desconto);
+        }
+
+        $this->add($desconto);
+
         #Input Estoque
         $estoque = new Numeric("detalhes[estoque][]");
         $estoque->setLabel("estoque");

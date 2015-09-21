@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Admin\Models;
 use Ecommerce\Admin\Models\Produtos;
+use Ecommerce\Admin\Models\Pedidos;
 class PedidoItens extends \Phalcon\Mvc\Model
 {
 
@@ -49,19 +50,27 @@ class PedidoItens extends \Phalcon\Mvc\Model
         $this->belongsTo('pedido_id', 'Ecommerce\Admin\Models\Pedidos', 'id', array('alias' => 'Pedido'));
     }
 
-    public static function getMaisVendidos($limit = 10){
+    public static function getMaisVendidos($limit = 10,$periodo = array()){
         $produtos = self::sum(
             array(
                 "column" => "quantidade",
-                "group"  => "produto_id",
+                "group"  => "produto_id,pedido_id",
                 "order"  => "sumatory DESC",
                 "limit" => $limit,
             )
         );
         $arr = array();
         for ($i=0; $i < count($produtos) ; $i++) { 
-            $arr[$i]['produto'] = Produtos::findById( $produtos[$i]->produto_id)->nome;
-            $arr[$i]['quantidade'] = $produtos[$i]->sumatory;
+            if(!empty($periodo)){
+                $pedido = Pedidos::findFirst($produtos[$i]->pedido_id)->toArray();
+                if($pedido['data'] >= $periodo['inicial'].' 00:00:00' && $pedido['data'] <= $periodo['final'].' 23:59:59' ){
+                    $arr[$i]['produto'] = Produtos::findById( $produtos[$i]->produto_id)->nome;
+                    $arr[$i]['quantidade'] = $produtos[$i]->sumatory;
+                }
+            }else{
+                $arr[$i]['produto'] = Produtos::findById( $produtos[$i]->produto_id)->nome;
+                $arr[$i]['quantidade'] = $produtos[$i]->sumatory;
+            }
         }
         return $arr;
     }

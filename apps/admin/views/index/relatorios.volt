@@ -1,7 +1,12 @@
 <div class="col-md-12">
    <div class="page-title">
-         <h1 class="title">Relatórios
-            <a href="#" class="btn btn-orange pull-right"><i class="fa fa-filter"></i> Filtro</a>
+         <h1 class="title">
+          {% if this.request.isPost() %}
+            Relatório {{Utilitarios.dateFormat(this.request.getPost('inicial'),'d/m/y')}} à {{Utilitarios.dateFormat(this.request.getPost('final'),'d/m/y')}}
+          {% else %}
+            Relatório
+          {% endif %}
+            <a href="#" data-toggle="modal" data-target="#filtro-relatorio" class="btn btn-orange pull-right"><i class="fa fa-filter"></i> Filtro</a>
          </h1>
    </div>
    <div class="row">
@@ -61,24 +66,54 @@
       </div>
    </div>
 </div>
+
+<div class="modal fade" id="filtro-relatorio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Filtro</h4>
+      </div>
+      {{ form('admin/relatorios', 'method': 'post') }}
+        <div class="modal-body">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>Data inicial</label>
+                {{ date_field('inicial','class':'form-control')}}
+              </div>
+              <div class="form-group col-md-6">
+                <label>Data final</label>
+                {{ date_field('final','class':'form-control')}}
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          {{ submit_button('Filtrar','class':'btn btn-primary')}}
+        </div>
+      {{ end_form()}}
+    </div>
+  </div>
+</div>
+
+
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <!-- Grafico de Aréa -->
 <script type="text/javascript">
    google.load("visualization", "1", {packages:["corechart"]});
    google.setOnLoadCallback(drawChart);
+  var vendas = [['Dia', 'Vendas']]
+  {% for vendidos in vendas %}
+    vendas.push(['{{ vendidos.data}}',{{vendidos.total}}])
+  {% endfor %}
    function drawChart() {
-     var data = google.visualization.arrayToDataTable([
-       ['Year', 'Sales'],
-       ['2013',  1000],
-       ['2014',  1170],
-       ['2015',  660],
-       ['2016',  1030]
-     ]);
+     var data = google.visualization.arrayToDataTable(vendas);
 
      var options = {
        vAxis: {minValue: 0},
        chartArea: {width: '90%',height:'80%'},
+       pointSize:8,
        legend:'none',
      };
 
@@ -141,8 +176,8 @@
    google.load("visualization", "1", {packages:["corechart"]});
    google.setOnLoadCallback(drawChart);
    var estados = [['Estado', 'Vendas']]
-   {% for estado in estados %}
-    estados.push(['{{ estado['estado']}}',{{estado['quantidade']}}])
+   {% for index,estado in estados %}
+    estados.push(['{{ index}}',{{estado}}])
    {% endfor %}
    function drawChart() {
      var data = google.visualization.arrayToDataTable(estados);

@@ -2,6 +2,7 @@
 namespace Ecommerce\Admin\Models;
 use Ecommerce\Admin\Models\Enderecos;
 use Ecommerce\Admin\Models\Widgets;
+use Phalcon\Mvc\Model\Query;
 class Pedidos extends \Phalcon\Mvc\Model
 {
 
@@ -99,51 +100,91 @@ class Pedidos extends \Phalcon\Mvc\Model
         return parent::find($parameters);
     }
 
-    public static function getEstatisticas($tipo){
+    public static function getEstatisticas($tipo,$periodo = array()){
         if($tipo == 'pedido'){
-            return self::getEstatisticasPedido();
+            return self::getEstatisticasPedido($periodo);
         }elseif($tipo == 'estado'){
-            return self::getEstatisticasEstado();
+            return self::getEstatisticasEstado($periodo);
         }else{
-            return self::getEstatisticasPagamento();
+            return self::getEstatisticasPagamento($periodo);
         }
     }
 
-    protected static function getEstatisticasPedido(){
+    public function getEstatisticasVenda($periodo = array()){
+        $manager = $this->getDI()->getShared('modelsManager');
+        if(!empty($periodo)){
+            $query  = $manager->createQuery('SELECT DATE_FORMAT(data,"%d/%m/%y") as data,count(*) as total FROM Ecommerce\Admin\Models\Pedidos WHERE status_id in (3,4,5) AND data >= "'.$periodo['inicial'].' 00:00:00" and data <= "'.$periodo['final'].' 23:59:59" GROUP BY DATE_FORMAT(data,"%Y-%m-%d") ORDER BY data ASC');
+        }else{
+            $query  = $manager->createQuery('SELECT DATE_FORMAT(data,"%d/%m/%y") as data,count(*) as total FROM Ecommerce\Admin\Models\Pedidos WHERE status_id in (3,4,5) GROUP BY DATE_FORMAT(data,"%Y-%m-%d") ORDER BY data ASC');
+        }
+        return $query->execute();
+    }
+
+    protected static function getEstatisticasPedido($periodo){
+        if(!empty($periodo)){
+            $s = 'AND data >= "'.$periodo['inicial'].' 00:00:00" and data <= "'.$periodo['final'].' 23:59:59"';
+            $concluido = 'status_id in (3,4,5) ';
+            $realizado = 'status_id in (1,2,6,7) ';
+            $concluido .= $s;
+            $realizado .= $s;
+        }else{
+            $concluido = 'status_id in (3,4,5)';
+            $realizado = 'status_id in (1,2,6,7)';    
+        }
         return array(
             'concluidos' => self::count(
-                 array(
-                    "conditions" => "status_id in (3,4,5)"
+                array(
+                    "conditions" => $concluido               
                 )
             ),
             'realizados' => self::count(
-                 array(
-                    "conditions" => "status_id in (1,2,6,7)"
+                array(
+                    "conditions" => $realizado
                 )
             ),
         );
     }
 
-    protected static function getEstatisticasEstado(){
+    protected static function getEstatisticasEstado($periodo){
         $endereco = Enderecos::count(
             array(
-                'group'  => 'estado_id',
+                'group'  => 'estado_id,id_relacao',
                 'conditions' => 'relacao = "pedidos"'
             )
         );
         $arr = array();
         for ($i=0; $i < count($endereco) ; $i++) { 
-            $arr[$i]['estado'] = Estados::findFirst('id = '.$endereco[$i]->estado_id)->sigla;
-            $arr[$i]['quantidade'] = $endereco[$i]->rowcount;
+            $sigla = Estados::findFirst('id = '.$endereco[$i]->estado_id)->sigla;
+            if(!empty($periodo)){
+                $pedido = self::findFirst($endereco[$i]->id_relacao)->toArray();
+                if($pedido['data'] >= $periodo['inicial'].' 00:00:00' && $pedido['data'] <= $periodo['final'].' 23:59:59' ){
+                   if(isset($arr[$sigla])){
+                        $arr[$sigla] =  $arr[$sigla]+1;
+                    }else{
+                        $arr[$sigla] = $endereco[$i]->rowcount;
+                    }
+                }
+            }else{
+                if(isset($arr[$sigla])){
+                    $arr[$sigla] =  $arr[$sigla]+1;
+                }else{
+                    $arr[$sigla] = $endereco[$i]->rowcount;
+                }
+            }
         }
         return $arr;
     }
 
-    protected static function getEstatisticasPagamento(){
+    protected static function getEstatisticasPagamento($periodo){
+        if(!empty($periodo)){
+            $conditions = 'status_id in (3,4,5) AND data >= "'.$periodo['inicial'].' 00:00:00" and data <= "'.$periodo['final'].' 23:59:59"';
+        }else{
+            $conditions = 'status_id in (3,4,5)';    
+        }
         $dados = self::count(
             array(
                 'group'  => 'forma_pagamento',
-                'conditions' => 'status_id in (3,4,5)'
+                'conditions' =>  $conditions
             )
         );
         $arr = array();

@@ -27,10 +27,17 @@ class IndexController extends ControllerBase
     }
 
     public function relatoriosAction(){
-        $this->view->mais_vendidos = PedidoItens::getMaisVendidos(30);
-        $this->view->pedidos = Pedidos::getEstatisticas('pedido');
-        $this->view->estados = Pedidos::getEstatisticas('estado');
-        $this->view->pagamento = Pedidos::getEstatisticas('pagamento');
+        if($this->request->isPost()){
+            $array = $this->request->getPost();
+        }else{
+            $array = array();
+        }
+        $pedidos = New Pedidos;
+        $this->view->vendas = $pedidos->getEstatisticasVenda($array);
+        $this->view->mais_vendidos = PedidoItens::getMaisVendidos(30,$array);
+        $this->view->pedidos = Pedidos::getEstatisticas('pedido',$array);
+        $this->view->estados = Pedidos::getEstatisticas('estado',$array);
+        $this->view->pagamento = Pedidos::getEstatisticas('pagamento',$array);
     }
 
 

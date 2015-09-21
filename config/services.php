@@ -18,9 +18,15 @@ use Phalcon\Flash\Direct as FlashDirect;
  */
 $di = new FactoryDefault();
 
-$di->set('url', function () use ($config) {
+$di->set('ecommerce_options',function(){
+    return new Ecommerce\Admin\Models\Options;
+});
+
+
+$di->set('url', function () use ($di) {
+    $eo = $di->getShared('ecommerce_options');
     $url = new UrlResolver();
-    $url->setBaseUri('http://localhost/mare_mansa/');
+    $url->setBaseUri($eo->url_base);
     return $url;
 }, true);
 
@@ -76,11 +82,6 @@ $di->set('mongo', function() {
 $di->set('collectionManager', function(){
     return new Phalcon\Mvc\Collection\Manager();
 }, true);
-
-
-$di->set('ecommerce_options',function(){
-    return new Ecommerce\Admin\Models\Options;
-});
 
 $di->set('helper',function(){
     $helper = new stdClass;
