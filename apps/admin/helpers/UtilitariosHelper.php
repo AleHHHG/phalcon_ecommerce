@@ -55,7 +55,7 @@ class UtilitariosHelper extends Tag
         return $html;
     }
 
-    public static function tofloat($num) {
+    public function tofloat($num) {
         $dotPos = strrpos($num, '.');
         $commaPos = strrpos($num, ',');
         $sep = (($dotPos > $commaPos) && $dotPos) ? $dotPos : 
@@ -69,5 +69,9 @@ class UtilitariosHelper extends Tag
             preg_replace("/[^0-9]/", "", substr($num, 0, $sep)) . '.' .
             preg_replace("/[^0-9]/", "", substr($num, $sep+1, strlen($num)))
         );
+    }
+
+    public function limpaString($string){
+        return preg_replace ('/\D/' ,'' ,$string);
     }
 }

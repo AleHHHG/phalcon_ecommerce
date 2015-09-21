@@ -86,6 +86,17 @@
 
          <li>
             <a href="#">
+               <i class="fa fa-sitemap"></i>
+               <span class="title">Integrações</span>
+            </a>
+            <ul class="sub-menu" >
+               <li><a href="#">Buscapé</a></li>
+               <li><a href="#">Mercado livre</a></li>
+            </ul>
+         </li>
+
+         <li>
+            <a href="#">
                <i class="fa fa-gear"></i>
                <span class="title">Minha Loja</span>
             </a>
@@ -99,10 +110,13 @@
                <li>
                   {{ link_to('/admin/usuarios/2','Administradores')}}
                </li>
+               <li>
+                  {{ link_to('','Formas de pagamento')}}
+               </li>
             </ul>
          </li>
 
-          <li>
+         <li>
             <a href="#">
                <i class="fa fa-gears"></i>
                <span class="title">Configurações</span>

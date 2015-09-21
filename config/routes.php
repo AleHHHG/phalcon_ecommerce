@@ -446,6 +446,32 @@ $router->add("/admin/cupom/delete/{id:[a-zA-Z0-9]+}", array(
 ));
 
 
+#Rota Fretes
+
+$router->add("/admin/fretes", array(
+    'module'     => 'admin',
+    'controller' => 'fretes',
+));
+
+$router->add("/admin/frete/create", array(
+    'module'     => 'admin',
+    'controller' => 'fretes',
+    'action' => 'create'
+));
+
+$router->add("/admin/frete/update/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'fretes',
+    'action' => 'update'
+));
+
+$router->add("/admin/frete/delete/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'fretes',
+    'action' => 'delete'
+));
+
+
 ######################################################
 ######################################################
 #               Documentação
