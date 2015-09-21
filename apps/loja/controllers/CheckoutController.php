@@ -52,7 +52,6 @@ class CheckoutController extends ControllerBase
 
 	}
 
-
 	public function setForms($array){
 		$namespace = '\\'.$array['namespace'].'\Formulario';
 		if($array['formulario']){
