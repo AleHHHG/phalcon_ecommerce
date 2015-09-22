@@ -1,7 +1,4 @@
 apps/documentacao
-apps/loja/vendor
-!apps/loja/vendor/correios
-!apps/loja/vendor/pagamentos
 apps/loja/cache
 apps/loja/customs
 apps/loja/views
