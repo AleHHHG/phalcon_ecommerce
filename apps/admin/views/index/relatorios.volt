@@ -140,10 +140,9 @@
       },
       vAxis: {
         textPosition: 'in',
-        textStyle:{color:'white',auraColor:'none',fontSize:12}
+        textStyle:{color:'white',auraColor:'none',fontSize:14}
       },
-      bars: 'horizontal',
-      bar: { groupWidth: "70%" }
+      bar: { groupWidth: "90%" }
     };
     var chart = new google.visualization.BarChart(document.getElementById('chart2'));
     chart.draw(data, options);

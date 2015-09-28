@@ -19,7 +19,7 @@ class Enderecos extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $cidades_id;
+    public $cidade_id;
 
     /**
      *
@@ -68,7 +68,7 @@ class Enderecos extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->belongsTo('cidades_id', 'Ecommerce\Admin\Models\Cidades', 'id', array('alias' => 'Cidade'));
+        $this->belongsTo('cidade_id', 'Ecommerce\Admin\Models\Cidades', 'id', array('alias' => 'Cidade'));
         $this->belongsTo('estado_id', 'Ecommerce\Admin\Models\Estados', 'id', array('alias' => 'Estado'));
     }
 

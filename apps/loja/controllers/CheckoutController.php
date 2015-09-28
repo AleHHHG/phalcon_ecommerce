@@ -10,6 +10,7 @@ use Ecommerce\Admin\Models\Widgets;
 use Ecommerce\Admin\Models\Enderecos;
 use Ecommerce\Admin\Models\Pedidos;
 use Ecommerce\Admin\Models\PedidoItens;
+use Ecommerce\Loja\Forms\CheckOutForm;
 class CheckoutController extends ControllerBase
 {
 	public function initialize(){
@@ -22,24 +23,31 @@ class CheckoutController extends ControllerBase
 		if($this->session->has('frete')){
 			$this->view->frete = number_format($this->session->get('frete')['valor'],2,',','.');
 		}
+		$this->view->endereco_form = new CheckOutForm();
 		$this->view->total = number_format($cart->total() + $this->session->get('frete')['valor'],2,',','.');
-		$widgets = Widgets::find('tipo_id = 1 and ativo = 1');
+		$widgets = Widgets::find("tipo_id = 1 AND ativo = 1 AND valor_minimo <=  {$cart->total()} ");
 		$this->view->widgets = array_map(array($this,'setForms'),$widgets->toArray());
 	}
 
 	public function finalizarAction(){
 		$cart = new Cart(new Session, new Cookie);
+		//Cria o Pedido
 		$pedido = new Pedidos();
 		$pedido_id = $pedido->createData($cart,$this->request->getPost());
+		//Cria os Itens do Pedido
 		$pedido_itens = new PedidoItens();
 		$pedido_itens = $pedido_itens->createData($cart->contents(),$pedido_id);
 		$widget = Widgets::findFirst("id = {$this->request->getPost('forma_pagamento')}")->toArray();
 		$_POST['pagamento']['valor'] = number_format($cart->total() + $this->session->get('frete')['valor'],2,'','');
-		$_POST['pagamento']['pedido_id'] = 1;
-		$class = '\\'.$widget['namespace'].'\Pagamento';
-		$retorno = $class::init(false,$this->request->getPost('pagamento'),unserialize($widget['opcoes']));
+		$_POST['pagamento']['pedido_id'] = $pedido_id;
+		//Inicia o pagamento
+		$pagamento = '\\'.$widget['namespace'].'\Pagamento';
+		$retorno = $pagamento::init(false,$this->request->getPost('pagamento'),unserialize($widget->opcoes));
+		// Retorno do PAGAMENTO
 		$class = '\\'.$widget['namespace'].'\Retorno';
 		$class::init($retorno,$pedido_id);
+		//Destroy Cart
+		$cart->destroy();
 		return $this->response->redirect("checkout/confirmacao/$pedido_id");
 
 	}
@@ -53,8 +61,8 @@ class CheckoutController extends ControllerBase
 	}
 
 	public function setForms($array){
-		$namespace = '\\'.$array['namespace'].'\Formulario';
 		if($array['formulario']){
+			$namespace = '\\'.$array['namespace'].'\Formulario';
 			$array['form'] = $namespace::generate();
 		}
 		return $array;

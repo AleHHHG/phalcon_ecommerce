@@ -116,7 +116,7 @@ class ProductInfoHelper extends SingleHelper {
 
 	private function setDetalhes($itens,$detalhes,$posicao){
 		$label = ucwords(parent::pluralize($itens['label']));
-		$html = "<div class='col-md-12 no-padding-left'><h5><strong>$label:</strong></h5>";
+		$html = "<div class='col-md-12 no-padding-left'><h5><strong>$label </strong></h5>";
 		foreach ($itens['detalhes'] as $key => $value) {
 			$active = ($key == $posicao) ? 'color-active' : ''; 
 			if($itens['label'] == 'cor' || $itens['label'] == 'cores'){
@@ -127,7 +127,7 @@ class ProductInfoHelper extends SingleHelper {
 				$html .= "<a href='#' class='sideColor $active color-produto-detalhe'>{$value['referencia']['nome']}</a>";
 			}
 		}
-		$html .= '</div><br clear="all"/><br/>';
+		$html .= '</div><br clear="all"/><br clear="all"/> <br clear="all"/> ';
 		if(isset($detalhes[1])){
 			foreach ($itens['detalhes'][$posicao]['itens'] as $key => $value) {
 				$array[$value[$detalhes[1]['label']]] = $value;
@@ -142,16 +142,18 @@ class ProductInfoHelper extends SingleHelper {
 		}
 		$html .= $this->generateOptions($array,$detalhes,true);
 		$html .= "<input type='hidden' name='produto_id' id='produto_id' value='{$this->layout['produto']->_id}' />";
-		$html .= '<br clear="all"/>';
-		$html .= '<br clear="all"/>';
 		return $html;
 	}
 
 	private function generateOptions($array,$detalhes,$estoque =false){
 		$html = '';
 		if(!$estoque){
-			$label = ucwords(parent::pluralize($detalhes[1]['label']));
-			$html .= "<div class='col-md-4 no-padding-left'><h5><strong>$label</strong></h5>";
+			if($this->layout['options']['label']){
+				$label = ucwords(parent::pluralize($detalhes[1]['label']));
+			}else{
+				$label = '';
+			}
+			$html .= "<div class='".$this->layout['options']['container_size']." no-padding-left'><".$this->layout['options']['label_container'].">$label</".$this->layout['options']['label_container'].">";
 			$html .= '<select name="detalhe" id="detalhe" class="form-control detalhe">';
 			foreach ($array as $key => $value) {
 				$html .= "<option value='$key' data-estoque='{$value['estoque']}' data-detalhe='{$value['detalhe_id']}'>$key</option>";
@@ -160,11 +162,16 @@ class ProductInfoHelper extends SingleHelper {
 			$array = array_values($array);
 			$html .= "<input type='hidden' name='detalhe_id' id='detalhe_id' value='{$array[0]['detalhe_id']}' />";
 		}else{
-			$html .= '<div class="col-md-1"></div>';
-			$html .= "<div class='col-md-4 no-padding-left'><h5><strong>Quantidade</strong></h5>";
-			$html .= '<select name="quantidade" class="form-control quantidade" id="quantidade">';
+			if($this->layout['options']['label']){
+				$label = 'Quantidade';
+			}else{
+				$label = '';
+			}
+			$html .= "<div class='".$this->layout['options']['container_size']." no-padding-left'><".$this->layout['options']['label_container'].">$label</".$this->layout['options']['label_container'].">";
+			$html .= '<select name="quantidade" class="'.$this->layout['option_class'].' quantidade" id="quantidade" required>';
 			$array = array_values($array);
 			$total = (isset($array[0]['estoque'])) ? $array[0]['estoque'] : $array[0];
+				$html .= "<option value=''>Selecione a quantidade</option>";
 			for ($i=1; $i <= $total ; $i++) { 
 				$html .= "<option value='$i'>$i</option>";
 			}

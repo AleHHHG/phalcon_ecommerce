@@ -84,7 +84,19 @@ class Pedidos extends \Phalcon\Mvc\Model
         $this->frete = $session->get('frete')['valor'];
         $this->total = $cart->total() + $session->get('frete')['valor'];
         $this->forma_pagamento = $post['forma_pagamento'];
+        $this->data = date('Y-m-d H:i:s');
         if($this->save()){
+            $endereco = new Enderecos;
+            $endereco->relacao = 'pedidos';
+            $endereco->id_relacao = $this->id;
+            $endereco->estado_id = Estados::findFirst('sigla = "'.$post['endereco']['estado'].'"')->id;
+            $endereco->cidade_id = Cidades::findFirst('nome = "'.$post['endereco']['cidade'].'"')->id;
+            $endereco->cep = $post['endereco']['cep'];
+            $endereco->logradouro = $post['endereco']['logradouro'];
+            $endereco->bairro = $post['endereco']['bairro'];
+            $endereco->numero = $post['endereco']['numero'];
+            $endereco->complemento = $post['endereco']['complemento'];
+            $endereco->save();
             return $this->id;
         }
     }

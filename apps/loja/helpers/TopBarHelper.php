@@ -70,8 +70,8 @@ class TopBarHelper extends BaseHelper{
 
 	private function setVars(){
 		$this->to_cart = "<a href='{$this->url_base}cart'><i class='fa fa-cart'></i> Carrinho</a>";
-		$this->fone = "<a href='javascript:;'><i class='fa fa-phone'></i> Entre em contato: {$this->ecommerce_options->telefone}</a>";
-		$this->email = "<a href='javascript:;'><i class='fa fa-envelope-o'></i>{$this->ecommerce_options->email}</a>";
+		$this->fone = "<a href='javascript:;' class='header-telefone'><i class='fa fa-phone'></i> Entre em contato: {$this->ecommerce_options->telefone}</a>";
+		$this->email = "<a href='javascript:;' class='header-email'><i class='fa fa-envelope-o'></i> {$this->ecommerce_options->email}</a>";
 		if($this->session->logado){
 			$this->my_account = "<a href='{$this->url_base}user'>Minha Conta</a>";
 		}

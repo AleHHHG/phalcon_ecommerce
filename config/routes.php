@@ -471,6 +471,20 @@ $router->add("/admin/frete/delete/{id:[a-zA-Z0-9]+}", array(
     'action' => 'delete'
 ));
 
+#Rota Formas Pagamento
+
+$router->add("/admin/pagamentos", array(
+    'module'     => 'admin',
+    'controller' => 'pagamentos',
+));
+
+$router->add("/admin/pagamento/update/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'pagamentos',
+    'action' => 'update'
+));
+
+
 
 ######################################################
 ######################################################

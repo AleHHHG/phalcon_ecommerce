@@ -75,7 +75,7 @@ $di->set('router', function () {
 
 $di->set('mongo', function() {
     $mongo = new MongoClient();
-    return $mongo->selectDB("mare_mansa");
+    return $mongo->selectDB("plataforma");
 }, true);
 
 

@@ -2,6 +2,7 @@
 namespace Ecommerce\Loja\Helpers;
 use Ecommerce\Admin\Models\Produtos;
 use Ecommerce\Admin\Models\Avaliacoes;
+use Ecommerce\Admin\Models\Imagens;
 class ProdutoHelper extends BaseHelper {
 	const QUICK_VIEW = '<a href="javascript:;"  data-produto="%1Ss" class="quick-view %2Ss">%3Ss</a>';
 	const WISH_LIST = '<a href="javascript:;"  data-produto="%1Ss" class="addToWishList %2Ss">%3Ss</a>';
@@ -19,16 +20,18 @@ class ProdutoHelper extends BaseHelper {
 		'info_class' => '',
 		'info_titulo_wrap' => '<h4 class="%1Ss"><a href="%2Ss">%3Ss</a></h4>',
 		'info_titulo_class' => '',
-		'info_preco_wrap' => '<span class="%1Ss">R$ %2Ss</span>',
+		'info_preco_wrap' => '<span class="%1Ss">%2Ss</span>',
 		'info_preco_class' => '',
+		'desconto_container' => 'span',
+		'desconto_class' =>'',
 		'overlay' => true,
 		'overlay_wrap' => '<div class="%1Ss">%2Ss</div>',
 		'overlay_position' => 'THUMBNAIL_CONTAINER',
 		'overlay_class' => '',
 		'overlay_options' => array(
-			'QUICK_VIEW' => array('text' => '<i class="fa fa-eye"></i>','class' =>''),
-			'WISH_LIST' => array('text' => '<i class="fa fa-heart-o"></i>','class' =>''),
-			'COMPARE' => array('text' => '<i class="fa fa-signal"></i>','class' =>''),
+			'QUICK_VIEW' => array('text' => '<i class="fa fa-eye"></i>','class' =>'','content' => ''),
+			'WISH_LIST' => array('text' => '<i class="fa fa-heart-o"></i>','class' =>'','content' => ''),
+			'COMPARE' => array('text' => '<i class="fa fa-signal"></i>','class' =>'','content' => ''),
 		),
 		'destaque' => 0,
 		'lancamento' => 0,
@@ -93,7 +96,7 @@ class ProdutoHelper extends BaseHelper {
 
 	protected function getThumbnail($obj){
 		if(!empty($obj->imagens)){
-			$imagem = $obj->imagens[0];
+			$imagem = Imagens::findFirst($obj->imagens[0])->url;
 		}else{
 			$imagem = 'no-image.png';
 		}
@@ -109,7 +112,7 @@ class ProdutoHelper extends BaseHelper {
 			}
 		}
 		$size = explode('x', $this->ecommerce_options->thumbnail_size);
-		$src = "?src={$this->url_base}public/files/produtos/$imagem&q=90&w={$size[0]}&h={$size[1]}&zc=2";
+		$src = "?src={$this->url_base}public/$imagem&q=90&w={$size[0]}&h={$size[1]}&zc=2";
 		return "<img src='{$this->url_base}public/timthumb$src' alt='{$obj->nome}' class='img-responsive'>";
 	}
 
@@ -123,9 +126,28 @@ class ProdutoHelper extends BaseHelper {
 		);
 		foreach ($array['opcoes'] as $value) {
 			if($value == 'PRECO'){
-				$html .= parent::replaceWraper(2,array(
+				if($this->ecommerce_options->produto_detalhes =='1'){
+					$preco_total = $obj->detalhes[0]['valor'];
+					if($obj->detalhes[0]['desconto']){
+						$desconto = $obj->detalhes[0]['desconto'];
+						$preco = 'R$ '.number_format($preco_total-$desconto,2,',','.');
+						$preco .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_container'].'"> R$ '.number_format($preco_total,2,',','.').'</'.$this->options['desconto_container'].'/>';
+					}else{
+						$preco = 'R$ '.number_format($preco_total,2,',','.');
+					}
+				}else{
+					$preco_total = $obj->valor;
+					if($obj->desconto){
+						$desconto = $obj->desconto;
+						$preco = 'R$ '.number_format($preco_total-$desconto,2,',','.');
+						$preco .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_container'].'"> R$ '.number_format($preco_total,2,',','.').'</'.$this->options['desconto_container'].'/>';
+					}else{
+						$preco = 'R$ '.number_format($preco_total,2,',','.');
+					}
+				}
+				$html .= parent::replaceWraper(3,array(
 							$array['info_preco_class'],
-							($this->ecommerce_options->produto_detalhes =='1') ? number_format($obj->detalhes[0]['valor'],2,',','.') : number_format($obj->valor,2,',','.')
+							$preco
 						),
 						$array['info_preco_wrap']
 					);
@@ -184,12 +206,17 @@ class ProdutoHelper extends BaseHelper {
 	public function setOverlay($array,$obj){
 		$html = '';
 		foreach ($array['overlay_options'] as $key => $value) {
+			if($value['content'] != ''){
+				$conteudo =  '<'.$value['content'].'>'.constant('self::'.$key).'</'.$value['content'].'>';
+			}else{
+				$conteudo = constant('self::'.$key);
+			}
 			$overlay = parent::replaceWraper(3,array(
 			 			$obj->_id,
 			 			$value['class'],
 			 			$value['text']
 					),
-					constant('self::'.$key)
+					$conteudo
 				);
 			$html .= $overlay;
 		}
@@ -203,40 +230,61 @@ class ProdutoHelper extends BaseHelper {
 
 	protected function getData($array){
 		$arr = array();
-		if($array['destaque' ]){
-			$arr['conditions'] = array('destaque' => '1');
-		}else if($array['lancamento']){
-			$arr['conditions'] = array('destaque' => '0');
-		}else if($array['categoria'] != ''){
-			if(is_array($array['categoria'])){
+		if(isset($array['relacionados'])){
+			if(!empty($array['relacionados'])){
 				$ids = array();
-				foreach ($array['categoria'] as $value) {
-					$ids[] = (string)$value;
+				foreach ($array['relacionados'] as $value) {
+					$ids[] = new \MongoId($value);
 				}
-				$arr['conditions'] = array('categoria' => array('$in' => $ids));
+				$arr['conditions'] = array('_id' => array('$in' => $ids));
 			}else{
-				$arr['conditions'] = array('categoria' => $array['categoria']);
-			}
-		}
-		if(!empty($array['filtros'])){
-			$filtros = array();
-			foreach ($array['filtros'] as $key => $value) {
-				if($key != 'valor'){
-					$filtros['$elemMatch']["$key"] = array(
-						'$in' => $value,
-					);
+				if(is_array($array['categoria'])){
+					$ids = array();
+					foreach ($array['categoria'] as $value) {
+						$ids[] = (string)$value;
+					}
+					$arr['conditions'] = array('categoria' => array('$in' => $ids));
 				}else{
-					$valores = explode(';', $value[0]);
-					$filtros['$elemMatch']["$key"] = array(
-						'$gte' => floatval($valores[0]),
-						'$lte' => floatval($valores[1]),
-					);
+					$arr['conditions'] = array('categoria' => (string) $array['categoria']);
 				}
 			}
-			$arr['conditions']['detalhes'] = $filtros;
+		}else{
+			if($array['destaque']){
+				$arr['conditions'] = array('destaque' => '1');
+				$arr['limit'] = $this->ecommerce_options->produtos_destaque;
+			}else if($array['lancamento']){
+				$arr['conditions'] = array('destaque' => '0');
+				$arr['limit'] = $this->ecommerce_options->produtos_por_pagina;
+			}else if($array['categoria'] != ''){
+				if(is_array($array['categoria'])){
+					$ids = array();
+					foreach ($array['categoria'] as $value) {
+						$ids[] = (string)$value;
+					}
+					$arr['conditions'] = array('categoria' => array('$in' => $ids));
+				}else{
+					$arr['conditions'] = array('categoria' => $array['categoria']);
+				}
+			}
+			if(!empty($array['filtros'])){
+				$filtros = array();
+				foreach ($array['filtros'] as $key => $value) {
+					if($key != 'valor'){
+						$filtros['$elemMatch']["$key"] = array(
+							'$in' => $value,
+						);
+					}else{
+						$valores = explode(';', $value[0]);
+						$filtros['$elemMatch']["$key"] = array(
+							'$gte' => floatval($valores[0]),
+							'$lte' => floatval($valores[1]),
+						);
+					}
+				}
+				$arr['conditions']['detalhes'] = $filtros;
+			}
 		}
 		$arr['conditions']['ativo'] = '1';
-		$arr['limit'] = $this->ecommerce_options->produtos_por_pagina;
 		if($array['pagina'] != 0){
 			$arr['skip'] = intval($this->ecommerce_options->produtos_por_pagina) * $array['pagina'];
 		}

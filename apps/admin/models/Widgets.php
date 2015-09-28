@@ -29,6 +29,36 @@ class Widgets extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var double
+     */
+    public $valor_minimo;
+
+    /**
+     *
+     * @var double
+     */
+    public $valor_minimo_parcela;
+
+     /**
+     *
+     * @var integer
+     */
+    public $maximo_parcela;
+
+    /**
+     *
+     * @var integer
+     */
+    public $parcela_sem_juros;
+
+    /**
+     *
+     * @var double
+     */
+    public $juros_parcela;
+
+    /**
+     *
      * @var string
      */
     public $opcoes;

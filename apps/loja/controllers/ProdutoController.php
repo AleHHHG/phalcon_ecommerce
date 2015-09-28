@@ -3,11 +3,13 @@
 namespace Ecommerce\Loja\Controllers;
 use Phalcon\Mvc\Controller;
 use Ecommerce\Admin\Models\Produtos;
+use Ecommerce\Admin\Models\Categorias;
 use Ecommerce\Admin\Models\Avaliacoes;
 class ProdutoController extends ControllerBase
 {
 	public function indexAction($produto,$id){
 		$this->view->produto = Produtos::findById($id);
+		$this->view->categoria = Categorias::findById($this->view->produto->categoria);
 		$this->view->detalhe = 0;
 		$this->view->posicao = 0;
 	}

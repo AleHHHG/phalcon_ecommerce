@@ -111,7 +111,7 @@
                   {{ link_to('/admin/usuarios/2','Administradores')}}
                </li>
                <li>
-                  {{ link_to('','Formas de pagamento')}}
+                  {{ link_to('/admin/pagamentos','Formas de pagamento')}}
                </li>
             </ul>
          </li>

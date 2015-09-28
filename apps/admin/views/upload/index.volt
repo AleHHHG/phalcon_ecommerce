@@ -34,7 +34,6 @@
                {{ form("admin/upload/create",'enctype': 'multipart/form-data','id':'upload-form') }}
                   {{ file_field('files[]','id':'fileupload','multiple':'multiple')}}
                   <br/>
-                  {{ submit_button('Upload','class':'btn btn-primary btn-lg')}}
                {{endForm()}}
             </div>   
          </div>

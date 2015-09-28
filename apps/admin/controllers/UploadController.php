@@ -28,9 +28,9 @@ class UploadController extends ControllerBase
                 foreach ($this->request->getUploadedFiles() as $file)
                 {
                     if($file->getName() != ''){
-                        $file->moveTo('files/'.$file->getName());
+                        $file->moveTo('files/produtos/'.md5(date('Y-m-d H:i:s:u')).$file->getName());
                         $imagem = new Imagens;
-                        $imagem->url = 'files/'.$file->getName();
+                        $imagem->url = 'files/produtos/'.md5(date('Y-m-d H:i:s:u')).$file->getName();
                         $imagem->save();
                         $this->response->setContent(json_encode(array('status' => true,'mensagem' => 'Upload concluido com sucesso')));
                         //Comentado pois não funciona locacal

@@ -1,5 +1,6 @@
 <?php
 namespace Ecommerce\Loja\Helpers;
+use Ecommerce\Admin\Models\Imagens;
 class ProductImageHelper extends SingleHelper {
 
 	protected $layout;
@@ -56,16 +57,25 @@ class ProductImageHelper extends SingleHelper {
 		return $html;
 	}
 
-	protected function setImagem($img,$param,$after,$before){
+	protected function setImagem($img,$param,$after,$before,$identificador = 0){
+		$img = Imagens::findFirst($img);
 		$imagem = ($param == 'item') ? $after : '';
 		$attr = '';
 		foreach ($this->layout[$param.'_imagem_attr'] as $key => $value) {
 			$attr .= $key.'='.$value.' ';
 		}
+		$size = explode('x', $this->ecommerce_options->imagem_size);
+		$src = "{$this->url_base}public/{$img->url}&q=90&w={$size[0]}&h={$size[1]}&zc=2";
+		$img = "{$this->url_base}public/timthumb?src=$src'";
+		if($this->layout['identificador'] && $this->layout['identificador_position'] == $param){
+			$wrap = str_replace('_IDENTIFICADOR_', $identificador, $this->layout[$param.'_imagem_wrap']);
+		}else{
+			$wrap = $this->layout[$param.'_imagem_wrap'];
+		}
 		$imagem .= parent::replaceWraper(2,array(
-			"{$this->url_base}files/produtos/$img",
+			$img,
 			$attr
-			),$this->layout[$param.'_imagem_wrap']);
+			),$wrap);
 		$imagem .= ($param == 'item') ? $before : '';
 		return $imagem;
 	}
@@ -77,9 +87,9 @@ class ProductImageHelper extends SingleHelper {
 			$int = $key+1;
 			$item .= parent::replaceWraper(3,
 				array(
-					($this->layout['identificador']) ? $this->layout['navigation_item_id'].$int : $this->layout['navigation_item_id'],
-					($this->layout['identificador']) ? $this->layout['navigation_item_class'].$int : $this->layout['navigation_item_class'],
-					$this->setImagem($value,'navigation','','')
+					$this->layout['navigation_item_id'],
+					$this->layout['navigation_item_class'],
+					$this->setImagem($value,'navigation','','',$key)
 				),
 				$this->layout['navigation_item']);
 		}

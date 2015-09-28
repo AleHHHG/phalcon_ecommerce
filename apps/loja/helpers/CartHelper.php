@@ -1,6 +1,7 @@
 <?php
 namespace Ecommerce\Loja\Helpers;
 use Ecommerce\Admin\Models\Categorias;
+use Ecommerce\Admin\Models\Imagens;
 use Ecommerce\Loja\Helpers\BaseHelper;
 use Moltin\Cart\Cart;
 use Moltin\Cart\Storage\Session;
@@ -137,7 +138,8 @@ class CartHelper extends BaseHelper{
 		if($this->options['thumbnail_container'] != ''){
 			$html .= "<{$this->options['thumbnail_container']} $container_class >";
 		}
-		$html .= "<img src='{$this->url_base}files/produtos/{$produto['imagens'][0]}' $thumbnail_class $width/>";
+		$imagem = Imagens::findFirst($produto['imagens'][0]);
+		$html .= "<img src='{$this->ecommerce_options->url_base}{$imagem->url}' $thumbnail_class $width/>";
 		if($this->options['thumbnail_container'] != ''){
 			$html .= "</{$this->options['thumbnail_container']}>";
 		}

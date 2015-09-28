@@ -13,9 +13,15 @@ class PedidoItens extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
+     * @var string
      */
     public $produto_id;
+
+    /**
+     *
+     * @var string
+     */
+    public $detalhe_id;
 
     /**
      *
@@ -89,14 +95,15 @@ class PedidoItens extends \Phalcon\Mvc\Model
     public function createData($itens,$pedido_id){
         $opcoes = $this->getDI()->getShared('ecommerce_options');
         foreach ($itens as $key => $value) {
-            $this->pedido_id = $pedido_id;
-            $this->produto_id = $value->id;
-            $this->quantidade = $value->quantity;
-            $this->valor = $value->price;
+            $pi = new PedidoItens;
+            $pi->pedido_id = $pedido_id;
+            $pi->produto_id = $value->id;
+            $pi->quantidade = $value->quantity;
+            $pi->valor = $value->price;
             if($opcoes->produto_detalhes == '1'){
-                $this->detalhe_id = $value->options['detalhe_id'];
+                $pi->detalhe_id = $value->options['detalhe_id'];
             }
-            $this->save();
+            $pi->save();
         }
     }
 

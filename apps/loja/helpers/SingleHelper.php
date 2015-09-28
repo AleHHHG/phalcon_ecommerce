@@ -34,6 +34,13 @@ class SingleHelper extends BaseHelper {
 			'social_item_wrap' => '<li class="%1Ss">%2Ss</li>',
 			'social_item_class' => '',
 			'social_itens' => ['facebook','twitter','gplus'],
+			'option_class' => 'form-control',
+			'options' => array(
+				'label' => true,
+				'label_container' => 'h5',
+				'label_class' => '',
+				'container_size' => 'col-md-4'
+			),
 		),
 		'PRODUCT_IMAGES_LAYOUT' => array(
 			'size' => 'col-md-6',
@@ -51,7 +58,7 @@ class SingleHelper extends BaseHelper {
 			'navigation_class' => '',
 			'navigation_wrap' => '<ul class="%1Ss">%2Ss</ul>',
 			'navigation_wrap_class' => '',
-			'navigation_item' => '<li id="%1Ss"class="%2Ss">%3Ss</li>',
+			'navigation_item' => '<li id="%1Ss" class="%2Ss">%3Ss</li>',
 			'navigation_position' => 'BEFORE_ITEM',
 			'navigation_item_class' =>'',
 			'navigation_imagem_wrap' => '<img src="%1Ss" %2Ss />',
@@ -59,6 +66,7 @@ class SingleHelper extends BaseHelper {
 			'navigation_item_id' =>'',
 			'navigation_item_imagem_class' => '',
 			'identificador' => false,
+			'identificador_position' => 'navigation',
 		),
 		'PRODUCT_TABS_LAYOUT' => array(
 			'container' => 'div',

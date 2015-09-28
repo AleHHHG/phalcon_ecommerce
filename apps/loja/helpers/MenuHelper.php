@@ -9,12 +9,12 @@ class MenuHelper extends BaseHelper{
 		'container'       => 'div',
 		'container_class' => '',
 		'container_id'    => '',
+		'menu_wrap'      => '<ul id="%1Ss" class="%2Ss">%3Ss</ul>',
 		'menu_class'      => '',
 		'menu_id'         => '',
-		'menu_wrap'      => '<ul id="%1Ss" class="%2Ss">%3Ss</ul>',
+		'item_wrap' => '<li class="%1Ss"><a class="%2Ss" href="%3Ss">%4Ss</a> %5Ss</li>',
 		'item_class' => '',
 		'item_link_class' => '',
-		'item_wrap' => '<li class="%1Ss"><a class="%2Ss" href="%3Ss">%4Ss</a> %5Ss</li>',
 		'submenu' => true,
 		'submenu_class' => '',
 		'submenu_id' => '',
@@ -73,7 +73,7 @@ class MenuHelper extends BaseHelper{
 				$array['item_class'],
 				$array['item_link_class'],
 				parent::generateUrl($value->nome,$value->_id,'categoria'),
-				$value->nome,
+				($submenu != '') ? $value->nome.' <i class="fa fa-angle-down"></i>' : $value->nome,
 				($submenu != '') ? parent::replaceWraper(3,$opcoes_sub,$array['menu_wrap']) : '',
 			);
 

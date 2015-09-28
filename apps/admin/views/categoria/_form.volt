@@ -10,7 +10,7 @@
 		<select name="parent" class="form-control">
 			<option value="">Nenhuma</option>
 			{% for key,value in categorias %}
-				<option value="{{key}}" {{ categoria._id == key ? 'selected' : ''}}>{{value}}</option>
+				<option value="{{key}}" {{ categoria.parent == key ? 'selected' : ''}}>{{value}}</option>
 			{% endfor %}
 		</select>
 	</div>

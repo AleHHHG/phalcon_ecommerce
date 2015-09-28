@@ -26,6 +26,7 @@ class Module implements ModuleDefinitionInterface{
                 'Ecommerce\Loja\Models'      => '../apps/loja/models/',
                 'Ecommerce\Loja\Helpers'      => '../apps/loja/helpers/',
                 'Ecommerce\Loja\Customs'      => '../apps/loja/customs/',
+                'Ecommerce\Loja\Forms'      => '../apps/loja/forms/',
                 'Ecommerce\Admin\Models'      => '../apps/admin/models/',
             )
         );

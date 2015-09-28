@@ -1,36 +1,15 @@
 <?php
-namespace Pagamentos\Cielo;
+namespace Pagamentos\Pagseguro;
 class Pagamento{
+
 	public static $producao;
-	public static $cielo_numero;
-	public static $cielo_chave;
-	public static $numero_teste = '1006993069';
-	public static $chave_teste = '25fbb99741c739dd84d7b06ec78c9bac718838630f30b112d033ce2e621b34f3';
-	public static $url_teste = 'https://qasecommerce.cielo.com.br/servicos/ecommwsec.do';
-	public static $url_producao = 'https://ecommerce.cbmp.com.br/servicos/ecommwsec.do';
-	public static $bandeira; //Bandeira, no caso a Visa, outras bandeiras olhar no manual
-    public static $nome_titular; //Nome do dono do cartão exatamente como impresso no mesmo.
-    public static $numero_cartao; //Número do cartão de crédito, apenas números.
-    public static $cvv; //Código de segurança do verso do cartão
-    public static $indicador; //Se o cartão não tiver código de segurança o indicaro é zero, caso contrário um
-    public static $produto;
-    public static $ano;
-    public static $mes;
-    public static $parcelas; //Quantidade total de parcelas
-    public static $autorizar = '3'; //No caso a '3' é a chamada "autorização direta", para entender o que é e quais as outras opções consulte o manual
-    public static $captura = 'true'; //A captura é quando após aprovada a transação você confirma para a operadora que quer o dinheiro, observe que se você não capturar, mesmo uma transação autorizada, não gerará débito para o usuário. No caso estou dizendo que se a transação for autorizada ela deve ser capturada, caso queira fazer a captura posteriormente devo usar false no lugar e posteriormente realizar a captura em outro procedimento.       
-	public static $valor;
-    public static $pedido_id;
+    public static $email;
+	public static $token;
+	public static $currency = 'BRL';
+	public static $reference;
 
     public static function setData($dados){
-    	foreach ($dados as $key => $value) {
-             self::$$key = $value;
-    	}
-        self::$parcelas = $dados['parcela'];
-        // TRATAMENTO NECESSARIO DOS DADOS
-        self::$indicador = (self::$cvv != '') ? '1' : '0'; 
-        self::$produto = (self::$parcelas == '1') ? '1':'2';
-        self::$valor = (self::$producao) ? self::$valor : self::$valor.'00';    
+    	  
     }
 
     public static function init($producao,$dados,$opcoes){;

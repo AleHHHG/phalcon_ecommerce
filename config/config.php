@@ -8,7 +8,7 @@ return new \Phalcon\Config(array(
         'host'        => 'localhost',
         'username'    => 'root',
         'password'    => '2015',
-        'dbname'      => 'mare_mansa',
+        'dbname'      => 'plataforma',
         'charset'     => 'utf8',
     ),
 ));
