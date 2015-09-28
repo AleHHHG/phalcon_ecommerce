@@ -27,7 +27,9 @@ class FooterHelper extends BaseHelper{
 			'wrap_class' => '',
 			'isItem' => true,
 			'item_wrap' => '<li class="%1Ss"><a href="%2Ss">%3Ss</a></li>',
-			'item_wrap_class' => ''
+			'item_wrap_class' => '',
+			'img_class' => '',
+			'img_size' => '200x60'
 		),
 		'SOCIAL_LAYOUT' => array(
 			'container_wrap' => '<div class="%1Ss">%2Ss</div>',
@@ -43,7 +45,7 @@ class FooterHelper extends BaseHelper{
 		'COPYRIGHT_LAYOUT' => array(
 			'logo' => true,
 			'logo_color' => 'white',
-			'logo_size' => '200x46'
+			'logo_size' => '100x46'
 		),
 	);
 
@@ -117,7 +119,9 @@ class FooterHelper extends BaseHelper{
 	public function getPagamentos($layout){
 		$item = '';
 		foreach (unserialize($this->ecommerce_options->bandeiras) as $value) {
-			$i = '<img src="'.$this->url_base.'img/loja/bandeiras/'.$value.'.png" class="'.$layout['img_class'].'" />';
+			$size = explode('x', $layout['img_size']);
+			$src="{$this->url_base}public/img/loja/bandeiras/$value.png&q=90&w={$size[0]}&h={$size[1]}&zc=2";
+			$i = '<img src="'.$this->url_base.'public/timthumb?src='.$src.'" class="'.$layout['img_class'].'" />';
 			if($layout['isItem']){
 				$item .=  parent::replaceWraper(3,
 					array(

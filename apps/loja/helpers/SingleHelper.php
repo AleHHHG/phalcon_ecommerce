@@ -41,6 +41,8 @@ class SingleHelper extends BaseHelper {
 				'label_class' => '',
 				'container_size' => 'col-md-4'
 			),
+			'desconto_container' => 'span',
+			'desconto_class' => ''
 		),
 		'PRODUCT_IMAGES_LAYOUT' => array(
 			'size' => 'col-md-6',

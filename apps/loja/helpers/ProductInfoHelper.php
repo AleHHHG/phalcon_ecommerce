@@ -44,14 +44,32 @@ class ProductInfoHelper extends SingleHelper {
 	protected function setProductPrice($produto){
 		if($this->ecommerce_options->produto_detalhes == '1'){
 			if($this->layout['detalhe'] == '0'){
-				$valor = 'R$ '.number_format($produto->detalhes[0]['valor'],2,',','.');
+				if(isset($produto->detalhes[0]['desconto']) && $produto->detalhes[0]['desconto'] != ''){
+					$desconto = $produto->detalhes[0]['desconto'];
+				}else{
+					$desconto = 0;
+				}
+				$valor = 'R$ '.number_format($produto->detalhes[0]['valor'] - $desconto,2,',','.');
+				$valor .= '<'.$this->layout['desconto_container'].' class="'.$this->layout['desconto_class'].'"> R$ '.number_format($produto->detalhes[0]['valor'],2,',','.').'</'.$this->layout['desconto_container'].'/>';
 			}else{
 				$detalhes = unserialize($this->ecommerce_options->produto_detalhe_options);
 				$index =  parent::arrayMultiSearch($this->layout['produto']->detalhes,$detalhes[0]['label'],$this->layout['detalhe']);
-				$valor = 'R$ '.number_format($produto->detalhes[$index]['valor'],2,',','.');
+				if(isset($detalhes[$index]['desconto']) && $detalhes[$index]['desconto'] != ''){
+					$desconto = $detalhes[$index]['desconto'];
+				}else{
+					$desconto = 0;
+				}
+				$valor = 'R$ '.number_format($produto->detalhes[$index]['valor'] - $desconto,2,',','.');
+				$valor .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_container'].'"> R$ '.number_format($produto->detalhes[$index]['valor'],2,',','.').'</'.$this->options['desconto_container'].'/>';
 			}
 		}else{
-			$valor = 'R$ '.number_format($produto->valor,2,',','.');
+			if($produto->desconto != ''){
+					$desconto = $produto->desconto;
+				}else{
+					$desconto = 0;
+				}
+			$valor = 'R$ '.number_format($produto->valor - $desconto,2,',','.');
+			$valor .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_container'].'"> R$ '.number_format($produto->valor,2,',','.').'</'.$this->options['desconto_container'].'/>';
 		}
 		return parent::replaceWraper(2,array(
 				$this->layout['preco_class'],
@@ -63,9 +81,7 @@ class ProductInfoHelper extends SingleHelper {
 
 	protected function setProductDescription($produto){
 		$html = "<{$this->layout['descricao_container']} class='{$this->layout['descricao_class']}'>";
-		$string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum imperdiet et orci quis commodo. Vivamus sit amet tortor sagittis, efficitur ante sit amet, viverra orci. Fusce condimentum sapien et augue pellentesque semper. Sed ac justo non mauris congue viverra. Nullam feugiat eros lectus, in hendrerit libero hendrerit at. Donec imperdiet quis neque ac pulvinar. Aenean velit mauris, lobortis ut venenatis non, vestibulum ac neque. ';
-		//$html .= $produto->descricao;
-		$html .= $string;
+		$html .= nl2br($produto->descricao);
 		$html .= "</{$this->layout['descricao_container']}>";
 		return $html;
 	}

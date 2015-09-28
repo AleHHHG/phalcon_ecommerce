@@ -58,7 +58,7 @@ class CartHelper extends BaseHelper{
 
 		),
 		'CART_TOTAL' => array(
-			'size' => 'col-md-4',
+			'size' => 'col-md-12',
 			'container_id' => '',
 			'container_class' => '',
 			'item_class' => '',
@@ -254,10 +254,19 @@ class CartHelper extends BaseHelper{
 			$html .= "<tr class='cart-item {$this->options['item_class']}'>";
 			$preco = number_format($value->price,2,',','.');
 			$total = number_format($value->price*$value->quantity,2,',','.');
+			$imagem = Imagens::findFirst($produto['imagens'][0]);
 			if(!$this->options['resumo']){
-				$html .= "<td><img src='{$this->url_base}files/produtos/{$produto['imagens'][0]}' class='img-responsive' style='width:100px'/></td>";
-				$html .= "<td>{$value->name}</td>";
+				$html .= "<td><img src='{$this->url_base}{$imagem->url}' class='img-responsive' style='width:100px'/></td>";
 				$chave = parent::arrayMultiSearch($produto['detalhes'],'detalhe_id',$value->options['detalhe_id']);
+				if($this->ecommerce_options->produto_detalhes == '1'){
+					$variacao = '';
+					foreach (unserialize($this->ecommerce_options->produto_detalhe_options) as $c => $v) {
+						$variacao .= ucwords($v['label']).': '.$produto['detalhes'][$chave]["{$v['label']}"];
+					}
+				}else{
+					$variacao = '';
+				}
+				$html .= "<td>{$value->name}<br/> <span class='cart-variacao'>{$variacao}</span></td>";
 				$select = "<select class='form-control cart-update' data-identificador='$key'>";
 				if($this->ecommerce_options->produto_detalhes == '0'){
 					$estoque = $produto['estoque'];
@@ -275,7 +284,7 @@ class CartHelper extends BaseHelper{
 				$link = $this->url_base.'cart/remove/'.$key;
 				$html .= "<td><a href='$link' class='cart-remove'><i class='fa fa-trash fa-2x'></i></a></td>";
 			}else{
-				$html .= "<td><img src='{$this->url_base}files/produtos/{$produto['imagens'][0]}' class='img-responsive' style='width:100px'/></td>";
+				$html .= "<td><img src='$this->url_base}{$imagem->url}' class='img-responsive' style='width:100px'/></td>";
 				$html .= "<td>
 							{$value->name} <br/>
 							<strong>{$value->quantity} x R$ $preco</strong>
@@ -290,7 +299,7 @@ class CartHelper extends BaseHelper{
 
 	public function setTotais(){
 		$html = '<div class="'.$this->options['size'].'">';
-		$html .= '<table class="'.$this->options['container_id'].'" id="'.$this->options['container_class'].'">';
+		$html .= '<table class="'.$this->options['container_class'].'" id="'.$this->options['container_id'].'">';
 		$html .= $this->getTotais();
 		$html .= '</table>';
 		$html .= '</div>';
@@ -298,11 +307,11 @@ class CartHelper extends BaseHelper{
 	}
 
 	protected function getTotais(){
-		$html = '<tr><td>'.$this->getCepOption().'</td></tr>';
+		$html = '<tr><td style="padding:20px">'.$this->getCepOption().'</td></tr>';
 		$html .= '<tr id="frete-opcoes" style="display:none"><td>'.$this->getCepOption().'</td></tr>';
-		$html .= '<tr><td><h5>SubTotal: <strong>R$ <span id="cart-subtotal">'. number_format($this->cart->total(),2,',','.').'</span> </strong></h5></td> </tr>';
+		$html .= '<tr><td style="padding:20px"><h5>SubTotal: <strong>R$ <span id="cart-subtotal">'. number_format($this->cart->total(),2,',','.').'</span> </strong></h5></td> </tr>';
 		$html .= $this->getFreteOption();
-		$html .= '<tr class="active"><td><h5>Total: <strong>R$ <span id="cart-total">'.number_format($this->cart->total() + $this->session->get('frete')['valor'],2,',','.').'</span> </strong></h5></td></tr>';
+		$html .= '<tr class="active"><td style="padding:20px"><h5>Total: <strong>R$ <span id="cart-total">'.number_format($this->cart->total() + $this->session->get('frete')['valor'],2,',','.').'</span> </strong></h5></td></tr>';
 		$html .= '<tr><td>'.$this->getActionsOptions().'</td></tr>';
 		return '<tbody>'.$html.'</tbody>';
 	}
@@ -322,7 +331,7 @@ class CartHelper extends BaseHelper{
 	protected function getFreteOption(){
 		$style = ($this->session->has('frete')) ? 'style="disyplay:none"' : '';
 		return '<tr '.$style.'>
-                    <td>
+                    <td style="padding:20px">
                         <h5>Frete: 
                             <strong>R$
                                 <span id="cart-frete">

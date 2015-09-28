@@ -238,15 +238,9 @@ class ProdutoHelper extends BaseHelper {
 				}
 				$arr['conditions'] = array('_id' => array('$in' => $ids));
 			}else{
-				if(is_array($array['categoria'])){
-					$ids = array();
-					foreach ($array['categoria'] as $value) {
-						$ids[] = (string)$value;
-					}
-					$arr['conditions'] = array('categoria' => array('$in' => $ids));
-				}else{
-					$arr['conditions'] = array('categoria' => (string) $array['categoria']);
-				}
+				$arr['conditions'] = array('categoria' => (string) $array['categoria'],
+					'_id' => array('$ne' => $this->options['produto']->_id
+				));			
 			}
 		}else{
 			if($array['destaque']){
