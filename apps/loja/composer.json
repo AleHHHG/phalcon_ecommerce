@@ -1,0 +1,8 @@
+{
+    "require": {
+        "moltin/cart": "dev-master",
+        "facebook/php-sdk-v4" : "~5.0"
+    },
+  	"minimum-stability": "dev",
+	"prefer-stable": true
+}
