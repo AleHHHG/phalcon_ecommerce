@@ -76,7 +76,7 @@ class TopBarHelper extends BaseHelper{
 			$this->my_account = "<a href='{$this->url_base}user'>Minha Conta</a>";
 		}
 		$this->wishilist = '<a href="#">Lista de Desejos</a>';
-		$this->compare = "<a href='{$this->url_base}comparacao'>Comparação</a>";
+		$this->compare = "<a href='{$this->url_base}comparacao'>Comparação <span class='badge comparacao-count'>".count($this->session->get('comparacao'))."</span> </a>";
 		if(!$this->session->logado){
 			$this->login = "<a href='{$this->url_base}user/login'>Login</a>";
 		}else{

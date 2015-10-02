@@ -38,7 +38,7 @@ class UtilitariosHelper extends Tag
             if(is_string($uploads)){
                 $valores = implode(',', unserialize($uploads));
             }else{
-                $valores = implode($uploads);
+                $valores = implode(',',$uploads);
             }
         }else{
             $valores = '';

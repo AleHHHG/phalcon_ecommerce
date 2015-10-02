@@ -37,7 +37,7 @@ class ProdutoForm extends Form
         $detalhes = unserialize($this->ecommerce_options->produto_options);
         foreach ($detalhes as $key => $value) {
             $chave = $key;
-            $chave = new Select("detalhes[{$value['label']}][]", $value['referencia']::find(array('order' => 'nome ASC')), array(
+            $chave = new Select("{$value['label']}", $value['referencia']::find(array('order' => 'nome ASC')), array(
                 'using' => array('nome', 'nome'),
                 'useEmpty'   => true,
                 'emptyText'  => 'Nenhum ...',

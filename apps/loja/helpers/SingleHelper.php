@@ -81,7 +81,9 @@ class SingleHelper extends BaseHelper {
 			'tab_class' => 'tab-content',
 			'item_container' => 'div',
 			'item_class' => 'tab-pane',
-			'tab_itens' => array('descrição','avaliação')
+			'tab_itens' => array('descrição','avaliação','detalhes'),
+			'list' => 'list-group',
+			'list_item' => 'list-group-item'
 		)
 	);
 

@@ -112,6 +112,36 @@ class UserController extends ControllerBase
         ));
 	}
 
+	public function createAction(){
+		if(!empty(Usuarios::findFirst('email = "'.$this->request->getPost('email').'"'))){
+			$this->flashSession->error('E-mail já existem em nossa base de dados');
+			return $this->response->redirect("user/login");
+		}
+		$usuario = new Usuarios;
+		$usuario->email = $this->request->getPost('email');
+		$usuario->nome = $this->request->getPost('nome');
+		$usuario->nivel_id = 3;
+		$usuario->senha = $this->security->hash($this->request->getPost('senha'));
+		if($usuario->save()){
+			$cliente = new Clientes;
+			$cliente->usuario_id = $usuario->id;
+			$cliente->save();
+			$this->setSession($usuario);
+			$this->dispatcher->forward(array(
+	            "action" => "index"
+	        ));
+		}else{
+			$mensagem = '';
+			foreach ($usuarios->getMessages() as  $value) {
+				$mensagem .= $message->getMessage()."<br/>";
+			}
+			$this->flashSession->error('Houve um erro:'.$mensagem);
+			return $this->response->redirect("user/login");
+		}
+
+	}
+
+
 	public function pedidosAction(){
 		$this->view->selecionado == 'Meus Pedidos';
 		$this->view->pedidos = Pedidos::find(
@@ -127,10 +157,6 @@ class UserController extends ControllerBase
 		$this->view->avaliacoes = Avaliacoes::findWithProduto($this->session->get('id'));
 	}
 
-
-	public function createAction(){
-
-	}
 
 	public function editAction($param){
 		$this->view->param = $param;

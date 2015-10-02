@@ -9,4 +9,6 @@ return array(
     'Moltin' => array($vendorDir . '/moltin/currency/src', $vendorDir . '/moltin/tax/src', $vendorDir . '/moltin/cart/src'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
+    'Correios' => array($vendorDir . '/correios/src'),
+  	'Pagamentos' => array($vendorDir . '/pagamentos/src'),
 );

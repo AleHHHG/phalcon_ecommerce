@@ -56,16 +56,23 @@ class ComparacaoHelper extends BaseHelper{
 				$html .= '<img src="'.$this->url_base.$imagem.'" class="img-responsive" width="150px" />';
 			}else if($param == 'valor' || $param == 'peso' || $param == 'dimensões'){
 				if($param == 'valor'){
+					$desconto = parent::getDesconto($value);
 					if($this->ecommerce_options->produto_detalhes == '1'){
-						$html .= 'R$ '.number_format($value['detalhes'][0][$param],2,',','.');
+						$html .= 'R$ '.number_format($value['detalhes'][0][$param]-$desconto,2,',','.');
+						if($desconto != 0){
+							$html .= '<span class="preco-desconto">R$ '.number_format($value['detalhes'][0][$param],2,',','.').'</span>';
+						}
 					}else{
-						$html .= 'R$ '.number_format($value[$param],2,',','.');
+						$html .= 'R$ '.number_format($value[$param]-$desconto,2,',','.');
+						if($desconto != 0){
+							$html .= '<span class="preco-desconto">R$ '.number_format($value[$param],2,',','.').'</span>';
+						}
 					}
 				}else if($param == 'dimensões'){
 					if($this->ecommerce_options->produto_cubagem_detalhe == '1'){
-						$html .= $value['detalhes'][0]['altura'].' / '.$value['detalhes'][0]['largura'].' / '.$value['detalhes'][0]['comprimento'];
+						$html .= $value['detalhes'][0]['altura'].' / '.$value['detalhes'][0]['largura'].' / '.$value['detalhes'][0]['comprimento'].' CM';
 					}else{
-						$html .= $value['altura'].' / '.$value['largura'].' / '.$value['comprimento'];
+						$html .= $value['altura'].' / '.$value['largura'].' / '.$value['comprimento'].' CM';
 					}
 				}else if($param == 'peso'){
 					if($this->ecommerce_options->produto_cubagem_detalhe == '1'){
@@ -89,7 +96,7 @@ class ComparacaoHelper extends BaseHelper{
 					$html .= $star.' '.Avaliacoes::count("produto_id = '{$value['_id']}' and avaliacao_tipo_id = 2 and aprovado = 1").' -Avaliação(oes)' ;
 				}
 			}else if($param == 'opções'){
-				$html .= '<a href="javascript:;" class="btn btn-primary"><i class="fa fa-plus"></i> Mais detalhes</a> ';
+				$html .= '<a href="'.parent::generateUrl($value['nome'],$value['_id'],'produto').'" class="btn btn-primary"><i class="fa fa-plus"></i> Mais detalhes</a> ';
 				$html .= '<a href="'.$this->url_base.'comparacao/delete/'.$value['_id'].'" class="btn btn-danger"><i class="fa fa-times"></i> Remover</a>';
 			}else{
 				if($param == 'descrição'){

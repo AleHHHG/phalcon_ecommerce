@@ -10,6 +10,7 @@ use Ecommerce\Admin\Models\Widgets;
 use Ecommerce\Admin\Models\Enderecos;
 use Ecommerce\Admin\Models\Pedidos;
 use Ecommerce\Admin\Models\PedidoItens;
+use Ecommerce\Admin\Models\Notificacoes;
 use Ecommerce\Loja\Forms\CheckOutForm;
 class CheckoutController extends ControllerBase
 {
@@ -40,9 +41,10 @@ class CheckoutController extends ControllerBase
 		$widget = Widgets::findFirst("id = {$this->request->getPost('forma_pagamento')}")->toArray();
 		$_POST['pagamento']['valor'] = number_format($cart->total() + $this->session->get('frete')['valor'],2,'','');
 		$_POST['pagamento']['pedido_id'] = $pedido_id;
+		$_POST['pagamento']['url_base'] = $this->ecommerce_options->url_base;
 		//Inicia o pagamento
 		$pagamento = '\\'.$widget['namespace'].'\Pagamento';
-		$retorno = $pagamento::init(false,$this->request->getPost('pagamento'),unserialize($widget->opcoes));
+		$retorno = $pagamento::init(false,$this->request->getPost('pagamento'),unserialize($widget['opcoes']));
 		// Retorno do PAGAMENTO
 		$class = '\\'.$widget['namespace'].'\Retorno';
 		$class::init($retorno,$pedido_id);
@@ -60,10 +62,16 @@ class CheckoutController extends ControllerBase
 
 	}
 
+	public function notificacaoAction($metodo){
+		if($metodo == 'pagseguro'){
+			Notificacoes::retornoPagseguro($_POST);
+		}
+	}
+
 	public function setForms($array){
 		if($array['formulario']){
 			$namespace = '\\'.$array['namespace'].'\Formulario';
-			$array['form'] = $namespace::generate();
+			$array['form'] = $namespace::generate(unserialize($array['opcoes']));
 		}
 		return $array;
 	}

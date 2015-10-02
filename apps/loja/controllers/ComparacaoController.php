@@ -22,7 +22,7 @@ class ComparacaoController extends ControllerBase
 		if($this->request->isPost()){
 			$array = $this->insert($this->request->getPost());
 		    if ($this->request->isAjax()){
-		        $this->response->setContent(json_encode(array('status' => true,'mensagem' => 'Produto adicionado com sucesso')));
+		        $this->response->setContent(json_encode(array('status' => true,'mensagem' => 'Produto adicionado com sucesso','total' => count($this->session->get('comparacao')) )));
         		$this->view->disable();
 		        return $this->response;
 		    }

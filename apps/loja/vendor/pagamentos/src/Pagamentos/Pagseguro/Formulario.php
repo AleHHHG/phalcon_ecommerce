@@ -1,15 +1,27 @@
 <?php
 namespace Pagamentos\Pagseguro;
+use Moltin\Cart\Storage\Session;
+use Moltin\Cart\Identifier\Cookie;
+use Moltin\Cart\Cart;
+use Phalcon\Forms\Form;
+use Phalcon\Forms\Element\Text;
+use Phalcon\Forms\Element\Select;
+use Phalcon\Forms\Element\Hidden;
 class Formulario{
 
 	public static $session_url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/sessions';
-	public static $email = 'comercial@webearte.com.br';
-	public static $token = 'C9B81840DE0B47208F641DC435D106C1';
+	public static $email;
+	public static $token;
 
-	public static function generate(){
+	public static function generate($opcoes = array()){
+		$cart = new Cart(new Session, new Cookie);
+		self::$token = $opcoes['token'];
+        self::$email = $opcoes['email'];
 		$sessao = self::setSession();
 		$html = self::getScript();
+		$html .= '<div class="checkout-pagseguro"></div>';
 		$html .= self::getSession($sessao);
+		$html .= self::getPaymentMethods($cart->total());
 		return $html;
 	}
 
@@ -41,26 +53,126 @@ class Formulario{
     	return '<script type="text/javascript">PagSeguroDirectPayment.setSessionId("'.$sessao->id.'");</script>';
     }
 
-    protected static function getSenderHash(){
-    	return '<script type="text/javascript">PagSeguroDirectPayment.getSenderHash();</script>';
-    }
-
     protected static function getPaymentMethods($valor){
     	$script = '<script type="text/javascript">';
     	$script .= 'PagSeguroDirectPayment.getPaymentMethods({
 			    amount: '.$valor.',
 			    success: function(response) {
-			    //meios de pagamento disponíveis
-			     },
-			    error: function(response) {
-			    //tratamento do erro
+			    	$.each(response.paymentMethods, function( key, value ) {
+						if(key != "BALANCE" && key != "CREDIT_CARD"){
+							var html = "<div class=page-header><h5>"+value.name+"</h5></div>";
+							$.each(value.options, function( chave, valor ) {
+								url = "https://stc.pagseguro.uol.com.br/"+valor.images.MEDIUM.path
+								html += "<a href=javascript:; class=pagseguro-forma-pagamento data-tipo="+value.name+" data-name="+valor.name+"><img src="+url+" /></a>";
+							})
+							$(".checkout-pagseguro").append(html)
+						}
+					});
+					var html = "<div class=page-header><h5>Cartão de crédito</h5></div>";
+					html += "<input type=hidden id=paymentMethod name=pagamento[paymentMethod] />"
+					html += "<input type=hidden id=bankName name=pagamento[bankName] />"
+					html += "<input type=hidden id=creditCardToken name=pagamento[creditCardToken] />"
+					html += "<input type=hidden name=pagamento[hash] value="+PagSeguroDirectPayment.getSenderHash()+" >";
+					$(".checkout-pagseguro").append(html)
+			    	$(".pagseguro-forma-pagamento").click(function(){
+						$(".pagseguro-forma-pagamento").removeClass("active")
+						$(this).addClass("active")
+						var tipo = $(this).data("tipo");
+						var name = $(this).data("name");
+						if(tipo == "ONLINE_DEBIT"){
+							$("#bankName").val(name)
+						}
+						$("#paymentMethod").val(tipo)
+					})
 			    },
-			    complete: function(response) {
-			    //tratamento comum para todas chamadas
-			    }
+			    error: function(response) {
+			    },
 			  })';
 		$script .= '</script>';
 		return $script;
     }
+
+    private static function setForm(){
+		$form = new Form();
+		//Numero do cartão
+		foreach (self::rules() as $key => $value) {
+			if($value['type'] == 'text'){
+				$chave = new Text("pagamento[$key]");
+			}else if($value['type'] == 'hidden'){
+				$chave = new Hidden("pagamento[$key]");
+			}else{
+				$chave = new Select("pagamento[$key]", array(
+		            'emptyText'  => 'Parcelas',
+            		'emptyValue' => '',
+		        ));
+			}
+			foreach ($value['attributos'] as $k => $v) {
+				$chave->setAttribute($k,$v);
+			}
+			$form->add($chave);
+		}
+        return $form;
+	}
+
+    protected static function rules(){
+		return array(
+			'numero_cartao' => array(
+				'type' => 'text',
+				'attributos' =>array(
+					'id' => 'numero-cartao',
+					'class' => 'form-control',
+					'disabled' => true,
+					'placeholder' => 'Numero do Cartão',
+				)
+			),
+			'nome_titular' => array(
+				'type' => 'text',
+				'attributos' =>array(
+					'class' => 'form-control',
+					'disabled' => true,
+					'placeholder' => 'Nome Impresso no cartão',
+				)
+			),
+			'mes' => array(
+				'type' => 'text',
+				'attributos' =>array(
+					'class' => 'form-control one-half',
+					'disabled' => true,
+					'placeholder' => 'Mes ex: 06,10,12',
+				)
+			),
+			'ano' => array(
+				'type' => 'text',
+				'attributos' =>array(
+					'class' => 'form-control one-half',
+					'disabled' => true,
+					'placeholder' => 'Ano ex: 2015',
+				)
+			),
+			'cvv' => array(
+				'type' => 'text',
+				'attributos' =>array(
+					'class' => 'form-control',
+					'disabled' => true,
+					'placeholder' => 'Codigo Verificador',
+				)
+			),
+			'parcelas' => array(
+				'type' => 'select',
+				'attributos' =>array(
+					'class' => 'form-control',
+					'disabled' => true,
+					'placeholder' => 'Codigo Verificador',
+				)
+			),
+			'bandeira' => array(
+				'type' => 'hidden',
+				'attributos' =>array(
+					'id' => 'cartao-bandeira',
+				)
+			),
+
+		);
+	}
 }
 

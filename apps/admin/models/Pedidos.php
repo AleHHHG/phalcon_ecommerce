@@ -55,6 +55,18 @@ class Pedidos extends \Phalcon\Mvc\Model
     public $total;
 
     /**
+     *
+     * @var string
+     */
+    public $link;
+
+    /**
+     *
+     * @var integer
+     */
+    public $meio_pagamento;
+
+    /**
      * Initialize method for model.
      */
     public function initialize()

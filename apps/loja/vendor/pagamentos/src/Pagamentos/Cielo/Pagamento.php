@@ -35,6 +35,8 @@ class Pagamento{
 
     public static function init($producao,$dados,$opcoes){;
         self::$producao = $producao;
+        self::$cielo_numero = $opcoes['numero'];
+        self::$cielo_chave = $opcoes['chave'];
         self::setData($dados);
         self::$cielo_numero = ($producao) ? $opcoes['numero']: self::$numero_teste;
         self::$cielo_chave = ($producao) ? $opcoes['chave']: self::$chave_teste;

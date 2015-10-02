@@ -177,6 +177,7 @@ class CartHelper extends BaseHelper{
 	}
 
 	protected function getPrice($item){
+		$preco_real = ($item->valor_real) ? '<span class="preco-desconto">R$ '.number_format($item->valor_real,2,',','.').'</span>' : '';
 		return parent::replaceWraper(2,
 				array(
 					$this->options['info_price_class'],
@@ -217,7 +218,7 @@ class CartHelper extends BaseHelper{
 				if($key == 'TO_CART'){	
 					$link = $this->url_base.'cart';
 				}else if($key == 'CHECKOUT'){
-					$link = $this->url_base.'chekout';
+					$link = $this->url_base.'checkout';
 				}else{
 					return false;
 				}
@@ -255,6 +256,7 @@ class CartHelper extends BaseHelper{
 			$preco = number_format($value->price,2,',','.');
 			$total = number_format($value->price*$value->quantity,2,',','.');
 			$imagem = Imagens::findFirst($produto['imagens'][0]);
+			$preco_real = ($value->valor_real) ? '<span class="preco-desconto">R$ '.number_format($value->valor_real,2,',','.').'</span>' : '';
 			if(!$this->options['resumo']){
 				$html .= "<td><img src='{$this->url_base}{$imagem->url}' class='img-responsive' style='width:100px'/></td>";
 				$chave = parent::arrayMultiSearch($produto['detalhes'],'detalhe_id',$value->options['detalhe_id']);
@@ -279,12 +281,12 @@ class CartHelper extends BaseHelper{
 				}
 				$select .= '</select>';
 				$html .= "<td>$select</td>";
-				$html .= "<td>R$ $preco</td>";
+				$html .= "<td>R$ $preco $preco_real</td>";
 				$html .= "<td class='cart-item-total'>R$ $total</td>";
 				$link = $this->url_base.'cart/remove/'.$key;
 				$html .= "<td><a href='$link' class='cart-remove'><i class='fa fa-trash fa-2x'></i></a></td>";
 			}else{
-				$html .= "<td><img src='$this->url_base}{$imagem->url}' class='img-responsive' style='width:100px'/></td>";
+				$html .= "<td><img src='{$this->url_base}{$imagem->url}' class='img-responsive' style='width:100px'/></td>";
 				$html .= "<td>
 							{$value->name} <br/>
 							<strong>{$value->quantity} x R$ $preco</strong>

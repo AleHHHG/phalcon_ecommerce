@@ -90,13 +90,20 @@ class CartController extends ControllerBase
 		$array['name'] = $produto['nome'];
 		$array['quantity'] = $array['quantidade'];
 		if(isset($array['detalhe_id']) && $array['detalhe_id'] != ''){
+			$desconto = $base->getDesconto($produto,$array['detalhe_id']);
 			$chave = $base->arrayMultiSearch($produto['detalhes'],'detalhe_id',$array['detalhe_id']);
 			$array['options']['detalhe_id'] = 	$array['detalhe_id'];
-			$array['price'] = $produto['detalhes'][$chave]['valor'];
-			$array['desconto'] = $base->getDesconto($produto,$array['detalhe_id']);
+			$array['price'] = $produto['detalhes'][$chave]['valor']-$desconto;
+			if($desconto != 0){
+				$array['valor_real'] = $produto['detalhes'][$chave]['valor'];
+			}
 		}else{
-			$array['price'] = (isset($produto['valor'])) ? $produto['valor'] : $produto['detalhes'][0]['valor'];
-			$array['desconto'] = $base->getDesconto($produto);
+			$desconto = $base->getDesconto($produto);
+			$valor = (isset($produto['valor'])) ? $produto['valor'] : $produto['detalhes'][0]['valor'];
+			$array['price'] = $valor-$desconto;
+			if($desconto != 0){
+				$array['valor_real'] = $valor;
+			}
 		}
 		unset($array['produto_id']);
 		unset($array['detalhe_id']);

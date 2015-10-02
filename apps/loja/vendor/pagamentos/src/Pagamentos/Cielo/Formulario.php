@@ -6,7 +6,7 @@ use Phalcon\Forms\Element\Select;
 use Phalcon\Forms\Element\Hidden;
 class Formulario{
 
-	public static function generate(){
+	public static function generate($opcoes = array()){
 		$form = new Form();
 		//Numero do cartão
 		foreach (self::rules() as $key => $value) {

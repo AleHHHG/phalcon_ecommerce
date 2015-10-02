@@ -48,8 +48,8 @@ class ProductTabsHelper extends SingleHelper {
 				$html .= $this->layout['produto']->descricao;
 			}else if($value == 'avaliação'){
 				$html .= $this->getAvaliacaoTab();
-			}else{
-				$html .= $value;
+			}else if($value == 'detalhes'){
+				$html .= $this->getDetalhes();
 			}
 			$html .= "</{$this->layout['item_container']}>";
 		}
@@ -117,5 +117,21 @@ class ProductTabsHelper extends SingleHelper {
 		 	</div>
 		 	<div class='alert alert-success' style='display:none'></div>
 		 </form>";
+	}
+
+	private function getDetalhes(){
+		$html = '<ul class="'.$this->layout['list'].'">';
+	 	$detalhes = unserialize($this->ecommerce_options->produto_options);
+        foreach ($detalhes as $key => $value) {
+        	if(isset($this->layout['produto']->$value['label']) && $this->layout['produto']->$value['label'] != ''){
+        		$html .= '<li class="'.$this->layout['list_item'].'">'.ucwords($value['label']).': '.$this->layout['produto']->$value['label'].'</li>';	
+        	}
+        }
+		$html .= '<li class="'.$this->layout['list_item'].'">Peso: '.$this->layout['produto']->peso.' KG </li>';
+		$html .= '<li class="'.$this->layout['list_item'].'">Altura: '.$this->layout['produto']->altura.' CM</li>';
+		$html .= '<li class="'.$this->layout['list_item'].'">Lagura: '.$this->layout['produto']->largura.' CM </li>';
+		$html .= '<li class="'.$this->layout['list_item'].'">Comprimento: '.$this->layout['produto']->comprimento.' CM </li>';
+		$html .= '</ul>';
+		return $html;
 	}
 }

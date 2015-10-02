@@ -124,6 +124,12 @@ $router->add("/checkout/confirmacao", array(
     'action' => 'confirmacao'
 ));
 
+$router->add("/checkout/notificacao/{metodo:[a-zA-Z0-9]+}", array(
+    'module'     => 'loja',
+    'controller' => 'checkout',
+    'action' => 'notificacao'
+));
+
 $router->add("/user", array(
     'module'     => 'loja',
     'controller' => 'user',
