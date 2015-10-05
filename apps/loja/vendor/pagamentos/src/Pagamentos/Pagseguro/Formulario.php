@@ -19,7 +19,10 @@ class Formulario{
         self::$email = $opcoes['email'];
 		$sessao = self::setSession();
 		$html = self::getScript();
-		$html .= '<div class="checkout-pagseguro"></div>';
+		$html .= '<div class="checkout-pagseguro">';
+		$html .= '<div class="page-header"><h5>Cartão de crédito</h5></div>';
+		$html .= self::setForm();
+		$html .= '</div>';
 		$html .= self::getSession($sessao);
 		$html .= self::getPaymentMethods($cart->total());
 		return $html;
@@ -68,7 +71,7 @@ class Formulario{
 							$(".checkout-pagseguro").append(html)
 						}
 					});
-					var html = "<div class=page-header><h5>Cartão de crédito</h5></div>";
+					var html = "";
 					html += "<input type=hidden id=paymentMethod name=pagamento[paymentMethod] />"
 					html += "<input type=hidden id=bankName name=pagamento[bankName] />"
 					html += "<input type=hidden id=creditCardToken name=pagamento[creditCardToken] />"
@@ -101,77 +104,123 @@ class Formulario{
 			}else if($value['type'] == 'hidden'){
 				$chave = new Hidden("pagamento[$key]");
 			}else{
-				$chave = new Select("pagamento[$key]", array(
-		            'emptyText'  => 'Parcelas',
-            		'emptyValue' => '',
-		        ));
+				$arr = array();
+				if($key == 'mes'){
+					$arr[''] = 'Mês de vencimento';
+					for ($i=1; $i <= 12 ; $i++) { 
+						$arr[$i] = $i;
+					}
+				}else if($key == 'ano'){
+					$arr[''] = 'Ano de vencimento';
+					for ($i=date('Y'); $i <= date('Y',strtotime('+ 20 years')) ; $i++) { 
+						$arr[$i] = $i;
+					}
+				}else{
+					$arr[''] = 'Numero de parcelas';
+				}
+				$chave = new Select("pagamento[$key]",$arr);
 			}
 			foreach ($value['attributos'] as $k => $v) {
 				$chave->setAttribute($k,$v);
 			}
 			$form->add($chave);
 		}
-        return $form;
-	}
+        $html = '';
+        foreach ($form as $key => $value) {
+         	$html .= "<div class='form-group'>".$value."</div>";
+        }
+        return $html;
+    }
 
     protected static function rules(){
 		return array(
+			'data_nascimento' => array(
+				'type' => 'text',
+				'attributos' =>array(
+					'disabled' => true,
+					'class' => 'form-control',
+					'placeholder' => 'Data Nascimento',
+					'data-mask' => '99/99/9999'
+				)
+			),
+			'cpf' => array(
+				'type' => 'text',
+				'attributos' =>array(
+					'disabled' => true,
+					'class' => 'form-control',
+					'placeholder' => 'CPF',
+					'data-mask' => '999.999.999-99'
+				)
+			),
 			'numero_cartao' => array(
 				'type' => 'text',
 				'attributos' =>array(
-					'id' => 'numero-cartao',
-					'class' => 'form-control',
 					'disabled' => true,
+					'class' => 'numero-cartao form-control pagseguro-numero_cartao',
 					'placeholder' => 'Numero do Cartão',
 				)
 			),
 			'nome_titular' => array(
 				'type' => 'text',
 				'attributos' =>array(
-					'class' => 'form-control',
 					'disabled' => true,
-					'placeholder' => 'Nome Impresso no cartão',
+					'class' => 'form-control',
+					'placeholder' => 'Nome impresso no cartão',
 				)
 			),
 			'mes' => array(
-				'type' => 'text',
+				'type' => 'select',
 				'attributos' =>array(
-					'class' => 'form-control one-half',
 					'disabled' => true,
+					'class' => 'form-control one-half pagseguro-mes',
 					'placeholder' => 'Mes ex: 06,10,12',
-				)
+					'style' => 'display:none',
+				),
+				'emptyText' => 'Mês'
 			),
 			'ano' => array(
-				'type' => 'text',
+				'type' => 'select',
 				'attributos' =>array(
-					'class' => 'form-control one-half',
 					'disabled' => true,
+					'class' => 'form-control one-half pagseguro-ano',
 					'placeholder' => 'Ano ex: 2015',
-				)
+					'style' => 'display:none'
+				),
+				'emptyText' => 'Ano'
 			),
 			'cvv' => array(
 				'type' => 'text',
 				'attributos' =>array(
-					'class' => 'form-control',
 					'disabled' => true,
+					'class' => 'form-control pagseguro-cvv',
 					'placeholder' => 'Codigo Verificador',
+					'style' => 'display:none'
 				)
 			),
 			'parcelas' => array(
 				'type' => 'select',
 				'attributos' =>array(
-					'class' => 'form-control',
 					'disabled' => true,
-					'placeholder' => 'Codigo Verificador',
-				)
+					'class' => 'form-control pagseguro-parcelas',
+					'placeholder' => 'Parcelas',
+					'style' => 'display:none'
+				),
+
 			),
 			'bandeira' => array(
 				'type' => 'hidden',
 				'attributos' =>array(
-					'id' => 'cartao-bandeira',
-				)
+					'disabled' => true,
+					'class' => 'cartao-bandeira',
+				),
 			),
-
+			'installmentValue' => array(
+				'type' => 'hidden',
+				'attributos' =>array(
+					'disabled' => true,
+					'class' => 'valor_parcela',
+				),
+			),
 		);
 	}
 }

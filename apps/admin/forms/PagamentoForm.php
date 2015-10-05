@@ -12,9 +12,18 @@ class PagamentoForm extends Form
     /**
      * Initialize the products form
      */
-    public function initialize($entity = null, $options = array())
+    public function initialize($model = null, $options = array())
     {
-         $ativo = new Select(
+
+        $op = unserialize($model->opcoes);
+        foreach ($op as $key => $value) {
+            $item = new Text($key);
+            $item->setAttribute('class','form-control');
+             $item->setAttribute('value',$value);
+            $this->add($item);
+        }
+
+        $ativo = new Select(
             "ativo",
             array(
                 '1' => 'Sim',
@@ -29,25 +38,27 @@ class PagamentoForm extends Form
         $valor_minimo->setAttribute('class','form-control money');
         $this->add($valor_minimo);
 
-        $maximo_parcela = new Numeric("maximo_parcela");
-        $maximo_parcela->setAttribute('class','form-control');
-        $maximo_parcela->setLabel('Maximo de parcelas');
-        $this->add($maximo_parcela);
+        if($model->id != 3){
+            $maximo_parcela = new Numeric("maximo_parcela");
+            $maximo_parcela->setAttribute('class','form-control');
+            $maximo_parcela->setLabel('Maximo de parcelas');
+            $this->add($maximo_parcela);
 
-        $valor_minimo_parcela = new Text("valor_minimo_parcela");
-        $valor_minimo_parcela->setLabel('Valor mínimo parcela');
-        $valor_minimo_parcela->setAttribute('class','form-control money');
-        $this->add($valor_minimo_parcela);
+            $valor_minimo_parcela = new Text("valor_minimo_parcela");
+            $valor_minimo_parcela->setLabel('Valor mínimo parcela');
+            $valor_minimo_parcela->setAttribute('class','form-control money');
+            $this->add($valor_minimo_parcela);
 
 
-        $parcela_sem_juros = new Numeric("parcela_sem_juros");
-        $parcela_sem_juros->setLabel('parcelas sem juros');
-        $parcela_sem_juros->setAttribute('class','form-control');
-        $this->add($parcela_sem_juros);
+            $parcela_sem_juros = new Numeric("parcela_sem_juros");
+            $parcela_sem_juros->setLabel('parcelas sem juros');
+            $parcela_sem_juros->setAttribute('class','form-control');
+            $this->add($parcela_sem_juros);
 
-        $juros_parcela = new Text("juros_parcela");
-        $juros_parcela->setLabel("juros parcela (% a.m)");
-        $juros_parcela->setAttribute('class','form-control');
-        $this->add($juros_parcela);
+            $juros_parcela = new Text("juros_parcela");
+            $juros_parcela->setLabel("juros parcela (% a.m)");
+            $juros_parcela->setAttribute('class','form-control');
+            $this->add($juros_parcela);
+        }
     }
 }

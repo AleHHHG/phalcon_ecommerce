@@ -6,6 +6,7 @@ use Ecommerce\Admin\Models\Clientes;
 use Ecommerce\Admin\Models\Usuarios;
 use Ecommerce\Admin\Models\Pedidos;
 use Ecommerce\Admin\Models\Enderecos;
+use Ecommerce\Loja\Helpers\BaseHelper;
 class Pagamento{
 
     public static $url_teste = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions';
@@ -42,8 +43,12 @@ class Pagamento{
     }
 
 	private static function setDados($post){
+        $base = new BaseHelper;
         $pedido = Pedidos::findFirst("id = ".$post['pedido_id']."");
         $endereco = Enderecos::findFirst("relacao = 'pedidos' and id_relacao = ".$post['pedido_id']);
+        $usuario = Usuarios::findFirst('id = '.$pedido->usuario_id);
+        $cliente = Clientes::findFirst('usuario_id ='.$pedido->usuario_id);
+        $fone = explode(')', $cliente->telefone);
         $dados['email'] = self::$email;
         $dados['token'] = self::$token;
         $dados['paymentMode'] = 'default';
@@ -63,6 +68,21 @@ class Pagamento{
         if($post['creditCardToken'] != ''){
             $dados['paymentMethod'] = 'creditCard';
             $dados['creditCardToken'] = $post['creditCardToken'];
+            $dados['installmentQuantity'] = $post['parcelas'];
+            $dados['installmentValue'] = number_format($post['installmentValue'],2,'.','');
+            $dados['creditCardHolderName'] = $post['nome_titular'];
+            $dados['creditCardHolderBirthDate'] = $post['data_nascimento'];
+            $dados['creditCardHolderCPF'] = $base->limpaString($post['cpf']);
+            $dados['creditCardHolderAreaCode'] = str_replace('(', '', $fone[0]);
+            $dados['creditCardHolderPhone'] = str_replace('-', '', $fone[1]);
+            $dados['billingAddressPostalCode'] = str_replace('-', '', $endereco->cep);
+            $dados['billingAddressStreet'] = $endereco->logradouro;
+            $dados['billingAddressNumber'] = $endereco->numero;
+            $dados['billingAddressComplement'] = $endereco->complemento;
+            $dados['billingAddressDistrict'] = $endereco->bairro;;
+            $dados['billingAddressCity'] = $endereco->Cidade->nome;
+            $dados['billingAddressState'] = $endereco->Estado->sigla;
+            $dados['billingAddressCountry'] = 'BRA';
         }else if($post['paymentMethod'] == 'ONLINE_DEBIT'){
              $dados['paymentMethod'] = 'eft';
              $dados['bankName'] = ($post['bankName'] == 'BANCO_BRASIL') ? 'bancodobrasil' : strtolower($post['bankName']);
@@ -73,8 +93,6 @@ class Pagamento{
         $dados['senderHash'] = $post['hash'];
         //Dados do Comprador
         $dados['extraAmount'] = $pedido->frete;
-        $usuario = Usuarios::findFirst('id = '.$pedido->usuario_id);
-        $cliente = Clientes::findFirst('usuario_id ='.$pedido->usuario_id);
         $dados['senderEmail'] = (self::$producao) ? $usuario->email : 'email@sandbox.pagseguro.com.br';
         $dados['senderName'] = $usuario->nome;
         if($cliente->pessoa_juridica){
@@ -82,7 +100,6 @@ class Pagamento{
         }else{
             $dados['senderCPF'] = $cliente->documento;
         }
-        $fone = explode(')', $cliente->telefone);
         $dados['senderAreaCode'] = str_replace('(', '', $fone[0]);
         $dados['senderPhone'] = str_replace('-', '', $fone[1]);
         // Dados de endereco

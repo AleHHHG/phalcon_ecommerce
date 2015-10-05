@@ -33,8 +33,7 @@ class Formulario{
 			'numero_cartao' => array(
 				'type' => 'text',
 				'attributos' =>array(
-					'id' => 'numero-cartao',
-					'class' => 'form-control',
+					'class' => 'numero-cartao form-control',
 					'disabled' => true,
 					'placeholder' => 'Numero do Cartão',
 				)
@@ -82,7 +81,7 @@ class Formulario{
 			'bandeira' => array(
 				'type' => 'hidden',
 				'attributos' =>array(
-					'id' => 'cartao-bandeira',
+					'class' => 'cartao-bandeira',
 				)
 			),
 
