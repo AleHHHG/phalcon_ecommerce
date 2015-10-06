@@ -5,6 +5,8 @@ use Phalcon\Mvc\Controller;
 use Ecommerce\Admin\Models\Produtos;
 use Ecommerce\Admin\Models\Categorias;
 use Ecommerce\Admin\Models\Avaliacoes;
+use Ecommerce\Admin\Models\Imagens;
+use Ecommerce\Loja\Helpers\BaseHelper;
 class ProdutoController extends ControllerBase
 {
 	public function indexAction($produto,$id){
@@ -36,4 +38,31 @@ class ProdutoController extends ControllerBase
 			}
 		}
 	}
+
+	public function searchAction(){
+		$base = new BaseHelper;
+        if($this->request->isPost()) {
+            if(isset($_POST['q'])){
+        	  	$this->view->disable();
+            	$arr = array();
+	            $param =  $this->request->getPost('q');
+	            $produtos = Produtos::find(array('conditions' => array('nome' =>  new \MongoRegex("/$param/i")))); 
+	            foreach ($produtos  as $key => $value) {
+	                $arr[$key]['id'] =  (string) $value->_id;
+	                $arr[$key]['name'] =  $value->nome;
+	                $arr[$key]['imagem'] = $this->ecommerce_options->url_base.Imagens::findFirst($value->imagens[0])->url;
+	            	$arr[$key]['url'] = $base->generateUrl($value->nome,$value->_id,'produto');
+	            }
+	            $this->response->setHeader("Content-Type", "application/json"); 
+	            return $this->response->setContent(json_encode($arr));
+        	}else{
+	           	$this->view->indice = 0;
+				$this->view->pagina = 0;
+				$this->view->filtros = array();
+        		$this->view->search = true;
+        	}
+        }
+
+	}
+
 }

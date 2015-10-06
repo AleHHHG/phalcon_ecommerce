@@ -39,6 +39,12 @@ $router->add("/produto/avaliacao", array(
     'action' => 'avaliacao',
 ));
 
+$router->add("/produtos/search", array(
+    'module'     => 'loja',
+    'controller' => 'produto',
+    'action' => 'search',
+));
+
 $router->add("/comparacao", array(
     'module'     => 'loja',
     'controller' => 'comparacao',

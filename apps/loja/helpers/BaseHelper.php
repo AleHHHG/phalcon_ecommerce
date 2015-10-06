@@ -47,7 +47,7 @@ class BaseHelper extends Tag {
 		return InflectorHelper::singularize($string);
 	}
 
-	protected function generateUrl($string,$id,$tipo){
+	public function generateUrl($string,$id,$tipo){
 		$filter = new Filter();
 		$url = $filter->sanitize($string, "lower");
 		$url = preg_replace( '/[`^~\'"]/', null, iconv( 'UTF-8', 'ASCII//TRANSLIT', $url ) );

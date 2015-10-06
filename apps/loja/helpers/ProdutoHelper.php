@@ -40,6 +40,7 @@ class ProdutoHelper extends BaseHelper {
 		'filtros' => array(),//Array associativo
 		'pagina' => 0,
 		'produto_container' => true,
+		'search' => false,
 		
 	);
 	protected $detalhes;
@@ -242,6 +243,10 @@ class ProdutoHelper extends BaseHelper {
 					'_id' => array('$ne' => $this->options['produto']->_id
 				));			
 			}
+		}else if($array['search']){
+			$param = $_POST['search'];
+			$arr['conditions'] = array('nome' => new \MongoRegex("/$param/i"));
+			$arr['limit'] = $this->ecommerce_options->produtos_por_pagina;
 		}else{
 			if($array['destaque']){
 				$arr['conditions'] = array('destaque' => '1');
