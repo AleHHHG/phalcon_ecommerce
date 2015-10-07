@@ -6,6 +6,9 @@ use Ecommerce\Admin\Models\Usuarios;
 use Ecommerce\Admin\Models\Pedidos;
 use Ecommerce\Admin\Models\Avaliacoes;
 use Ecommerce\Admin\Models\Clientes;
+use Ecommerce\Loja\Forms\ClienteForm;
+use Ecommerce\Admin\Models\Enderecos;
+use Ecommerce\Loja\Helpers\BaseHelper;
 class UserController extends ControllerBase
 {
 
@@ -72,25 +75,21 @@ class UserController extends ControllerBase
 }
 
 	public function loginAction(){
-		$fb = new \Facebook\Facebook([
-		  'app_id' => "{$this->ecommerce_options->facebook_appId}",
-		  'app_secret' => "{$this->ecommerce_options->facebook_appSecret}",
-		  'default_graph_version' => 'v2.4',
-		]);
-		$helper = $fb->getRedirectLoginHelper();
-		$permissions = ['email'];
-		$loginUrl = $helper->getLoginUrl("{$this->ecommerce_options->url_base}user/callback",$permissions);
-		$this->view->facebook = htmlspecialchars($loginUrl);
 		if($this->request->isPost()){
 			$email = $this->request->getPost('email');
 			$senha = $this->request->getPost('senha');
 			$user = Usuarios::findFirst("email = '$email' and nivel_id = 3");
 			if($user){
 	            if($this->security->checkHash($senha, $user->senha)) {
-                		$this->setSession($user->id);
-	                 	$this->dispatcher->forward(array(
-				            "action" => "index"
-				        ));
+                		$this->setSession($user);
+                		if($this->session->has('checkout')){
+                			$this->session->remove('checkout');
+                			return $this->response->redirect("checkout");
+                		}else{
+                			$this->dispatcher->forward(array(
+				           	 "action" => "index"
+				        	));
+                		}
 	            }else{
             		$this->flashSession->error("Senha Invalida");
             		return $this->response->redirect("user/login");
@@ -127,9 +126,7 @@ class UserController extends ControllerBase
 			$cliente->usuario_id = $usuario->id;
 			$cliente->save();
 			$this->setSession($usuario);
-			$this->dispatcher->forward(array(
-	            "action" => "index"
-	        ));
+			return $this->response->redirect("user/edit/dados");
 		}else{
 			$mensagem = '';
 			foreach ($usuarios->getMessages() as  $value) {
@@ -152,6 +149,12 @@ class UserController extends ControllerBase
 		);
 	}
 
+	public function detalhesAction($id){
+		$this->view->selecionado == 'Meus Pedidos';
+		$this->view->pedido = Pedidos::findFirst("id = $id");
+    	$this->view->endereco = Enderecos::findFirst("id_relacao = $id and relacao = 'pedidos'");
+	}
+
 	public function avaliacoesAction(){
 		$this->view->selecionado == 'Minhas Avaliacoes';
 		$this->view->avaliacoes = Avaliacoes::findWithProduto($this->session->get('id'));
@@ -160,13 +163,13 @@ class UserController extends ControllerBase
 
 	public function editAction($param){
 		$this->view->param = $param;
+		if($param == 'dados'){
+			$cliente = Clientes::findFirst('usuario_id ='.$this->session->get('id'));
+			$this->view->form = new ClienteForm($cliente,array('edit' => true));
+		}
 		if($this->request->isPost()){
 			$this->update($this->request->getPost(),$param);
 		}
-	}
-
-	public function insert(){
-
 	}
 
 	public function update($post,$param){
@@ -187,7 +190,17 @@ class UserController extends ControllerBase
     			return $this->response->redirect("user/edit/$param");
 			}
 		}else{
-
+			$base = new BaseHelper;
+			$cliente = Clientes::findFirst('usuario_id ='.$this->session->get('id'));
+			$user->nome = $post['nome'];
+			$user->save();
+			$this->setSession($user);
+			$cliente->telefone = $post['telefone'];
+			$cliente->celular = $post['celular'];
+			$cliente->documento = $base->limpaString($post['documento']);
+			$cliente->save();
+			$this->flashSession->success("Editado com sucesso");
+			return $this->response->redirect("user/edit/$param");
 		}
 	}
 

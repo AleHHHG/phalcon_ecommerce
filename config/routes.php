@@ -171,6 +171,12 @@ $router->add("/user/pedidos", array(
     'action' => 'pedidos',
 ));
 
+$router->add("/user/pedido/{id:[0-9]+}", array(
+    'module'     => 'loja',
+    'controller' => 'user',
+    'action' => 'detalhes',
+));
+
 $router->add("/user/avaliacoes", array(
     'module'     => 'loja',
     'controller' => 'user',
@@ -397,6 +403,13 @@ $router->add("/admin/upload/show", array(
     'module'     => 'admin',
     'controller' => 'upload',
     'action' => 'show'
+));
+
+
+$router->add("/admin/upload/delete", array(
+    'module'     => 'admin',
+    'controller' => 'upload',
+    'action' => 'delete'
 ));
 
 #Usuarios ROTA

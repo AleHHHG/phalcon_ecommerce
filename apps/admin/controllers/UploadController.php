@@ -10,7 +10,7 @@ class UploadController extends ControllerBase
 
     public function indexAction(){
         $this->view->disableLevel(View::LEVEL_AFTER_TEMPLATE);
-        $this->view->imagens = Imagens::find();
+        $this->view->imagens = Imagens::find(array('order' => 'id desc'));
     }
 
     public function createAction(){
@@ -69,12 +69,21 @@ class UploadController extends ControllerBase
      
     public function showAction(){
         $this->view->disableLevel(View::LEVEL_AFTER_TEMPLATE);
-        $this->view->imagens = Imagens::find();
+        $this->view->imagens = Imagens::find(array('order' => 'id desc'));
     }
 
     public function deleteAction()
     {
-
+        if($this->request->isAjax()){
+            $this->view->disable();
+            $imagem =  Imagens::findFirst('id = '.$this->request->getPost('id'));
+            if($imagem->delete()){
+                $this->response->setContent(json_encode(array('status' => true,'mensagem' => 'Deletado com sucesso')));
+            }else{
+                 $this->response->setContent(json_encode(array('status' => false,'mensagem' => 'Houve um erro: Imagem não pode ser deletada')));
+            }
+            return $this->response;
+        }
     }
 
 }

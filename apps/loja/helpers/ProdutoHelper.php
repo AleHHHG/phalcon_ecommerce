@@ -297,7 +297,7 @@ class ProdutoHelper extends BaseHelper {
 			if(is_array($categoria)){
 				$categoria = $categoria['current'];
 			}
-			$html = '<br clear="all"/><div id="pagination">';
+			$html = '<br clear="all"/><br clear="all"/><div id="pagination">';
 			$html .= "<a href='{$this->url_base}categoria/paginacao/$categoria/$pagina' class='next'></a>";
 			$html .= '</div>';
 			return $html;

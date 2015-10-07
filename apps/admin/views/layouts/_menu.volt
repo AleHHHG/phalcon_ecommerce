@@ -95,6 +95,14 @@
             </ul>
          </li>
 
+
+         <li>
+            <a href="#target-upload"  data-url="{{url.getBaseUri()}}admin/upload" data-toggle="modal" class="call-upload">
+               <i class="fa fa-picture-o"></i>
+               <span class="title">Central de Mídia</span>
+            </a>
+         </li>
+
          <li>
             <a href="#">
                <i class="fa fa-gear"></i>

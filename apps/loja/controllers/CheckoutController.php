@@ -19,6 +19,10 @@ class CheckoutController extends ControllerBase
 	}
 
 	public function indexAction(){
+		if(!$this->session->has("logado")){
+			$this->session->set('checkout',true);
+			return $this->response->redirect('user/login');
+		}
 		$cart = new Cart(new Session, new Cookie);
 		$this->view->subtotal = number_format($cart->total(),2,',','.');
 		if($this->session->has('frete')){

@@ -55,6 +55,7 @@ class Pagamento{
         $dados['receiverEmail'] = self::$email;
         $dados['currency'] = self::$currency;
         $dados['reference'] = $post['pedido_id'];
+        $dados['notificationURL'] = $base->url_base.'checkout/notificacao/pagseguro';
         //Itens
         $itens = PedidoItens::find("pedido_id = ".$post['pedido_id']);
         foreach ($itens as $key => $value) {

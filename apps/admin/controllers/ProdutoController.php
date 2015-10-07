@@ -43,7 +43,16 @@ class ProdutoController extends ControllerBase
     public function updateAction($id){
         $this->view->categorias =  Categorias::getDados();
         $produto = Produtos::findById($id);
-        $this->view->imagens = Imagens::find("id in (".implode(',', $produto->imagens).")");
+        $imagens = Imagens::find("id in (".implode(',', $produto->imagens).")");
+        $arr = array();
+        for ($i=0; $i < count($produto->imagens) ; $i++) { 
+            foreach ($imagens as $key => $value) {
+                if($value->id == $produto->imagens[$i]){
+                    $arr[] = $value;
+                }
+            }
+        }
+        $this->view->imagens = (object) $arr;
         $this->view->form = new ProdutoForm($produto,array('edit' => true));
         $form = array();
         if($this->ecommerce_options->produto_detalhes == '1'){

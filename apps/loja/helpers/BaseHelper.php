@@ -3,6 +3,7 @@ namespace Ecommerce\Loja\Helpers;
 use Phalcon\Tag;
 use Ecommerce\Loja\Helpers\InflectorHelper;
 use Phalcon\Filter;
+use Ecommerce\Admin\Models\Produtos;
 class BaseHelper extends Tag {
 
 	protected $ecommerce_options;

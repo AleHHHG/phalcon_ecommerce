@@ -28,6 +28,7 @@ class Module implements ModuleDefinitionInterface{
                 'Ecommerce\Loja\Customs'      => '../apps/loja/customs/',
                 'Ecommerce\Loja\Forms'      => '../apps/loja/forms/',
                 'Ecommerce\Admin\Models'      => '../apps/admin/models/',
+                'Ecommerce\Admin\Helpers'      => '../apps/admin/helpers/',
             )
         );
         require('vendor/autoload.php');

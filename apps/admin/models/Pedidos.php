@@ -90,7 +90,7 @@ class Pedidos extends \Phalcon\Mvc\Model
 
     public function createData($cart,$post){
         $session = $this->getDI()->getShared('session');
-        $this->usuario_id = 2;
+        $this->usuario_id = $session->get('id');
         $this->frete_codigo = $post['tipo_frete'];
         $this->valor = $cart->total();
         $this->frete = $session->get('frete')['valor'];

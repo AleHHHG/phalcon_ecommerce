@@ -44,13 +44,14 @@ class UtilitariosHelper extends Tag
             $valores = '';
         }
         $html .= '<input type="hidden" class="upload-target-values" value="'.$valores.'" name="'.$name.'">'; 
-        $html .= '<a href="#target-upload" id="call-upload" data-url="'.$url->getBaseUri().'admin/upload" data-toggle="modal" class="btn btn-info">Adicionar Imagem</a>';
+        $html .= '<a href="#target-upload" data-url="'.$url->getBaseUri().'admin/upload" data-toggle="modal" class="btn btn-info call-upload">Adicionar Imagens</a>';
         $html .= '<hr/>';
         $html .= '<div id="selected-content">';
         if($action == 'update'){
             foreach ($imagens as $key => $value) {
-                $html .= '<div class="col-md-3 thumbnail" style="padding:20px">
-                            <img src="'.$url->getBaseUri().$value->url.'" class="img-reponsive" />
+                $html .= '<div class="col-md-3 thumbnail dragContent" draggable="true" style="padding:20px;">
+                            <input type="checkbox" name="imagens_selecionadas" style="display:none" class="pull-right imagem-select" value="'.$value->id.'">
+                            <img src="'.$url->getBaseUri().'public/timthumb?src='.$url->getBaseUri().'public/'.$value->url.'&q=90&w=215&h=161&zc=2" class="img-reponsive" onmousedown="return false" />
                          </div>';
             }
         }
