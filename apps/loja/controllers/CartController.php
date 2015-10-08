@@ -11,6 +11,7 @@ use Ecommerce\Loja\Helpers\BaseHelper;
 use Phalcon\Mvc\Application;
 use Phalcon\Mvc\View;
 use Correios\CalculoFrete;
+use Ecommerce\Admin\Models\Mailer;
 class CartController extends ControllerBase
 {
 	public $cart;

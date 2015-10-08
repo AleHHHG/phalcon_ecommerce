@@ -18,13 +18,16 @@ class Notificacoes extends \Phalcon\Mvc\Model
         $retorno = curl_exec($curl);
         curl_close($curl);
         if($retorno == 'Unauthorized'){
-            exit;//Mantenha essa linha
+            return false;//Mantenha essa linha
         }
         $retorno = simplexml_load_string($retorno);
         $pedido = Pedidos::findFirst('id = '.$retorno->reference);
         $pedido->status_id = self::deParaStatus($retorno->status,3);
         $pedido->save();
-        self::subtraiEstoque($pedido->id);
+        if($pedido->status_id == 3){
+            self::subtraiEstoque($pedido->id);
+        }
+        return $pedido->pedido_id;
     }
 
     private static function subtraiEstoque($pedido){

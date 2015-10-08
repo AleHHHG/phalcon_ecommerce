@@ -1,7 +1,8 @@
 {
     "require": {
         "moltin/cart": "dev-master",
-        "facebook/php-sdk-v4" : "~5.0"
+        "facebook/php-sdk-v4" : "~5.0",
+        "sendgrid/sendgrid": "~3.2"
     },
   	"minimum-stability": "dev",
 	"prefer-stable": true

@@ -42,6 +42,12 @@ class CheckoutController extends ControllerBase
 		//Cria os Itens do Pedido
 		$pedido_itens = new PedidoItens();
 		$pedido_itens = $pedido_itens->createData($cart->contents(),$pedido_id);
+		//Envia Email
+		$this->mailer->getHelper(array(
+			'pedido_id' => $pedido_id,
+			'tipo' => 'pedidoCriado'
+		));
+
 		$widget = Widgets::findFirst("id = {$this->request->getPost('forma_pagamento')}")->toArray();
 		$_POST['pagamento']['valor'] = number_format($cart->total() + $this->session->get('frete')['valor'],2,'','');
 		$_POST['pagamento']['pedido_id'] = $pedido_id;
@@ -53,22 +59,19 @@ class CheckoutController extends ControllerBase
 		$class = '\\'.$widget['namespace'].'\Retorno';
 		$class::init($retorno,$pedido_id);
 		//Destroy Cart
-		$cart->destroy();
-		return $this->response->redirect("checkout/confirmacao/$pedido_id");
-
+		$this->verificaStatus($pedido_id);
 	}
 
 	public function confirmacaoAction($pedido){
 		$this->view->pedido = Pedidos::findFirst("id = $pedido");
 	}
 
-	public function retornoAction(){
-
-	}
-
 	public function notificacaoAction($metodo){
 		if($metodo == 'pagseguro'){
-			Notificacoes::retornoPagseguro($_POST);
+			$retorno = Notificacoes::retornoPagseguro($_POST);
+			if($retorno != 0){
+				$this->verificaStatus($retorno,false)
+			}
 		}
 	}
 
@@ -78,5 +81,31 @@ class CheckoutController extends ControllerBase
 			$array['form'] = $namespace::generate(unserialize($array['opcoes']));
 		}
 		return $array;
+	}
+
+	protected function verificaStatus($pedido_id,$redirect = true){
+		$pedido = Pedidos::findFirst('id = '.$pedido);
+		if($pedido->status_id == 3){
+			$tipo = 'pedidoAprovado';
+			$cart->destroy();
+			$this->mailer->getHelper(array(
+				'pedido_id' => $pedido_id,
+				'tipo' => $tipo
+			));
+			if($redirect){
+				return $this->response->redirect("checkout/confirmacao/$pedido_id");
+			}
+		}
+		else if($pedido->status_id == 6 || $pedido->status_id == 7){
+			$tipo = 'pedidoCancelado';
+			$this->mailer->getHelper(array(
+				'pedido_id' => $pedido_id,
+				'tipo' => $tipo
+			));
+			if($redirect){
+				$this->flashSession->error('Pedido CANCELADO/NÃO AUTORIZADO tente com nova forma de pagamento');
+				return $this->response->redirect("checkout");
+			}
+		}
 	}
 }
