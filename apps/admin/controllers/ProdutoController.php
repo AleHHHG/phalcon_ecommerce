@@ -6,6 +6,7 @@ use Ecommerce\Admin\Models\Categorias;
 use Ecommerce\Admin\Models\Imagens;
 use Ecommerce\Admin\Forms\ProdutoForm;
 use Ecommerce\Admin\Forms\ProdutoDetalheForm;
+use Ecommerce\Admin\Forms\ProdutosRelacionadosForm;
 class ProdutoController extends ControllerBase
 {
 
@@ -30,6 +31,7 @@ class ProdutoController extends ControllerBase
     public function createAction(){
         $this->view->categorias =  Categorias::getDados();
         $this->view->form = new ProdutoForm();
+        $this->view->relacionado_form = new ProdutosRelacionadosForm();
         if($this->ecommerce_options->produto_detalhes == '1'){
              $this->view->form_detalhes = new ProdutoDetalheForm();
         }
@@ -43,17 +45,20 @@ class ProdutoController extends ControllerBase
     public function updateAction($id){
         $this->view->categorias =  Categorias::getDados();
         $produto = Produtos::findById($id);
-        $imagens = Imagens::find("id in (".implode(',', $produto->imagens).")");
         $arr = array();
-        for ($i=0; $i < count($produto->imagens) ; $i++) { 
-            foreach ($imagens as $key => $value) {
-                if($value->id == $produto->imagens[$i]){
-                    $arr[] = $value;
+        if(!empty($produto->imagens)){
+            $imagens = Imagens::find("id in (".implode(',', $produto->imagens).")");
+            for ($i=0; $i < count($produto->imagens) ; $i++) { 
+                foreach ($imagens as $key => $value) {
+                    if($value->id == $produto->imagens[$i]){
+                        $arr[] = $value;
+                    }
                 }
             }
         }
         $this->view->imagens = (object) $arr;
         $this->view->form = new ProdutoForm($produto,array('edit' => true));
+        $this->view->relacionado_form = new ProdutosRelacionadosForm($produto,array('edit' => true));
         $form = array();
         if($this->ecommerce_options->produto_detalhes == '1'){
             foreach ($produto->detalhes as $key => $value) {
@@ -75,8 +80,8 @@ class ProdutoController extends ControllerBase
 
     protected function save($produto){
         $imagens = $_POST['imagens'];
-        $relacionados = $_POST['relacionados'];
-        unset($_POST['relacionados']);
+        $relacionados = $_POST['relacionado'];
+        unset($_POST['relacionado']);
         unset($_POST['imagens']);
         foreach ($this->request->getPost() as $key => $value) {
             $produto->$key = $value;

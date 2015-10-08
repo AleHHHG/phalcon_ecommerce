@@ -16,9 +16,11 @@ class FreteForm extends Form
     /**
      * Initialize the products form
      */
-    public function initialize($entity = null, $options = array())
+    public function initialize($model = null, $options = array())
     {
         $eo = $this->getDI()->getShared('ecommerce_options');
+        $utilitarios = $this->getDI()->getShared('Utilitarios');
+        
         $nome = new Text("nome");
         $nome->setAttribute('class','form-control');
         $this->add($nome);
@@ -69,6 +71,16 @@ class FreteForm extends Form
         $opcao->setAttribute('class','form-control frete-produtos');
         $opcao->setAttribute('id','produtos_relacionados');
         $opcao->setAttribute('data-url',$eo->url_base.'admin/produtos');
+        $arr = array();
+        if(!is_null($model) && $model->tipo == 3){
+            $produtos = unserialize($model->produtos);
+            foreach ($produtos as $key => $value) {
+                $produto = $utilitarios->getProduto($value);
+                $arr[$key]['id'] = (string)$produto->_id;
+                $arr[$key]['name'] = $produto->nome;
+            }
+        }
+        $opcao->setAttribute('data-pre',json_encode($arr));
         $this->add($opcao);
     }
 }

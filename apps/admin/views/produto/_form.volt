@@ -1,4 +1,4 @@
-<a href="" class="btn btn-orange pull-right"><i class="fa fa-angle-left"></i>&nbsp Voltar</a> 
+{{ link_to('admin/produtos','<i class="fa fa-angle-left"></i>&nbsp Voltar','class':'btn btn-orange pull-right') }}
 <button class="btn btn-info pull-right"><i class="fa fa-save"></i> {{ acao == 'update' ? 'Editar' : 'Salvar' }}</button>
 <br clear"all"/>
 <ul class="nav nav-tabs">
@@ -97,10 +97,12 @@
     </div>
     <div class="tab-pane fade" id="relacionados">
       <br clear="all"/>
-      <div class="form-group">
-        <label>Produtos Relacionados</label>
-        <input type="text" id="produtos_relacionados" data-url="{{ url.getBaseUri()}}admin/produtos" name="relacionados" class="form-control" id="teste" />
-      </div>
+       {% for element in relacionado_form %}
+           <div class="form-group">
+               {{ element.label(['class': 'form-label']) }}
+               {{ element }}
+           </div>
+      {% endfor %}
       <br clear="all"/>
     </div>
     <div class="tab-pane fade" id="step3">
