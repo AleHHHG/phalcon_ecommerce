@@ -6,6 +6,7 @@ use Moltin\Cart\Identifier\Cookie;
 use Phalcon\Mvc\Controller;
 use Ecommerce\Admin\Models\Produtos;
 use Ecommerce\Admin\Models\FreteTipos;
+use Ecommerce\Admin\Models\Fretes;
 use Ecommerce\Loja\Helpers\BaseHelper;
 use Phalcon\Mvc\Application;
 use Phalcon\Mvc\View;
@@ -73,8 +74,13 @@ class CartController extends ControllerBase
 		if($this->request->isPost()){
 			if($this->request->getPost('action') == 'calculo'){
 				$this->session->set('cep',$this->request->getPost('cep'));
-				$calculo = new CalculoFrete($this->cart->contents(),$this->request->getPost('cep'),$this->ecommerce_options->cep);
-				$this->view->calculo = $calculo->getFretes();
+				$frete_gratis = Fretes::verificaFrete($this->request->getPost('cep'),$this->cart);
+				if(is_object($frete_gratis)){
+					$this->view->calculo = array($frete_gratis);
+				}else{
+					$calculo = new CalculoFrete($this->cart->contents(),$this->request->getPost('cep'),$this->ecommerce_options->cep);
+					$this->view->calculo = $calculo->getFretes();
+				}
 				$this->view->tipos = array_column(FreteTipos::find()->toArray(),'nome','codigo');
 			}else{
 				$this->session->set('frete',array('codigo' => $this->request->getPost('codigo'),'valor' => $this->request->getPost('valor')));

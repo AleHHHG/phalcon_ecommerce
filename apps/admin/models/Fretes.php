@@ -83,4 +83,34 @@ class Fretes extends \Phalcon\Mvc\Model
         return parent::findFirst($parameters);
     }
 
+    public static function verificaFrete($cep,$cart){
+        $fretes = self::find("ativo = 1 and valor_minimo <= ".$cart->total())->toArray();
+        if(empty($fretes)){
+            return false;
+        }else{
+            foreach ($fretes as $key => $value) {
+                $cep_inicial =intval(str_replace('-', '', $value['cep_inicial']));
+                $cep_final = intval(str_replace('-', '', $value['cep_final']));
+                $cep_int = intval($cep);
+                $obj = new \stdClass;
+                $obj->Valor = '0,00';
+                $obj->Codigo = '00001';
+                $obj->PrazoEntrega = 'em até 10';
+                if($value['tipo'] == 1 || $value['tipo'] == 2){
+                    if($cep_int >= $cep_inicial && $cep_int <= $cep_final){
+                        return $obj;
+                    }
+                }else{
+                    $produtos = unserialize($value['produtos']);
+                    foreach ($cart->contents() as $chave => $valor) {
+                        if(in_array($valor->id, $produtos)){
+                            return $obj;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }

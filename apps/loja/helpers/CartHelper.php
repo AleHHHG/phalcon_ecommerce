@@ -322,7 +322,7 @@ class CartHelper extends BaseHelper{
 		return $this->options['cep_options']['text_wrap'].'
 				<div class="row">
                     <div class="col-md-6 no-padding-right">
-                         <input type="text" class="'.$this->options['cep_options']['input_class'].' frete-calcular" value="'.$this->session->get('cep').'" />
+                         <input type="text" class="'.$this->options['cep_options']['input_class'].' frete-calcular" value="'.$this->session->get('cep').'" data-mask="99999-999" />
                     </div>
                     <div class="col-md-6">
                         <button class="'.$this->options['cep_options']['btn_class'].' frete-calcular-btn">Calcular</button>
