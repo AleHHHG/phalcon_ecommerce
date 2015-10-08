@@ -51,6 +51,7 @@
 
 {{ javascript_include('js/admin/jquery.tokeninput.js') }}
 
+{{ javascript_include('js/jquery.mask.js') }}
 
 {{ javascript_include('js/admin/scripts.js') }}
 

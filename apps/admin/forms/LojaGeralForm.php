@@ -2,14 +2,9 @@
 
 namespace Ecommerce\Admin\Forms;
 
-use Ecommerce\Admin\Models\Categorias;
 use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Numeric;
-use Phalcon\Validation\Validator\Email;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\Numericality;
-
 class LojaGeralForm extends Form
 {
 
@@ -20,20 +15,32 @@ class LojaGeralForm extends Form
     {
            
         $titulo = new Text("titulo");
+        $titulo->setAttribute('class','form-control ');
         $this->add($titulo);
 
         $email = new Text("email");
+        $email->setAttribute('class','form-control ');
         $this->add($email);
 
-        $email = new Text("email");
-        $this->add($email);
+        $telefone = new Text("telefone");
+        $telefone->setAttribute('class','form-control ');
+        $this->add($telefone);
+
+        $cep = new Text("cep");
+        $cep->setLabel('CEP');
+        $cep->setAttribute('data-mask','99999-999');
+        $cep->setAttribute('class','form-control ');
+        $this->add($cep);
+
 
         $produtos_por_pagina = new Numeric("produtos_por_pagina");
         $produtos_por_pagina->setLabel('Produtos por pagina');
+        $produtos_por_pagina->setAttribute('class','form-control');
         $this->add($produtos_por_pagina);
 
-        $produtos_destaque_quantidade = new Numeric("produtos_destaque_quantidade");
-        $produtos_destaque_quantidade->setLabel('Quantidade de destaques exibidos por vez:');
+        $produtos_destaque_quantidade = new Numeric("produtos_destaque");
+        $produtos_destaque_quantidade->setLabel('Produtos destaques');
+        $produtos_destaque_quantidade->setAttribute('class','form-control');
         $this->add($produtos_destaque_quantidade);
 
     }

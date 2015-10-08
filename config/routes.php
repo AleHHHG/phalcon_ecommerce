@@ -4,6 +4,13 @@ $router->add("/", array(
     'controller' => 'index',
 ));
 
+$router->add("/pagina/{id:[0-9]+}", array(
+    'module'     => 'loja',
+    'controller' => 'index',
+    'action' => 'pagina'
+));
+
+
 $router->add("/categoria/{categoria:[a-zA-Z0-9_-]+}/{id:[a-zA-Z0-9]+}", array(
     'module'     => 'loja',
     'controller' => 'categoria',
@@ -313,6 +320,14 @@ $router->add("/admin/loja/produtos", array(
     'controller' => 'loja',
     'action' => 'produtos',
 ));
+
+$router->add("/admin/loja/opcoes/{param:[a-zA-Z]+}", array(
+    'module'     => 'admin',
+    'controller' => 'loja',
+    'action' => 'opcoes',
+));
+
+
 
 #Rota Banner
 

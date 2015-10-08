@@ -1,12 +1,12 @@
 
    <ul class="nav nav-tabs transparent">
       <li class="active">
-         <a href="#home-2" data-toggle="tab">
+         <a href="#home-2" class="home-2" data-toggle="tab">
          <i class="fa fa-picture-o"></i> Biblioteca
          </a>
       </li>
       <li>
-         <a href="#profile-2" data-toggle="tab">
+         <a href="#profile-2" class="profile-2" data-toggle="tab">
          <i class="fa fa-plus-square"></i>Upload 
          </a>
       </li>

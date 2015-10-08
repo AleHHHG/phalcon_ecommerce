@@ -181,16 +181,17 @@ class FooterHelper extends BaseHelper{
 				$item .=  parent::replaceWraper(3,
 					array(
 						$layout['item_wrap_class'],
-						'javascript:;',
+						$this->url_base.'pagina/'.$value->id,
 						$value->nome
 					),
 					$layout['item_wrap']
 				);
 			}
 		}else if($valor == 'informaçãoes'){
-			$array = array('termos_de_uso','politica_de_privacidade','politica_de_entrega');
+			$array = array('termos_de_uso','politica_de_privacidade','politica_de_entrega','trocas_e_devolucoes');
 			foreach ($array as $key => $value) {
 				$nome = str_replace('politica','política',str_replace('_', ' ', $value));
+				$nome = str_replace('devolucoes', 'devoluções', $nome);
 				if($this->ecommerce_options->$value != ''){
 					$item .=  parent::replaceWraper(3,
 						array(

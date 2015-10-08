@@ -43,10 +43,10 @@
                   {{ link_to('/admin/cupons','Cupons de desconto')}}
                </li>
                <li>
-                  {{ link_to('/admin/newsletter','Newsletter')}}
+                  {{ link_to('/admin/fretes','Frete grátis')}}
                </li>
                <li>
-                  {{ link_to('/admin/fretes','Frete grátis')}}
+                  {{ link_to('/admin/newsletter','Newsletter')}}
                </li>
             </ul>
          </li>
@@ -95,49 +95,63 @@
             </ul>
          </li>
 
-
-         <li>
-            <a href="#target-upload"  data-url="{{url.getBaseUri()}}admin/upload" data-toggle="modal" class="call-upload">
-               <i class="fa fa-picture-o"></i>
-               <span class="title">Central de Mídia</span>
-            </a>
-         </li>
-
          <li>
             <a href="#">
                <i class="fa fa-gear"></i>
                <span class="title">Minha Loja</span>
             </a>
             <ul class="sub-menu" >
-                <li>
+               <li>
+                  {{ link_to('/admin/usuarios/2','Administradores')}}
+               </li>
+               <li>
                   {{ link_to('/admin/avaliacoes','Avaliações')}}
                </li>
                <li>
                   {{ link_to('/admin/usuarios/3','Clientes')}}
                </li>
                <li>
-                  {{ link_to('/admin/usuarios/2','Administradores')}}
-               </li>
-               <li>
                   {{ link_to('/admin/pagamentos','Formas de pagamento')}}
                </li>
-            </ul>
-         </li>
-
-         <li>
-            <a href="#">
-               <i class="fa fa-gears"></i>
-               <span class="title">Configurações</span>
-            </a>
-            <ul class="sub-menu" >
                <li>
-                  {{ link_to('/admin/loja/geral','Geral')}}
+                  {{ link_to('/admin/loja/opcoes/Geral','Geral')}}
+               </li>
+                <li>
+                  {{ link_to('/admin/loja/opcoes/Metas','Metas')}}
                </li>
                <li>
-                  {{ link_to('/admin/loja/produtos','Produtos')}}
+                  {{ link_to('/admin/loja/opcoes/Informacoes','Informações')}}
+               </li>
+               <li>
+                  {{ link_to('/admin/loja/opcoes/Institucional','Institucional')}}
+               </li>
+               <li>
+                  {{ link_to('/admin/loja/opcoes/Social','Redes Sociais')}}
                </li>
             </ul>
          </li>
+         {% if this.session.get('admin_nivel') == 1 %}
+            <li>
+               <a href="#">
+                  <i class="fa fa-gears"></i>
+                  <span class="title">Configurações</span>
+               </a>
+               <ul class="sub-menu" >
+                  <li>
+                     {{ link_to('/admin/loja/opcoes/Api','APIs')}}
+                  </li>
+                  <li>
+                     {{ link_to('/admin/loja/opcoes/GeralConfig','Geral')}}
+                  </li>
+                  <li>
+                     {{ link_to('/admin/loja/opcoes/Layout','Layout')}}
+                  </li>
+                  <li>
+                     {{ link_to('/admin/loja/produtos','Produtos')}}
+                  </li>
+               </ul>
+            </li>
+         {% endif %}
       </ul>
    </div>
 </div>

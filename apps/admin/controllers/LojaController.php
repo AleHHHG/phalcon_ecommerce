@@ -6,17 +6,19 @@ use Ecommerce\Admin\Forms\LojaProdutoForm;
 use Ecommerce\Admin\Models\Options;
 class LojaController extends ControllerBase
 {
-    public function geralAction()
+    public function opcoesAction($param)
     {
-  	   	$this->view->form = new LojaGeralForm($this->ecommerce_options,array('edit' => true));
-  	   	if($this->request->isPost()){
+        $form = 'Ecommerce\Admin\Forms\Loja'.$param.'Form';
+        $this->view->form = new $form($this->ecommerce_options,array('edit' => true));
+        $this->view->param = $param;
+        if($this->request->isPost()){
             foreach ($_POST as $key => $value) {
               $option = Options::findFirst("nome = '$key'");
               $option->valor = $value;
               $option->update();
             }
-            return $this->response->redirect("admin/loja/geral");
-    	  }
+            return $this->response->redirect("admin/loja/opcoes/".$param);
+        }
     }
 
      public function produtosAction()
@@ -30,9 +32,9 @@ class LojaController extends ControllerBase
           $produto_opcoes = $_POST['produto_opcoes'];
           unset($_POST['produto_opcoes']);
           foreach ($_POST as $key => $value) {
-              $option = Options::findFirst("nome = '$key'");
-              $option->valor = $value;
-              $option->update();
+            $option = Options::findFirst("nome = '$key'");
+            $option->valor = $value;
+            $option->update();
           }
           $this->customOptions($opcoes,'produto_detalhe_options');
           $this->customOptions($produto_opcoes,'produto_options');
