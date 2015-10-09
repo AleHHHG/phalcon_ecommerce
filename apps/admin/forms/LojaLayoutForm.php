@@ -16,7 +16,7 @@ class LojaLayoutForm extends Form
      * Initialize the products form
      */
     public function initialize($entity = null, $options = array()){
-        $f = new select("ativo",array(
+        $f = new select("template_nome",array(
             '7store' => '7store',
             'Bewear' => 'Bewear',
             'Bohase' => 'Bohase',

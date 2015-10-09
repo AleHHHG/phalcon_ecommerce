@@ -10,6 +10,13 @@ $router->add("/pagina/{id:[0-9]+}", array(
     'action' => 'pagina'
 ));
 
+$router->add("/newsletter", array(
+    'module'     => 'loja',
+    'controller' => 'index',
+    'action' => 'newsletter'
+));
+
+
 
 $router->add("/categoria/{categoria:[a-zA-Z0-9_-]+}/{id:[a-zA-Z0-9]+}", array(
     'module'     => 'loja',

@@ -84,7 +84,7 @@
              )}}
          </li>
 
-         <li>
+     <!--     <li>
             <a href="#">
                <i class="fa fa-sitemap"></i>
                <span class="title">Integrações</span>
@@ -93,7 +93,7 @@
                <li><a href="#">Buscapé</a></li>
                <li><a href="#">Mercado livre</a></li>
             </ul>
-         </li>
+         </li> -->
 
          <li>
             <a href="#">
@@ -148,6 +148,9 @@
                   </li>
                   <li>
                      {{ link_to('/admin/loja/produtos','Produtos')}}
+                  </li>
+                  <li>
+                     {{ link_to('/admin/loja/opcoes/Mailer','Mailer')}}
                   </li>
                </ul>
             </li>

@@ -24,6 +24,7 @@ class BannerHelper extends BaseHelper{
 		'produto_options' => array(),
 		'link_wrap' => '<div %1Ss>%2Ss</div>',
 		'link_options' => array(),
+		'link_class' => 'btn btn-primary',
 		'navigation_container' => 'div',
 		'navigation_class' =>'',
 		'navigation_id' => '',
@@ -77,7 +78,7 @@ class BannerHelper extends BaseHelper{
 	public function setCaption($dados,$chave){
 		$html = '';
 		foreach ($this->options['caption_options'] as $value) {
-			$html .= $this->getCaption($dados,strtolower($value),$chave);
+			$html .= $this->getCaption($dados,strtolower($value),0);
 		}
 		return $html;
 	}
@@ -85,13 +86,11 @@ class BannerHelper extends BaseHelper{
 	public function getCaption($dados,$param,$chave){
 		$item = '';
 		if($param == 'title'){
-			if($dados->descricao != ''){
-				$item = $dados->nome;
-			}
+			$item = $dados->nome;
 		}else if($param == 'description'){
 			$item = nl2br($dados->descricao);
 		}else if($param == 'link'){
-			$item = "<a href='$dados->link'>Mais Detalhes</a>";
+			$item = "<a href='$dados->link' class='{$this->options['link_class']}'>Mais Detalhes</a>";
 		}else{
 			$item = '';
 		}

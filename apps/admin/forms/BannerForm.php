@@ -24,14 +24,14 @@ class BannerForm extends Form
 
         $this->add(new Text("nome"));
 
-        $produto = new Select("produto_id", Produtos::returnArrayForSelect(), array(
-            'using' => array('_id', 'nome'),
-            'useEmpty'   => true,
-            'emptyText'  => 'Nenhum ...',
-            'emptyValue' => null,
-        ));
-        $produto->setLabel('Produto');
-        $this->add($produto);
+        // $produto = new Select("produto_id", Produtos::returnArrayForSelect(), array(
+        //     'using' => array('_id', 'nome'),
+        //     'useEmpty'   => true,
+        //     'emptyText'  => 'Nenhum ...',
+        //     'emptyValue' => null,
+        // ));
+        // $produto->setLabel('Produto');
+        // $this->add($produto);
 
         $categoria = new Select("categoria_id", Categorias::returnArrayForSelect(), array(
             'using' => array('_id', 'nome'),

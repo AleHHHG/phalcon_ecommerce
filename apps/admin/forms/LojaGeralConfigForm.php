@@ -30,6 +30,14 @@ class LojaGeralConfigForm extends Form
         $f->setAttribute('class','form-control');
         $this->add($f);
 
+         $f = new select("manutencao",array(
+            '1' => 'Sim',
+            '0' => 'Não',
+            )
+        );
+        $f->setAttribute('class','form-control');
+        $this->add($f);
+
         $f = new select("orcamento",array(
             '1' => 'Sim',
             '0' => 'Não',

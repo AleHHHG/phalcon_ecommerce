@@ -45,6 +45,22 @@ class LojaApiForm extends Form
         $f->setLabel('Facebooke app secret');
         $f->setAttribute('class','form-control');
         $this->add($f);
+
+        $f = new text("sendgrid_username");
+        $f->setLabel('Sendgrid username');
+        $f->setAttribute('class','form-control');
+        $this->add($f);
+
+        $f = new text("sendgrid_password");
+        $f->setLabel('sendgrid password');
+        $f->setAttribute('class','form-control');
+        $this->add($f);
+
+        $f = new text("sendgrid_templateId");
+        $f->setLabel('sendgrid template ID');
+        $f->setAttribute('class','form-control');
+        $this->add($f);
+
     }
 
 }
