@@ -15,7 +15,7 @@ class Retorno{
         $pedido->tid = "{$retorno->code}";
         if(isset($retorno->paymentLink)){
             $pedido->link = "{$retorno->paymentLink}";
-            $pedido->meio_pagamento = "{$retorno->type}";
+            $pedido->meio_pagamento = "{$retorno->paymentMethod->type}";
         }
         $pedido->save();
     }

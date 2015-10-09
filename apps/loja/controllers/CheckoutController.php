@@ -43,7 +43,7 @@ class CheckoutController extends ControllerBase
 		$pedido_itens = new PedidoItens();
 		$pedido_itens = $pedido_itens->createData($cart->contents(),$pedido_id);
 		//Envia Email
-		$this->mailer->getHelper(array(
+		$this->helper->mailer->getHelper(array(
 			'pedido_id' => $pedido_id,
 			'tipo' => 'pedidoCriado'
 		));
@@ -70,7 +70,7 @@ class CheckoutController extends ControllerBase
 		if($metodo == 'pagseguro'){
 			$retorno = Notificacoes::retornoPagseguro($_POST);
 			if($retorno != 0){
-				$this->verificaStatus($retorno,false)
+				$this->verificaStatus($retorno,false);
 			}
 		}
 	}
@@ -84,11 +84,11 @@ class CheckoutController extends ControllerBase
 	}
 
 	protected function verificaStatus($pedido_id,$redirect = true){
-		$pedido = Pedidos::findFirst('id = '.$pedido);
+		$pedido = Pedidos::findFirst('id = '.$pedido_id);
 		if($pedido->status_id == 3){
 			$tipo = 'pedidoAprovado';
 			$cart->destroy();
-			$this->mailer->getHelper(array(
+			$this->helper->mailer->getHelper(array(
 				'pedido_id' => $pedido_id,
 				'tipo' => $tipo
 			));
@@ -98,13 +98,18 @@ class CheckoutController extends ControllerBase
 		}
 		else if($pedido->status_id == 6 || $pedido->status_id == 7){
 			$tipo = 'pedidoCancelado';
-			$this->mailer->getHelper(array(
+			$this->helper->mailer->getHelper(array(
 				'pedido_id' => $pedido_id,
 				'tipo' => $tipo
 			));
 			if($redirect){
 				$this->flashSession->error('Pedido CANCELADO/NÃO AUTORIZADO tente com nova forma de pagamento');
 				return $this->response->redirect("checkout");
+			}
+		}else{
+			$cart->destroy();
+			if($redirect){
+				return $this->response->redirect("checkout/confirmacao/$pedido_id");
 			}
 		}
 	}

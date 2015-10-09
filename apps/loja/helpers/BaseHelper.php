@@ -7,7 +7,7 @@ use Ecommerce\Admin\Models\Produtos;
 class BaseHelper extends Tag {
 
 	protected $ecommerce_options;
-	protected $url_base;
+	public $url_base;
 	protected $session;
 
 	function __construct(){

@@ -6,13 +6,12 @@ use Moltin\Cart\Cart;
 class MailerHelper extends BaseHelper{
 	
 	public $opcoes;	
-	public $session;
 
 
 	public function getHelper($opcoes = array()){
-		$tipo = $opcoes['tipo'].'()';
+		$tipo = $opcoes['tipo'];
 		$this->opcoes = $opcoes;
-		$this->$tipo;
+		$this->$tipo();
 	}
 
 	protected function pedidoCriado(){
@@ -81,7 +80,7 @@ class MailerHelper extends BaseHelper{
 	}
 
 	private function sendMail($array){
-		$email = new Mailer($array);
+		$email = new Mailer($this->ecommerce_options,$array);
 		$email->send();
 	}
 
