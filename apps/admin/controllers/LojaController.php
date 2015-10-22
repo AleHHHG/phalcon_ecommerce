@@ -17,6 +17,17 @@ class LojaController extends ControllerBase
               $option->valor = $value;
               $option->update();
             }
+            if($this->request->hasFiles()){
+              foreach ($this->request->getUploadedFiles() as $file) {
+                // Move the file into the application
+                if($file->getName() != ''){
+                  $option = Options::findFirst("nome = 'logo'");
+                  $file->moveTo('files/logo/'.$file->getName());
+                  $option->valor = 'files/logo/'.$file->getName();
+                  $option->update();
+                }
+              }
+            }
             return $this->response->redirect("admin/loja/opcoes/".$param);
         }
     }

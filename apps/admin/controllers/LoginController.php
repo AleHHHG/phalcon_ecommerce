@@ -14,7 +14,10 @@ class LoginController extends Controller
     public function indexAction()
     {	
 		if ($this->session->has("admin_logado")){
-			return $this->response->redirect('admin/dashboard');
+			$this->dispatcher->forward(array(
+           	 	'controller' => 'index',
+           	 	'action' => 'index',
+        	));
 		}
     }
 
@@ -27,14 +30,21 @@ class LoginController extends Controller
 				$this->session->set("admin_email",$user->email);
 				$this->session->set("admin_nome",$user->nome);
 				$this->session->set("admin_nivel",$user->nivel_id);
-				return $this->response->redirect('admin/dashboard');
+				$this->dispatcher->forward(array(
+	           	 	'controller' => 'index',
+	           	 	'action' => 'index',
+	        	));
             }else{
             	$this->flashSession->error('Senha inválida');
-				return $this->response->redirect('admin');
+				$this->dispatcher->forward(array(
+		       	 	'action' => 'index',
+		    	));
             }
         }else{
         	$this->flashSession->error('Usuário não existe em nossos registros');
-        	return $this->response->redirect('admin');
+        	$this->dispatcher->forward(array(
+       	 		'action' => 'index',
+    		));
         }
     }
 
@@ -44,7 +54,9 @@ class LoginController extends Controller
 		$this->session->remove("admin_email");
 		$this->session->remove("admin_nome");
 		$this->session->remove("admin_nivel");
-		return $this->response->redirect('admin');
+		$this->dispatcher->forward(array(
+       	 	'action' => 'index',
+    	));
     }
 
 

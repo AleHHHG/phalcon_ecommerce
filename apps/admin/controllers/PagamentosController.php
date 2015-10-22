@@ -30,7 +30,7 @@ class PagamentosController extends ControllerBase
         $model->valor_minimo_parcela = $this->Utilitarios->toFloat($this->request->getPost('valor_minimo_parcela'));
         $model->produtos = serialize($opcoes);
         $exec = $model->save();
-        parent::notifica($exec,"admin/pagamentos");
+        parent::notifica($exec,array('controller' => 'pagamentos','action' => 'index'));
     }
 
 

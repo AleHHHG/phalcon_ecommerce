@@ -39,7 +39,7 @@ class AtributosController extends ControllerBase
         $referencia = $this->getReferencia($param);
         $model = $referencia::findFirst("id = $id");
         $exec = $model->delete();
-        parent::notifica($exec,"admin/atributos/$param");
+        parent::notifica($exec,array('controller' => 'atributos','action' => 'index','param' => $param));
     }
 
     protected function save($model,$param){
@@ -58,7 +58,7 @@ class AtributosController extends ControllerBase
             }
         }
         $exec = $model->save();
-        parent::notifica($exec,"admin/atributos/$param");
+        parent::notifica($exec,array('controller' => 'atributos','action' => 'index','param' => $param));
     }
 
     protected function getReferencia($param){

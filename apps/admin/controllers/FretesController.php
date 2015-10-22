@@ -31,7 +31,7 @@ class FretesController extends ControllerBase
     public function deleteAction($id){
         $model = Fretes::findById($id);
         $exec = $model->delete();
-        parent::notifica($exec,"admin/fretes");
+        parent::notifica($exec,array('controller' => 'fretes','action' => 'index'));
     }
 
     protected function save($model){
@@ -44,7 +44,7 @@ class FretesController extends ControllerBase
             $model->produtos = serialize(array_unique(explode(',', $produtos)));
         }
         $exec = $model->save();
-        parent::notifica($exec,"admin/fretes");
+        parent::notifica($exec,array('controller' => 'fretes','action' => 'index'));
     }
 
 

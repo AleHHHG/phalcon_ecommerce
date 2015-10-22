@@ -12,6 +12,9 @@ use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Flash\Direct as FlashDirect;
+use Moltin\Cart\Cart;
+use Moltin\Cart\Storage\Session;
+use Moltin\Cart\Identifier\Cookie;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
@@ -60,10 +63,12 @@ $di->set('modelsMetadata', function () {
  */
 $di->setShared('session', function () {
     $session = new SessionAdapter();
-    if(!isset($_SESSION)){
-        $session->start();
-    }
+    $session->start();
     return $session;
+});
+
+$di->setShared('cart', function () {
+    return new Cart(new Session, new Cookie);
 });
 
 $di->set('router', function () {

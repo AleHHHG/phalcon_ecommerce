@@ -34,7 +34,7 @@ class BannerController extends ControllerBase
     public function deleteAction($id){
         $model = Banners::findById($id);
         $exec = $model->delete();
-        parent::notifica($exec,"admin/banners");
+        parent::notifica($exec,array('controller' => 'banner','action' => 'index'));
     }
 
     protected function save($model){
@@ -47,7 +47,7 @@ class BannerController extends ControllerBase
             $model->imagens = serialize(explode(',',$imagens));
         }
         $exec = $model->save();
-        parent::notifica($exec,"admin/banners");
+        parent::notifica($exec,array('controller' => 'banner','action' => 'index'));
     }
 
 

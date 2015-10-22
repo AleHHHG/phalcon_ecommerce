@@ -99,7 +99,7 @@ class ProdutoHelper extends BaseHelper {
 		if(!empty($obj->imagens)){
 			$imagem = Imagens::findFirst($obj->imagens[0])->url;
 		}else{
-			$imagem = 'no-image.png';
+			$imagem = 'img/no-image.jpg';
 		}
 		if($this->ecommerce_options->produto_detalhes == '1'){
 			$index =  parent::arrayMultiSearch($this->detalhes,'label','cor');
@@ -107,7 +107,7 @@ class ProdutoHelper extends BaseHelper {
 				if(isset($obj->detalhes[0]['cor'])){
 					$cor = $obj->detalhes[0]['cor'];
 					if(isset($obj->imagem_detalhes) && array_key_exists($cor,$obj->imagem_detalhes)){
-						$imagem = $obj->imagem_detalhes[$cor][0];
+						$imagem = Imagens::findFirst($obj->imagem_detalhes[$cor][0])->url;
 					}
 				}
 			}
@@ -288,6 +288,8 @@ class ProdutoHelper extends BaseHelper {
 			$arr['skip'] = intval($this->ecommerce_options->produtos_por_pagina) * $array['pagina'];
 		}
 		$arr['sort'] = array('created_at' => -1);
+		$produtos = Produtos::find($arr);
+		// die(print(count($produtos)));
 		return Produtos::find($arr);
 	}
 

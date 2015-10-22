@@ -35,20 +35,22 @@ class ProdutoForm extends Form
 
         #Opçõs setadas dinamicamente
         $detalhes = unserialize($this->ecommerce_options->produto_options);
-        foreach ($detalhes as $key => $value) {
-            $chave = $key;
-            $chave = new Select("{$value['label']}", $value['referencia']::find(array('order' => 'nome ASC')), array(
-                'using' => array('nome', 'nome'),
-                'useEmpty'   => true,
-                'emptyText'  => 'Nenhum ...',
-                'emptyValue' => null,
-            ));
-            $chave->setLabel($value['label']);
-            $chave->setAttribute('class','form-control '.$value['label']);
-            if(isset($obj) && !is_null($obj)){
-                $chave->setDefault($obj->$value['label']);
+        if(!empty($detalhes)){
+            foreach ($detalhes as $key => $value) {
+                $chave = $key;
+                $chave = new Select("{$value['label']}", $value['referencia']::find(array('order' => 'nome ASC')), array(
+                    'using' => array('nome', 'nome'),
+                    'useEmpty'   => true,
+                    'emptyText'  => 'Nenhum ...',
+                    'emptyValue' => null,
+                ));
+                $chave->setLabel($value['label']);
+                $chave->setAttribute('class','form-control '.$value['label']);
+                if(isset($obj) && !is_null($obj)){
+                    $chave->setDefault($obj->$value['label']);
+                }
+                $this->add($chave);
             }
-            $this->add($chave);
         }
 
         #Caso detalhes do produto esteja habilitado

@@ -3,7 +3,7 @@
    <div class="page-sidebar-wrapper" id="main-menu-wrapper">
       <ul class='wraplist'>
          <li class="open"> 
-            {{ link_to('/admin/dashboard',
+            {{ link_to('admin/dashboard',
                '<i class="fa fa-dashboard"></i>
                <span class="title">Painel</span>'
                )
@@ -11,7 +11,7 @@
          </li>
 
          <li>
-            {{ link_to('/admin/pedidos',
+            {{ link_to('admin/pedidos',
                '<i class="fa fa-shopping-cart"></i>
                <span class="title">Pedidos</span>'
                )
@@ -19,14 +19,14 @@
          </li>
 
          <li> 
-            {{ link_to('/admin/categorias',
+            {{ link_to('admin/categorias',
                '<i class="fa fa-th"></i>
                <span class="title">Categorias</span>'
                )
             }}
          </li>
         <li> 
-            {{ link_to('/admin/produtos',
+            {{ link_to('admin/produtos',
                '<i class="fa fa-cube"></i>
                <span class="title">Produtos</span>'
                )
@@ -40,13 +40,13 @@
             </a>
             <ul class="sub-menu" >
                <li>
-                  {{ link_to('/admin/cupons','Cupons de desconto')}}
+                  {{ link_to('admin/cupons','Cupons de desconto')}}
                </li>
                <li>
-                  {{ link_to('/admin/fretes','Frete grátis')}}
+                  {{ link_to('admin/fretes','Frete grátis')}}
                </li>
                <li>
-                  {{ link_to('/admin/newsletter','Newsletter')}}
+                  {{ link_to('admin/newsletter','Newsletter')}}
                </li>
             </ul>
          </li>
@@ -58,7 +58,7 @@
             </a>
             <ul class="sub-menu" >
                <li>
-                  {{ link_to('/admin/banners','Banners')}}
+                  {{ link_to('admin/banners','Banners')}}
                </li>
             </ul>
          </li>
@@ -71,14 +71,14 @@
             <ul class="sub-menu" >
                {% for attr in atributos %}
                   <li>
-                     {{ link_to('/admin/atributos/'~attr['label'],base_helper.pluralize(attr['label'])|capitalize)}}
+                     {{ link_to('admin/atributos/'~attr['label'],base_helper.pluralize(attr['label'])|capitalize)}}
                   </li>
                {% endfor %}
             </ul>
          </li>
 
          <li>
-             {{ link_to('/admin/relatorios',
+             {{ link_to('admin/relatorios',
                 '<i class="fa fa-line-chart"></i>
                 <span class="title">Relatórios</span>'
              )}}
@@ -102,31 +102,31 @@
             </a>
             <ul class="sub-menu" >
                <li>
-                  {{ link_to('/admin/usuarios/2','Administradores')}}
+                  {{ link_to('admin/usuarios/2','Administradores')}}
                </li>
                <li>
-                  {{ link_to('/admin/avaliacoes','Avaliações')}}
+                  {{ link_to('admin/avaliacoes','Avaliações')}}
                </li>
                <li>
-                  {{ link_to('/admin/usuarios/3','Clientes')}}
+                  {{ link_to('admin/usuarios/3','Clientes')}}
                </li>
                <li>
-                  {{ link_to('/admin/pagamentos','Formas de pagamento')}}
+                  {{ link_to('admin/pagamentos','Formas de pagamento')}}
                </li>
                <li>
-                  {{ link_to('/admin/loja/opcoes/Geral','Geral')}}
+                  {{ link_to('admin/loja/opcoes/Geral','Geral')}}
                </li>
                 <li>
-                  {{ link_to('/admin/loja/opcoes/Metas','Metas')}}
+                  {{ link_to('admin/loja/opcoes/Metas','Metas')}}
                </li>
                <li>
-                  {{ link_to('/admin/loja/opcoes/Informacoes','Informações')}}
+                  {{ link_to('admin/loja/opcoes/Informacoes','Informações')}}
                </li>
                <li>
-                  {{ link_to('/admin/loja/opcoes/Institucional','Institucional')}}
+                  {{ link_to('admin/loja/opcoes/Institucional','Institucional')}}
                </li>
                <li>
-                  {{ link_to('/admin/loja/opcoes/Social','Redes Sociais')}}
+                  {{ link_to('admin/loja/opcoes/Social','Redes Sociais')}}
                </li>
             </ul>
          </li>
@@ -138,19 +138,19 @@
                </a>
                <ul class="sub-menu" >
                   <li>
-                     {{ link_to('/admin/loja/opcoes/Api','APIs')}}
+                     {{ link_to('admin/loja/opcoes/Api','APIs')}}
                   </li>
                   <li>
-                     {{ link_to('/admin/loja/opcoes/GeralConfig','Geral')}}
+                     {{ link_to('admin/loja/opcoes/GeralConfig','Geral')}}
                   </li>
                   <li>
-                     {{ link_to('/admin/loja/opcoes/Layout','Layout')}}
+                     {{ link_to('admin/loja/opcoes/Layout','Layout')}}
                   </li>
                   <li>
-                     {{ link_to('/admin/loja/produtos','Produtos')}}
+                     {{ link_to('admin/loja/produtos','Produtos')}}
                   </li>
                   <li>
-                     {{ link_to('/admin/loja/opcoes/Mailer','Mailer')}}
+                     {{ link_to('admin/loja/opcoes/Mailer','Mailer')}}
                   </li>
                </ul>
             </li>

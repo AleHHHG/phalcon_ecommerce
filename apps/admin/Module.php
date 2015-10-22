@@ -28,7 +28,7 @@ class Module implements ModuleDefinitionInterface{
                 'Ecommerce\Loja\Helpers'      => '../apps/loja/helpers/',
             )
         );
-
+        require('../apps/loja/vendor/autoload.php');
         $loader->register();
     }
 

@@ -47,7 +47,7 @@
                   {% endif %}
                </table>
             </div>
-            {% if endereco is defined %}
+            {% if endereco is not empty %}
                <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="page-header">
                      <h3>Endereço</h3>

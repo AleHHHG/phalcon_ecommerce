@@ -31,7 +31,7 @@ class CupomController extends ControllerBase
     public function deleteAction($id){
         $model = Cupons::findById($id);
         $exec = $model->delete();
-        parent::notifica($exec,"admin/cupons");
+        parent::notifica($exec,array('controller' => 'cupons','action' => 'index'));
     }
 
      protected function save($model){
@@ -45,7 +45,7 @@ class CupomController extends ControllerBase
         $model->valor = $this->Utilitarios->toFloat($valor);
         $model->valor_minimo = $this->Utilitarios->toFloat($valor_minimo);
         $exec = $model->save();
-        parent::notifica($exec,"admin/cupons");
+        parent::notifica($exec,array('controller' => 'cupons','action' => 'index'));
     }
 }
 

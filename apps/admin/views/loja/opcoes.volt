@@ -4,7 +4,11 @@
 	        <h2 class="title pull-left">{{ param }}</h2>
 	    </header>
          <div class="content-body">
-			{{ form("admin/loja/opcoes/"~param) }}
+			{{ form("admin/loja/opcoes/"~param, 'enctype':'multipart/form-data') }}
+				{% if param == 'Geral'%}
+					<input type="file" name="logo">
+					<br clear="all"/>
+				{% endif %}
 				{% for element in form %}
 				   <div class="form-group">
 				       {{ element.label(['class': 'form-label']) }}

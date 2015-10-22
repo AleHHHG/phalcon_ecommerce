@@ -5,7 +5,7 @@ use Ecommerce\Admin\Models\Newsletter;
 class IndexController extends ControllerBase
 {
 
-    public function indexAction(){	
+    public function indexAction(){
     }
 
     public function paginaAction($id)

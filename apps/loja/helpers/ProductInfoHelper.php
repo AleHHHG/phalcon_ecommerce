@@ -129,12 +129,12 @@ class ProductInfoHelper extends SingleHelper {
 		$html = "<div class='col-md-12 no-padding-left'><h5><strong>$label </strong></h5>";
 		foreach ($itens['detalhes'] as $key => $value) {
 			$active = ($key == $posicao) ? 'color-active' : ''; 
+			$url = parent::generateUrl($this->layout['produto']->nome,$this->layout['produto']->_id,'produto_variacao');
+			$url = $url.'/'.$value['referencia']['nome'].'/'.$key;
 			if($itens['label'] == 'cor' || $itens['label'] == 'cores'){
-				$url = parent::generateUrl($this->layout['produto']->nome,$this->layout['produto']->_id,'produto_variacao');
-				$url = $url.'/'.$value['referencia']['nome'].'/'.$key;
 				$html .= "<a href='$url' class='sideColor $active color-produto-detalhe variacao' style='background-color:{$value['referencia']['hexa']}'></a> ";
 			}else{
-				$html .= "<a href='#' class='sideColor $active color-produto-detalhe'>{$value['referencia']['nome']}</a>";
+				$html .= "<a href='$url' class='sideColor $active tamanho-produto-detalhe'>{$value['referencia']['nome']}</a>";
 			}
 		}
 		$html .= '</div><br clear="all"/><br clear="all"/> <br clear="all"/> ';
@@ -181,7 +181,6 @@ class ProductInfoHelper extends SingleHelper {
 			$html .= '<select name="quantidade" class="'.$this->layout['option_class'].' quantidade" id="quantidade" required>';
 			$array = array_values($array);
 			$total = (isset($array[0]['estoque'])) ? $array[0]['estoque'] : $array[0];
-				$html .= "<option value=''>Selecione a quantidade</option>";
 			for ($i=1; $i <= $total ; $i++) { 
 				$html .= "<option value='$i'>$i</option>";
 			}
@@ -231,8 +230,9 @@ class ProductInfoHelper extends SingleHelper {
 	}
 
 	protected function setAddCart(){
-		return parent::replaceWraper(2,array(
+		return parent::replaceWraper(3,array(
 			'addCart '.$this->layout['add_cart_class'],
+			$this->url_base.'cart/insert',
 			$this->layout['add_cart_text']
 			),
 			$this->layout['add_cart_wrap']

@@ -9,11 +9,13 @@ class BaseHelper extends Tag {
 	protected $ecommerce_options;
 	public $url_base;
 	protected $session;
+	protected $cart;
 
 	function __construct(){
 		$this->ecommerce_options = $this->getDI()->getShared('ecommerce_options');
 		$this->url_base = $this->getDI()->getShared('url')->getBaseUri();
 		$this->session = $this->getDI()->getShared('session');
+		$this->cart = $this->getDI()->getShared('cart');
 	}
 
 	public function getFiles($path){
@@ -51,9 +53,22 @@ class BaseHelper extends Tag {
 	public function generateUrl($string,$id,$tipo){
 		$filter = new Filter();
 		$url = $filter->sanitize($string, "lower");
-		$url = preg_replace( '/[`^~\'"]/', null, iconv( 'UTF-8', 'ASCII//TRANSLIT', $url ) );
+		$url = $this->sanitizeString($string);
 		$url = str_replace(' ', '-', $url);
 		return $this->url_base.$tipo.'/'.$url.'/'.$id;
+	}
+
+	public function sanitizeString($str) {
+	    $str = preg_replace('/[áàãâä]/ui', 'a', $str);
+	    $str = preg_replace('/[éèêë]/ui', 'e', $str);
+	    $str = preg_replace('/[íìîï]/ui', 'i', $str);
+	    $str = preg_replace('/[óòõôö]/ui', 'o', $str);
+	    $str = preg_replace('/[úùûü]/ui', 'u', $str);
+	    $str = preg_replace('/[ç]/ui', 'c', $str);
+	    // $str = preg_replace('/[,(),;:|!"#$%&/=?~^><ªº-]/', '_', $str);
+	    $str = preg_replace('/[^a-z0-9]/i', '_', $str);
+	    $str = preg_replace('/_+/', '_', $str); // ideia do Bacco :)
+	    return $str;
 	}
 
 	// protected function getHtmlAtributo($atributo,$valor){

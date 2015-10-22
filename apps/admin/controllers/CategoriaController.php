@@ -32,7 +32,7 @@ class CategoriaController extends ControllerBase
     public function deleteAction($id){
         $categoria = Categorias::findById($id);
         $exec = $categoria->delete();
-        parent::notifica($exec,"admin/categorias");
+        parent::notifica($exec,array('controller' => 'categoria','action' => 'index'));
     }
 
      protected function save($model){
@@ -41,7 +41,7 @@ class CategoriaController extends ControllerBase
             $model->parent = $this->request->getPost('parent');
         }
         $exec = $model->save();
-        parent::notifica($exec,"admin/categorias");
+        parent::notifica($exec,array('controller' => 'categoria','action' => 'index'));
     }
 }
 

@@ -5,6 +5,7 @@ namespace Ecommerce\Admin\Forms;
 use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Numeric;
+use Phalcon\Forms\Element\File;
 class LojaGeralForm extends Form
 {
 
@@ -12,8 +13,7 @@ class LojaGeralForm extends Form
      * Initialize the products form
      */
     public function initialize($entity = null, $options = array())
-    {
-           
+    {      
         $titulo = new Text("titulo");
         $titulo->setAttribute('class','form-control ');
         $this->add($titulo);

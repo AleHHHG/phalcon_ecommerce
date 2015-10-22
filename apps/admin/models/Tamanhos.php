@@ -7,6 +7,18 @@ class Tamanhos extends \Phalcon\Mvc\Model
     public $id;
     public $nome;
 
+    public function rules(){
+        return array(
+            'id' => array(
+                'primary' =>true,
+                'type' => 'text'
+            ),
+            'nome' => array(
+                'type'=> 'text'
+            ),
+        );
+    }
+
 
     public function getSource(){
         return 'tamanhos';

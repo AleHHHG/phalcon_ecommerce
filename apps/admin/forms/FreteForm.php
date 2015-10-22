@@ -70,7 +70,7 @@ class FreteForm extends Form
         $opcao->setLabel('Produtos');
         $opcao->setAttribute('class','form-control frete-produtos');
         $opcao->setAttribute('id','produtos_relacionados');
-        $opcao->setAttribute('data-url',$eo->url_base.'admin/produtos');
+        $opcao->setAttribute('data-url',$eo->url_base.'admin/produtos/search');
         $arr = array();
         if(!is_null($model) && $model->tipo == 3){
             $produtos = unserialize($model->produtos);

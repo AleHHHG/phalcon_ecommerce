@@ -15,7 +15,10 @@ class ControllerBase extends Controller
 		$this->view->setTemplateAfter('main');
 		if (!$this->session->has("admin_logado")){
 			$this->flashSession->error('Acesso negado : Faça o login para proseguir');
-			return $this->response->redirect('admin');
+			$this->dispatcher->forward(array(
+	       	 	'action' => 'index',
+	       	 	'controller' => 'login',
+	    	));
 		}
 		$attrs = ($this->ecommerce_options->produto_detalhes == '1') ? unserialize($this->ecommerce_options->produto_detalhe_options) : array();
 		if($this->ecommerce_options->produto_options != ''){
@@ -26,7 +29,7 @@ class ControllerBase extends Controller
 		$this->view->base_helper = $this->helper;
 	}
 
-	public function notifica($exec,$url){
+	public function notifica($exec,$array){
 		if($exec){
             $this->flashSession->success('Ação realizada com sucesso');
         }else{
@@ -36,7 +39,7 @@ class ControllerBase extends Controller
             }
             $this->flashSession->error('Houve um erro :'.$mensagem);
         }
-        return $this->response->redirect("$url");
+       	$this->dispatcher->forward($array);
 
 	}
 }

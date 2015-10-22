@@ -64,18 +64,29 @@ class ProductImageHelper extends SingleHelper {
 		foreach ($this->layout[$param.'_imagem_attr'] as $key => $value) {
 			$attr .= $key.'='.$value.' ';
 		}
+		$img_url = $this->url_base.$img->url;
 		$size = explode('x', $this->ecommerce_options->imagem_size);
 		$src = "{$this->url_base}public/{$img->url}&q=90&w={$size[0]}&h={$size[1]}&zc=2";
 		$img = "{$this->url_base}public/timthumb?src=$src'";
 		if($this->layout['identificador'] && $this->layout['identificador_position'] == $param){
 			$wrap = str_replace('_IDENTIFICADOR_', $identificador, $this->layout[$param.'_imagem_wrap']);
+			$wrap = str_replace('_ZOOM_', $img_url, $wrap);
+			$wrap = str_replace('_IMAGE_', $img, $wrap);
 		}else{
 			$wrap = $this->layout[$param.'_imagem_wrap'];
 		}
-		$imagem .= parent::replaceWraper(2,array(
-			$img,
-			$attr
-			),$wrap);
+		if($param == 'item'){
+			$imagem .= parent::replaceWraper(3,array(
+				$img,
+				$attr,
+				"data-zoom-image='{$img_url}'",
+				),$wrap);
+		}else{
+			$imagem .= parent::replaceWraper(2,array(
+				$img,
+				$attr
+				),$wrap);
+		}
 		$imagem .= ($param == 'item') ? $before : '';
 		return $imagem;
 	}

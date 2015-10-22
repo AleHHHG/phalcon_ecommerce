@@ -18,7 +18,7 @@ class ProdutosRelacionadosForm extends Form
         $opcao->setLabel('Produtos Relacionados');
         $opcao->setAttribute('class','form-control');
         $opcao->setAttribute('id','produtos_relacionados');
-        $opcao->setAttribute('data-url',$eo->url_base.'admin/produtos');
+        $opcao->setAttribute('data-url',$eo->url_base.'admin/produtos/search');
         $arr = array();
         if(!is_null($model) && !empty($model->relacionados)){
             foreach ($model->relacionados as $key => $value) {

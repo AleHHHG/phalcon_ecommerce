@@ -22,6 +22,7 @@
                <table id="example-1" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
                   <thead>
                      <tr>
+                        <th>Data</th>
                         <th>Nome</th>
                         <th>Descrição</th>
                         <th>Nota</th>
@@ -31,6 +32,9 @@
                   <tbody>
                   {% for dado in dados %}
                      <tr>
+                        <td>
+                           {{Utilitarios.dateFormat(dado.data)}}
+                        </td>
                         <td>
                            {{dado.nome}}
                         </td>

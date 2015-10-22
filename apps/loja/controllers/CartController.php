@@ -1,8 +1,5 @@
 <?php
 namespace Ecommerce\Loja\Controllers;
-use Moltin\Cart\Cart;
-use Moltin\Cart\Storage\Session;
-use Moltin\Cart\Identifier\Cookie;
 use Phalcon\Mvc\Controller;
 use Ecommerce\Admin\Models\Produtos;
 use Ecommerce\Admin\Models\FreteTipos;
@@ -14,11 +11,9 @@ use Correios\CalculoFrete;
 use Ecommerce\Admin\Models\Mailer;
 class CartController extends ControllerBase
 {
-	public $cart;
 
 	public function initialize(){
 		parent::initialize();
-		$this->cart = new Cart(new Session, new Cookie);
 	}
 
 	public function indexAction(){

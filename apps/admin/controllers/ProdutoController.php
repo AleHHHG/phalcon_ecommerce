@@ -13,6 +13,9 @@ class ProdutoController extends ControllerBase
     public function indexAction()
     {
   	   	$this->view->produtos = Produtos::find();
+    }
+
+    public function searchAction(){
         if($this->request->isPost()) {
             $this->view->disable();
             $arr = array();
@@ -26,7 +29,6 @@ class ProdutoController extends ControllerBase
             return $this->response->setContent(json_encode($arr));
         }
     }
-
 
     public function createAction(){
         $this->view->categorias =  Categorias::getDados();
@@ -75,7 +77,28 @@ class ProdutoController extends ControllerBase
     public function deleteAction($id){
         $produto = Produtos::findById($id);
         $exec = $produto->delete();
-        parent::notifica($exec,"admin/produtos");
+        parent::notifica($exec,array('controller' => 'produto','action' => 'index'));
+    }
+
+   public function setCorAction(){
+        if($this->request->isPost()) {
+            if($this->request->isAjax()){
+                $this->view->disable();
+                $produto = Produtos::findById('560433b1b440b308090001c1');
+                if($this->request->getPost('cor') != ''){
+                    if(isset($produto->imagem_detalhes) && !empty($produto->imagem_detalhes)){
+                        foreach ($produto->imagem_detalhes as $key => $value) {
+                            if($this->request->getPost('cor') != $key){
+                                $arr = array_diff($produto->imagem_detalhes[$key], array($this->request->getPost('imagem')));
+                                $produto->imagem_detalhes[$key] = $arr;
+                            }
+                        }
+                    }
+                    $produto->imagem_detalhes[$this->request->getPost('cor')][] =  $this->request->getPost('imagem'); 
+                    $produto->save();
+                }
+            } 
+        }
     }
 
     protected function save($produto){
@@ -88,12 +111,16 @@ class ProdutoController extends ControllerBase
         }
         if($imagens != ''){
             $produto->imagens = explode(',',$imagens);
+        }else{
+            $produto->imagens = array();
         }
         if($relacionados != ''){
             $produto->relacionados = array_unique(explode(',', $relacionados));
+        }else{
+            $produto->relacionados = array();
         }
         $exec = $produto->save();
-        parent::notifica($exec,"admin/produtos");
+        parent::notifica($exec,array('controller' => 'produto','action' => 'index'));
     }  
 }
 

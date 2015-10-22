@@ -9,7 +9,6 @@ use Moltin\Cart\Identifier\Cookie;
 use Ecommerce\Admin\Models\Produtos;
 class CartHelper extends BaseHelper{
 	
-	protected $cart;
 	protected $attr;
 	public $options = array(
 		'tipo' => array()
@@ -82,7 +81,6 @@ class CartHelper extends BaseHelper{
 
 	public function __construct(){
 		parent::__construct();
-		$this->cart = new Cart(new Session, new Cookie);
 	}
 
 	public function getHelper($options = array()){
@@ -114,6 +112,7 @@ class CartHelper extends BaseHelper{
 
 	protected function setItens(){
 		$html = '';
+		//die(print_r($this->cart->contents()));
 		foreach ($this->cart->contents() as $key => $value) {
 			$produto = Produtos::findById($value->id)->toArray();
 			$html .= "<{$this->options['item_container']} class='{$this->options['item_container_class']} cart-item'>";
