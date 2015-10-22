@@ -16,6 +16,12 @@
 <div class="clearfix"></div>
 <div class="col-lg-12">
    <section class="box ">
+      {% if nivel == 2 %}
+         <header class="panel_header">
+            {{ link_to('admin/usuario/create','Novo Usuário','class':'btn btn-primary btn-lg pull-right')}}
+            <br clear="all"/>
+         </header>
+      {% endif %}
       <div class="content-body">
          <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -42,6 +48,8 @@
                               )}}
                            {% else %}
                               {% if session.get('admin_nivel') == 1 %}
+                                 {{ link_to("admin/usuario/update/"~dado.id ,'<i class="fa fa-pencil icon-square icon-default "></i>'
+                                 )}}
                                  {{ link_to("admin/usuario/delete/"~dado.id ,'<i class="fa fa-times icon-square icon-danger "></i>'
                                  )}}
                               {% endif %}

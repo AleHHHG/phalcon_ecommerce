@@ -453,6 +453,24 @@ $router->add("/admin/usuario/detalhe/{id:[a-zA-Z0-9]+}", array(
     'action' => 'show'
 ));
 
+$router->add("/admin/usuario/create", array(
+    'module'     => 'admin',
+    'controller' => 'usuarios',
+    'action' => 'create'
+));
+
+$router->add("/admin/usuario/update/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'usuarios',
+    'action' => 'update'
+));
+
+$router->add("/admin/usuario/delete/{id:[a-zA-Z0-9]+}", array(
+    'module'     => 'admin',
+    'controller' => 'usuarios',
+    'action' => 'delete'
+));
+
 #Newsletter ROTA
 
 $router->add("/admin/newsletter", array(
