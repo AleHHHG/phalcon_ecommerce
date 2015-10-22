@@ -7,6 +7,7 @@ use Ecommerce\Admin\Models\Categorias;
 use Ecommerce\Admin\Models\Avaliacoes;
 use Ecommerce\Admin\Models\Imagens;
 use Ecommerce\Loja\Helpers\BaseHelper;
+use Phalcon\Mvc\View;
 class ProdutoController extends ControllerBase
 {
 	public function indexAction($produto,$id){
@@ -15,6 +16,15 @@ class ProdutoController extends ControllerBase
 		$this->view->detalhe = 0;
 		$this->view->posicao = 0;
 	}
+
+	public function previewAction(){
+		$this->view->disableLevel(View::LEVEL_AFTER_TEMPLATE);
+		$this->view->produto = Produtos::findById($this->request->getPost('id'));
+		$this->view->categoria = Categorias::findById($this->view->produto->categoria);
+		$this->view->detalhe = 0;
+		$this->view->posicao = 0;
+	}
+
 
 	public function variacaoAction($produto,$id,$detalhe,$posicao){
 		$this->view->produto = Produtos::findById($id);

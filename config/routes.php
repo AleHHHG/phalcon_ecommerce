@@ -41,6 +41,12 @@ $router->add("/produto/{produto:[a-zA-Z0-9_-]+}/{id:[a-zA-Z0-9]+}", array(
     'controller' => 'produto',
 ));
 
+$router->add("/produto/preview", array(
+    'module'     => 'loja',
+    'controller' => 'produto',
+    'action' => 'preview'
+));
+
 $router->add("/produto_variacao/{produto:[a-zA-Z0-9_-]+}/{id:[a-zA-Z0-9]+}/{detalhe:[\sa-zA-Z0-9áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ_-]+}/{posicao:[0-9]+}", array(
     'module'     => 'loja',
     'controller' => 'produto',

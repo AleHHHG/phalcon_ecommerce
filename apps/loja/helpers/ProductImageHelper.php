@@ -16,6 +16,8 @@ class ProductImageHelper extends SingleHelper {
 		$produto_imagens = $this->setProdutoImagens();
 		if($this->layout['navigation']){
 			$navigation = $this->setNavigation($produto_imagens);
+		}else{
+			$navigation = '';
 		}
 		if($this->layout['navigation_position'] == 'AFTER_ITEM'){
 			$html .= $navigation;
