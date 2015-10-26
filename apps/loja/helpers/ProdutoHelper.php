@@ -246,14 +246,11 @@ class ProdutoHelper extends BaseHelper {
 		}else if($array['search']){
 			$param = $_POST['search'];
 			$arr['conditions'] = array('nome' => new \MongoRegex("/$param/i"));
-			$arr['limit'] = $this->ecommerce_options->produtos_por_pagina;
 		}else{
 			if($array['destaque']){
 				$arr['conditions'] = array('destaque' => '1');
-				$arr['limit'] = $this->ecommerce_options->produtos_destaque;
 			}else if($array['lancamento']){
 				$arr['conditions'] = array('destaque' => '0');
-				$arr['limit'] = $this->ecommerce_options->produtos_por_pagina;
 			}else if($array['categoria'] != ''){
 				if(is_array($array['categoria'])){
 					$ids = array();
@@ -282,6 +279,11 @@ class ProdutoHelper extends BaseHelper {
 				}
 				$arr['conditions']['detalhes'] = $filtros;
 			}
+		}
+		if($array['destaque']){
+			$arr['limit'] = $this->ecommerce_options->produtos_destaque;
+		}else{
+			$arr['limit'] = $this->ecommerce_options->produtos_por_pagina;
 		}
 		$arr['conditions']['ativo'] = '1';
 		if($array['pagina'] != 0){

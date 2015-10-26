@@ -47,7 +47,7 @@ class Mailer
 		    foreach($e->getErrors() as $er) {
 		        $string .= $e->getCode().' - '.$er.'<br/>';
 		    }
-		    return array('enviado' => true, 'mensagem' => $string);
+		    return array('enviado' => false, 'mensagem' => $string);
 		}
 	}
 }

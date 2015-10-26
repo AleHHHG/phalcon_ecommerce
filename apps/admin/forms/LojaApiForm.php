@@ -61,6 +61,12 @@ class LojaApiForm extends Form
         $f->setAttribute('class','form-control');
         $this->add($f);
 
+        $f = new TextArea("mapa");
+        $f->setLabel('Google Maps');
+        $f->setAttribute('class','form-control');
+        $f->setAttribute('rows','10');
+        $this->add($f);
+
     }
 
 }
