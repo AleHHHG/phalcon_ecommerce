@@ -75,6 +75,15 @@ class UserController extends ControllerBase
 }
 
 	public function loginAction(){
+		$fb = new \Facebook\Facebook([
+		  'app_id' => "{$this->ecommerce_options->facebook_appId}",
+		  'app_secret' => "{$this->ecommerce_options->facebook_appSecret}",
+		  'default_graph_version' => 'v2.4',
+		]);
+		$helper = $fb->getRedirectLoginHelper();
+		$permissions = ['email'];
+		$loginUrl = $helper->getLoginUrl("{$this->ecommerce_options->url_base}user/callback",$permissions);
+		$this->view->facebook = htmlspecialchars($loginUrl);
 		if($this->request->isPost()){
 			$email = $this->request->getPost('email');
 			$senha = $this->request->getPost('senha');

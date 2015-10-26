@@ -39,9 +39,9 @@
                <span class="title">Marketing</span>
             </a>
             <ul class="sub-menu" >
-               <li>
+               <!-- <li>
                   {{ link_to('admin/cupons','Cupons de desconto')}}
-               </li>
+               </li> -->
                <li>
                   {{ link_to('admin/fretes','Frete grátis')}}
                </li>

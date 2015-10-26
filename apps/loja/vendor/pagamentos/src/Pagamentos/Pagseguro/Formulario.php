@@ -9,7 +9,7 @@ use Phalcon\Forms\Element\Select;
 use Phalcon\Forms\Element\Hidden;
 class Formulario{
 
-	public static $session_url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/sessions';
+	public static $session_url = 'https://ws.pagseguro.uol.com.br/v2/sessions';
 	public static $email;
 	public static $token;
 
@@ -49,7 +49,7 @@ class Formulario{
     }
 
     protected static function getScript(){
-    	return '<script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js "></script>';
+    	return '<script type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js "></script>';
     }
 
     protected static function getSession($sessao){

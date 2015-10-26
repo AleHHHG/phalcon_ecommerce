@@ -30,7 +30,7 @@ class MailerHelper extends BaseHelper{
 	protected function pedidoAprovado(){
 		$array = array(
 			'email' => $this->session->get('email'),
-			'assunto' => 'Pedido Realizado Nº '.$this->opcoes['pedido_id'],
+			'assunto' => 'Pedido Aprovado Nº '.$this->opcoes['pedido_id'],
 			'conteudo' => parent::replaceWraper(3,array(
 				$this->opcoes['pedido_id'],
 				$this->session->get('nome'),
@@ -43,7 +43,7 @@ class MailerHelper extends BaseHelper{
 	protected function pedidoTransporte(){
 		$array = array(
 			'email' => $this->session->get('email'),
-			'assunto' => 'Pedido Realizado Nº '.$this->opcoes['pedido_id'],
+			'assunto' => 'Pedido em Transporte Nº '.$this->opcoes['pedido_id'],
 			'conteudo' => parent::replaceWraper(3,array(
 				$this->opcoes['pedido_id'],
 				$this->session->get('nome'),
@@ -56,10 +56,10 @@ class MailerHelper extends BaseHelper{
 	protected function pedidoConcluido(){
 		$array = array(
 			'email' => $this->session->get('email'),
-			'assunto' => 'Pedido Realizado Nº '.$this->opcoes['pedido_id'],
+			'assunto' => 'Pedido Concluido Nº '.$this->opcoes['pedido_id'],
 			'conteudo' => parent::replaceWraper(2,array(
-				$this->session->get('nome'),
 				$this->opcoes['pedido_id'],
+				$this->session->get('nome'),
 				),$this->ecommerce_options->email_pedido_concluido)
 		);
 		$this->sendMail($array);
@@ -68,10 +68,10 @@ class MailerHelper extends BaseHelper{
 	protected function pedidoCancelado(){
 		$array = array(
 			'email' => $this->session->get('email'),
-			'assunto' => 'Pedido Realizado Nº '.$this->opcoes['pedido_id'],
+			'assunto' => 'Pedido Cancelado Nº '.$this->opcoes['pedido_id'],
 			'conteudo' => parent::replaceWraper(3,array(
-				$this->session->get('nome'),
 				$this->opcoes['pedido_id'],
+				$this->session->get('nome'),
 				$this->opcoes['pedido_id'],
 				),$this->ecommerce_options->email_pedido_cancelado)
 		);

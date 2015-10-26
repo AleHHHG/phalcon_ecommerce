@@ -54,7 +54,7 @@ class CheckoutController extends ControllerBase
 		$_POST['pagamento']['url_base'] = $this->ecommerce_options->url_base;
 		//Inicia o pagamento
 		$pagamento = '\\'.$widget['namespace'].'\Pagamento';
-		$retorno = $pagamento::init(false,$this->request->getPost('pagamento'),unserialize($widget['opcoes']));
+		$retorno = $pagamento::init(true,$this->request->getPost('pagamento'),unserialize($widget['opcoes']));
 		// Retorno do PAGAMENTO
 		$class = '\\'.$widget['namespace'].'\Retorno';
 		$class::init($retorno,$pedido_id);
@@ -103,11 +103,11 @@ class CheckoutController extends ControllerBase
 				'tipo' => $tipo
 			));
 			if($redirect){
-				$this->flashSession->error('Pedido CANCELADO/NÃO AUTORIZADO tente com nova forma de pagamento');
+				$this->flashSession->error('Pedido CANCELADO/NÃO AUTORIZADO tente com uma nova forma de pagamento');
 				return $this->response->redirect("checkout");
 			}
 		}else{
-			$cart->destroy();
+			$this->cart->destroy();
 			if($redirect){
 				return $this->response->redirect("checkout/confirmacao/$pedido_id");
 			}

@@ -290,8 +290,6 @@ class ProdutoHelper extends BaseHelper {
 			$arr['skip'] = intval($this->ecommerce_options->produtos_por_pagina) * $array['pagina'];
 		}
 		$arr['sort'] = array('created_at' => -1);
-		$produtos = Produtos::find($arr);
-		// die(print(count($produtos)));
 		return Produtos::find($arr);
 	}
 

@@ -28,7 +28,7 @@ class PagamentosController extends ControllerBase
         $model->valor_minimo = $this->Utilitarios->toFloat($this->request->getPost('valor_minimo'));
         $model->juros_parcela = $this->Utilitarios->toFloat($this->request->getPost('juros_parcela'));
         $model->valor_minimo_parcela = $this->Utilitarios->toFloat($this->request->getPost('valor_minimo_parcela'));
-        $model->produtos = serialize($opcoes);
+        $model->opcoes = serialize($opcoes);
         $exec = $model->save();
         parent::notifica($exec,array('controller' => 'pagamentos','action' => 'index'));
     }

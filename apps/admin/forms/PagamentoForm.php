@@ -17,7 +17,8 @@ class PagamentoForm extends Form
 
         $op = unserialize($model->opcoes);
         foreach ($op as $key => $value) {
-            $item = new Text($key);
+            $item = new Text('opcoes['.$key.']');
+            $item->setLabel($key);
             $item->setAttribute('class','form-control');
              $item->setAttribute('value',$value);
             $this->add($item);
