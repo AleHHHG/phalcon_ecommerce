@@ -179,6 +179,12 @@ $router->add("/user/create", array(
     'action' => 'create',
 ));
 
+$router->add("/user/recupera", array(
+    'module'     => 'loja',
+    'controller' => 'user',
+    'action' => 'recupera',
+));
+
 $router->add("/user/edit/{param:[a-zA-Z0-9]+}", array(
     'module'     => 'loja',
     'controller' => 'user',

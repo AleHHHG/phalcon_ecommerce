@@ -67,6 +67,12 @@ class LojaApiForm extends Form
         $f->setAttribute('rows','10');
         $this->add($f);
 
+        $f = new TextArea("chat");
+        $f->setLabel('Chat');
+        $f->setAttribute('class','form-control');
+        $f->setAttribute('rows','10');
+        $this->add($f);
+
     }
 
 }

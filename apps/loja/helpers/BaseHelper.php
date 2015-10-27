@@ -141,4 +141,20 @@ class BaseHelper extends Tag {
     	}
     	return $this->toFloat($desconto);
     }
+
+    public function geraSenha($caracteres = 8){
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVXZWY0123456789';
+        $string = '';
+         for ($i = 0; $i < $caracteres; $i++) {
+              $string .= $characters[rand(0, strlen($characters) - 1)];
+         }
+        return $string;
+    }
+
+ 	public function setDesconto($valor,$desconto){
+        $percentual = $desconto/100;
+        $valor_final = $valor - ($percentual * $valor);
+        return number_format($valor_final, 2, '.', '');
+    }
+
 }

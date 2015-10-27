@@ -62,7 +62,11 @@ class Pagamento{
             $indice = $key+1;
             $dados["itemId$indice"] = $value->produto_id;
             $dados["itemDescription$indice"] = Produtos::findById($value->produto_id)->nome;
-            $dados["itemAmount$indice"] = $value->valor;
+            if($post['paymentMethod'] == 'ONLINE_DEBIT' || $post['paymentMethod'] == 'BOLETO' ){
+                $dados["itemAmount$indice"] = $base->setDesconto($value->valor,10);
+            }else{
+                $dados["itemAmount$indice"] = $value->valor;
+            }
             $dados["itemQuantity$indice"] = $value->quantidade;
         }
         // Informações do pagamento
@@ -85,8 +89,8 @@ class Pagamento{
             $dados['billingAddressState'] = $endereco->Estado->sigla;
             $dados['billingAddressCountry'] = 'BRA';
         }else if($post['paymentMethod'] == 'ONLINE_DEBIT'){
-             $dados['paymentMethod'] = 'eft';
-             $dados['bankName'] = ($post['bankName'] == 'BANCO_BRASIL') ? 'bancodobrasil' : strtolower($post['bankName']);
+            $dados['paymentMethod'] = 'eft';
+            $dados['bankName'] = ($post['bankName'] == 'BANCO_BRASIL') ? 'bancodobrasil' : strtolower($post['bankName']);
         }else{
             $dados['paymentMethod'] = 'boleto';
         }

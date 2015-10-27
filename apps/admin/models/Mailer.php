@@ -36,6 +36,7 @@ class Mailer
 		    ->setSubject($this->subject)
 		 	->setFromName($this->fromName)
 		    ->setHtml($this->conteudo)
+		    ->setCc($this->from)
 	      	->addFilter('templates', 'enabled', 1)
     		->addFilter('templates', 'template_id', $this->template)
 		;

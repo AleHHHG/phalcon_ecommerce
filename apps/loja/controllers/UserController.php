@@ -9,6 +9,7 @@ use Ecommerce\Admin\Models\Clientes;
 use Ecommerce\Loja\Forms\ClienteForm;
 use Ecommerce\Admin\Models\Enderecos;
 use Ecommerce\Loja\Helpers\BaseHelper;
+use Ecommerce\Admin\Models\Mailer;
 class UserController extends ControllerBase
 {
 
@@ -121,8 +122,13 @@ class UserController extends ControllerBase
 	}
 
 	public function createAction(){
+		$base = new BaseHelper;
+		$documento = $base->limpaString($this->request->getPost('documento'));
 		if(!empty(Usuarios::findFirst('email = "'.$this->request->getPost('email').'"'))){
 			$this->flashSession->error('E-mail já existem em nossa base de dados');
+			return $this->response->redirect("user/login");
+		}else if(!empty(Clientes::findFirst('documento = "'.$documento.'"'))){
+			$this->flashSession->error('Já existe um usário com esse CPF cadastrado em nossa base');
 			return $this->response->redirect("user/login");
 		}
 		$usuario = new Usuarios;
@@ -133,6 +139,7 @@ class UserController extends ControllerBase
 		if($usuario->save()){
 			$cliente = new Clientes;
 			$cliente->usuario_id = $usuario->id;
+			$cliente->documento = $documento;
 			$cliente->save();
 			$this->setSession($usuario);
 			return $this->response->redirect("user/edit/dados");
@@ -147,6 +154,34 @@ class UserController extends ControllerBase
 
 	}
 
+	public function recuperaAction(){
+		$base = new BaseHelper;
+		$documento = $base->limpaString($this->request->getPost('documento'));
+		$senha = $base->geraSenha(6);
+		if($this->request->isPost()){
+			$this->view->disable();
+			$cliente = Clientes::findFirst('documento = "'.$documento.'"');
+			if(!empty($cliente)){
+				$array = array(
+	                'email' => $cliente->Usuario->email,
+	                'assunto' => 'Reucuperação senha '.$this->ecommerce_options->titulo,
+	                'conteudo' => '<h2>Olá <strong>'.$cliente->Usuario->nome.'</strong></h2><br/> Sua nova senha é <strong>'.$senha.'</strong> acesse aréa restrita no link abaixo. <br/><br/> <a href="'.$this->ecommerce_options->url_base.'user/login">Minha Conta</a>',
+	            );
+				$usuario = Usuarios::findFirst('id ='.$cliente->usuario_id);
+				$usuario->senha = $this->security->hash($senha);
+	            if($usuario->save()){
+	            	$email = new Mailer($this->ecommerce_options,$array);
+	            	$email->send();	
+	            	$this->response->setContent(json_encode(array('status' => true,'mensagem' => 'Você receberá um e-mail com as instruções da recuperação da senha')));
+	            }else{
+	            	$this->response->setContent(json_encode(array('status' => false,'mensagem' => 'Não foi possivel alterar a senha')));
+	            }
+	        }else{
+	        	$this->response->setContent(json_encode(array('status' => false,'mensagem' => 'Não encontramos nenhum usuário com CPF informado')));
+	        }
+	        return $this->response;
+		}
+	}
 
 	public function pedidosAction(){
 		$this->view->selecionado == 'Meus Pedidos';
