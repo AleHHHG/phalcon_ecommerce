@@ -258,8 +258,8 @@ class CartHelper extends BaseHelper{
 			$preco_real = ($value->valor_real) ? '<span class="preco-desconto">R$ '.number_format($value->valor_real,2,',','.').'</span>' : '';
 			if(!$this->options['resumo']){
 				$html .= "<td><img src='{$this->url_base}{$imagem->url}' class='img-responsive' style='width:100px'/></td>";
-				$chave = parent::arrayMultiSearch($produto['detalhes'],'detalhe_id',$value->options['detalhe_id']);
 				if($this->ecommerce_options->produto_detalhes == '1'){
+					$chave = parent::arrayMultiSearch($produto['detalhes'],'detalhe_id',$value->options['detalhe_id']);
 					$variacao = '';
 					foreach (unserialize($this->ecommerce_options->produto_detalhe_options) as $c => $v) {
 						$variacao .= ucwords($v['label']).': '.$produto['detalhes'][$chave]["{$v['label']}"];
@@ -279,7 +279,7 @@ class CartHelper extends BaseHelper{
 					$select .= "<option value='$i' $selected>$i</option>";
 				}
 				$select .= '</select>';
-				$html .= "<td>$select</td>";
+				$html .= "<td style='width:18%'>$select</td>";
 				$html .= "<td>R$ $preco $preco_real</td>";
 				$html .= "<td class='cart-item-total'>R$ $total</td>";
 				$link = $this->url_base.'cart/remove/'.$key;

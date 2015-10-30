@@ -29,9 +29,9 @@ class ProdutoHelper extends BaseHelper {
 		'overlay_position' => 'THUMBNAIL_CONTAINER',
 		'overlay_class' => '',
 		'overlay_options' => array(
-			'QUICK_VIEW' => array('text' => '<i class="fa fa-eye"></i>','class' =>'','content' => ''),
-			'WISH_LIST' => array('text' => '<i class="fa fa-heart-o"></i>','class' =>'','content' => ''),
-			'COMPARE' => array('text' => '<i class="fa fa-signal"></i>','class' =>'','content' => ''),
+			'QUICK_VIEW' => array('text' => '<i class="fa fa-eye"></i>','class' =>'','content' => '','content_class' => ''),
+			'WISH_LIST' => array('text' => '<i class="fa fa-heart-o"></i>','class' =>'','content' => '','content_class' => ''),
+			'COMPARE' => array('text' => '<i class="fa fa-signal"></i>','class' =>'','content' => '','content_class' => ''),
 		),
 		'destaque' => 0,
 		'lancamento' => 0,
@@ -208,7 +208,7 @@ class ProdutoHelper extends BaseHelper {
 		$html = '';
 		foreach ($array['overlay_options'] as $key => $value) {
 			if($value['content'] != ''){
-				$conteudo =  '<'.$value['content'].'>'.constant('self::'.$key).'</'.$value['content'].'>';
+				$conteudo =  '<'.$value['content'].' class="'.$value['content_class'].'">'.constant('self::'.$key).'</'.$value['content'].'>';
 			}else{
 				$conteudo = constant('self::'.$key);
 			}

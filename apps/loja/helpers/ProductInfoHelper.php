@@ -55,14 +55,14 @@ class ProductInfoHelper extends SingleHelper {
 				$desconto = parent::getDesconto($produto,$index);
 				$valor = 'R$ '.number_format($produto->detalhes[$index]['valor'] - $desconto,2,',','.');
 				if($desconto != 0){
-					$valor .= '<'.$this->layout['desconto_container'].' class="'.$this->layout['desconto_container'].'"> R$ '.number_format($produto->detalhes[$index]['valor'],2,',','.').'</'.$this->layout['desconto_container'].'/>';
+					$valor .= '<'.$this->layout['desconto_container'].' class="'.$this->layout['desconto_class'].'"> R$ '.number_format($produto->detalhes[$index]['valor'],2,',','.').'</'.$this->layout['desconto_container'].'/>';
 				}
 			}
 		}else{
 			$desconto = parent::getDesconto($produto);
 			$valor = 'R$ '.number_format($produto->valor - $desconto,2,',','.');
 			if($desconto != 0){
-				$valor .= '<'.$this->layout['desconto_container'].' class="'.$this->layout['desconto_container'].'"> R$ '.number_format($produto->valor,2,',','.').'</'.$this->layout['desconto_container'].'/>';
+				$valor .= '<'.$this->layout['desconto_container'].' class="'.$this->layout['desconto_class'].'"> R$ '.number_format($produto->valor,2,',','.').'</'.$this->layout['desconto_container'].'/>';
 			}
 		}
 		return parent::replaceWraper(2,array(
@@ -75,7 +75,7 @@ class ProductInfoHelper extends SingleHelper {
 
 	protected function setProductDescription($produto){
 		$html = "<{$this->layout['descricao_container']} class='{$this->layout['descricao_class']}'>";
-		$html .= nl2br($produto->descricao);
+		$html .= (isset($produto->resumo)) ? nl2br($produto->resumo) :$produto->descricao;
 		$html .= "</{$this->layout['descricao_container']}>";
 		return $html;
 	}

@@ -10,9 +10,15 @@ use Ecommerce\Loja\Helpers\BaseHelper;
 use Phalcon\Mvc\View;
 class ProdutoController extends ControllerBase
 {
+	public function initialize(){
+		parent::initialize();
+		$this->base = new BaseHelper;
+	}
+
 	public function indexAction($produto,$id){
 		$this->view->produto = Produtos::findById($id);
 		$this->view->categoria = Categorias::findById($this->view->produto->categoria);
+		$this->view->categoria_nome = $this->base->sanitizeString($this->view->categoria->nome);
 		$this->view->detalhe = 0;
 		$this->view->posicao = 0;
 	}
@@ -21,6 +27,7 @@ class ProdutoController extends ControllerBase
 		$this->view->disableLevel(View::LEVEL_AFTER_TEMPLATE);
 		$this->view->produto = Produtos::findById($this->request->getPost('id'));
 		$this->view->categoria = Categorias::findById($this->view->produto->categoria);
+		$this->view->categoria_nome = $this->base->sanitizeString($this->view->categoria->nome);
 		$this->view->detalhe = 0;
 		$this->view->posicao = 0;
 	}
@@ -50,7 +57,6 @@ class ProdutoController extends ControllerBase
 	}
 
 	public function searchAction(){
-		$base = new BaseHelper;
         if($this->request->isPost()) {
             if(isset($_POST['q'])){
         	  	$this->view->disable();
@@ -61,7 +67,7 @@ class ProdutoController extends ControllerBase
 	                $arr[$key]['id'] =  (string) $value->_id;
 	                $arr[$key]['name'] =  $value->nome;
 	                $arr[$key]['imagem'] = $this->ecommerce_options->url_base.Imagens::findFirst($value->imagens[0])->url;
-	            	$arr[$key]['url'] = $base->generateUrl($value->nome,$value->_id,'produto');
+	            	$arr[$key]['url'] = $this->base->generateUrl($value->nome,$value->_id,'produto');
 	            }
 	            $this->response->setHeader("Content-Type", "application/json"); 
 	            return $this->response->setContent(json_encode($arr));

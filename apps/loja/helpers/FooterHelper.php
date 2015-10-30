@@ -175,7 +175,7 @@ class FooterHelper extends BaseHelper{
 		if($valor == 'descrição'){
 			$html .= '<p>'.$this->ecommerce_options->descricao.'</p>';
 		}else if($valor == 'segurança'){
-			$html .= '<img src='.$this->url_base.'img/loja/certificado/'.$this->ecommerce_options->certificado.'.png class="img-responsive">';;
+			$html .= '<img src='.$this->url_base.'img/loja/certificado/'.$this->ecommerce_options->certificado.'.png class="img-responsive">';
 		}else if($valor == 'menu'){
 			foreach (\Ecommerce\Admin\Models\Paginas::find() as $key => $value) {
 				$item .=  parent::replaceWraper(3,

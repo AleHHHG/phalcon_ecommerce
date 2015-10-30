@@ -27,8 +27,8 @@ class ProductImageHelper extends SingleHelper {
 		if($this->layout['unique_item']){
 			$item .= parent::replaceWraper(2,
 					array(
-						($this->layout['identificador']) ? $this->layout['item_class'].$int : $this->layout['item_class'],
-						$this->setImagem($produto_imagens[0],'item',$after,$before)
+						($this->layout['identificador']) ? $this->layout['item_class'] : $this->layout['item_class'],
+						$this->setImagem((isset($produto_imagens[0])) ? $produto_imagens[0] : '0','item',$after,$before)
 					),
 					$this->layout['item_wrap']);
 		}else{
@@ -60,17 +60,25 @@ class ProductImageHelper extends SingleHelper {
 	}
 
 	protected function setImagem($img,$param,$after,$before,$identificador = 0){
-		$img = Imagens::findFirst($img);
+		if($img == 0){
+			$img = new \stdClass();
+			$img->url = '/img/no-image.jpg';
+		}else{
+			$img = Imagens::findFirst($img);
+		}
 		$imagem = ($param == 'item') ? $after : '';
 		$attr = '';
 		foreach ($this->layout[$param.'_imagem_attr'] as $key => $value) {
 			$attr .= $key.'='.$value.' ';
+			if(isset($this->ecommerce_options->galeria) && $this->ecommerce_options->galeria != ''){
+				$attr .= 'data-galeria="'.$this->ecommerce_options->galeria.'"';
+			}
 		}
 		$img_url = $this->url_base.$img->url;
 		$size = explode('x', $this->ecommerce_options->imagem_size);
 		$src = "{$this->url_base}public/{$img->url}&q=90&w={$size[0]}&h={$size[1]}&zc=2";
 		$img = "{$this->url_base}public/timthumb?src=$src'";
-		if($this->layout['identificador'] && $this->layout['identificador_position'] == $param){
+		if($this->layout['identificador']){
 			$wrap = str_replace('_IDENTIFICADOR_', $identificador, $this->layout[$param.'_imagem_wrap']);
 			$wrap = str_replace('_ZOOM_', $img_url, $wrap);
 			$wrap = str_replace('_IMAGE_', $img, $wrap);

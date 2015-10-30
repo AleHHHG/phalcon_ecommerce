@@ -6,6 +6,7 @@ use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Numeric;
 use Phalcon\Forms\Element\File;
+use Phalcon\Forms\Element\TextArea;
 class LojaGeralForm extends Form
 {
 
@@ -26,11 +27,21 @@ class LojaGeralForm extends Form
         $telefone->setAttribute('class','form-control ');
         $this->add($telefone);
 
+        $endereco = new Text("endereco");
+        $endereco->setAttribute('class','form-control ');
+        $this->add($endereco);
+
         $cep = new Text("cep");
         $cep->setLabel('CEP');
         $cep->setAttribute('data-mask','99999-999');
         $cep->setAttribute('class','form-control ');
         $this->add($cep);
+
+        $descricao = new TextArea("descricao");
+        $descricao->setLabel('Descrição da loja');
+        $descricao->setAttribute('class','form-control ');
+        $descricao->setAttribute('rows','5');
+        $this->add($descricao);
 
 
         $produtos_por_pagina = new Numeric("produtos_por_pagina");

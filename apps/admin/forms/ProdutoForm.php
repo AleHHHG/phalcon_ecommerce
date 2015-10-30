@@ -69,8 +69,15 @@ class ProdutoForm extends Form
             $this->add($estoque);
         }
 
+        $descricao = new TextArea("resumo");
+        $descricao->setLabel("Descrição Resumida");
+        $descricao->setAttribute('class','form-control');
+        $descricao->setAttribute('rows','5');
+        $this->add($descricao);
+        
+
         $descricao = new TextArea("descricao");
-        $descricao->setLabel("Descrição");
+        $descricao->setLabel("Descrição Completa");
         $descricao->setAttribute('class','form-control summernote');
         $descricao->setAttribute('rows','10');
         $this->add($descricao);

@@ -118,12 +118,12 @@ class BaseHelper extends Tag {
     }
 
     public function getDesconto($produto,$index = 0){
-    	if(is_object($produto)){
-    		$detalhes = $produto->detalhes;
-    	}else{
-    		$detalhes = $produto['detalhes'];
-    	}
     	if($this->ecommerce_options->produto_detalhes == '1'){
+		 	if(is_object($produto)){
+	    		$detalhes = $produto->detalhes;
+	    	}else{
+	    		$detalhes = $produto['detalhes'];
+	    	}
     		if(is_string($index)){
     			$index = $this->arrayMultiSearch($detalhes,'detalhe_id',$index);
     		}

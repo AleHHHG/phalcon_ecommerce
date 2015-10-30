@@ -10,6 +10,7 @@ class Produtos extends \Phalcon\Mvc\Collection
     public $meta_title;
     public $meta_description;
     public $meta_keywords;
+    public $resumo;
     public $descricao;
     public $relacionados = array();
 

@@ -12,10 +12,6 @@ use Ecommerce\Admin\Models\Mailer;
 class CartController extends ControllerBase
 {
 
-	public function initialize(){
-		parent::initialize();
-	}
-
 	public function indexAction(){
 		$this->view->cart = $this->cart;
 	}
