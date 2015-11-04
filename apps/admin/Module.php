@@ -14,7 +14,7 @@ class Module implements ModuleDefinitionInterface{
     /**
      * Register a specific autoloader for the module
      */
-    public function registerAutoloaders(\Phalcon\DiInterface $dependencyInjector = NULL)
+    public function registerAutoloaders(DiInterface $di = NULL)
     {
 
         $loader = new Loader();

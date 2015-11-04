@@ -67,6 +67,7 @@ $di->setShared('session', function () {
         $session->start();
     }
     return $session;
+    
 });
 
 $di->setShared('cart', function () {

@@ -86,10 +86,14 @@ class BannerHelper extends BaseHelper{
 	public function getCaption($dados,$param,$chave){
 		$item = '';
 		if($param == 'title'){
-			if($dados->descricao != ''){
-				$item = $dados->nome;
+			if($this->options['posicao'] == '1'){
+				if($dados->descricao != ''){
+					$item = $dados->nome;
+				}else{
+					$item = '';
+				}
 			}else{
-				$item = '';
+				$item = $dados->nome;
 			}
 		}else if($param == 'description'){
 			$item = nl2br($dados->descricao);

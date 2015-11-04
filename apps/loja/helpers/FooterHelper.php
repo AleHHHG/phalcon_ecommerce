@@ -9,7 +9,7 @@ class FooterHelper extends BaseHelper{
 	protected $layouts = array(
 		'BASE_LAYOUT' => array(
 			'itens' => array(
-				'descriçao','segurança','menu','informaçãoes','contato'
+				'descriçao','segurança','menu','informações','contato'
 			),
 			'container_wrap' => '<div class="%1Ss">%2Ss</div>',
 			'container_class' => 'col-md-3',
@@ -187,7 +187,7 @@ class FooterHelper extends BaseHelper{
 					$layout['item_wrap']
 				);
 			}
-		}else if($valor == 'informaçãoes'){
+		}else if($valor == 'informações'){
 			$array = array('termos_de_uso','politica_de_privacidade','politica_de_entrega','trocas_e_devolucoes');
 			foreach ($array as $key => $value) {
 				$nome = str_replace('politica','política',str_replace('_', ' ', $value));

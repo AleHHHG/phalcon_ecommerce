@@ -9,7 +9,7 @@ class ControllerBase extends Controller
 		$this->verificaAtivo();
 		$this->view->setTemplateAfter('main');
 		$this->getTemplateFiles();
-		$this->view->marcas = \Ecommerce\Admin\Models\Marcas::find();
+		$this->view->marcas = \Ecommerce\Admin\Models\Marcas::find()->toArray();
 	}
 	
 	public function getTemplateFiles(){
