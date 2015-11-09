@@ -33,6 +33,11 @@ class LojaLayoutForm extends Form
         $f->setAttribute('class','form-control');
         $this->add($f);
 
+        $f = new text("template_variacao");
+        $f->setLabel('Template Variação');
+        $f->setAttribute('class','form-control');
+        $this->add($f);
+
         $f = new text("imagem_size");
         $f->setLabel('Imagem Size');
         $f->setAttribute('class','form-control');

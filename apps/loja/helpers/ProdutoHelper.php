@@ -132,7 +132,7 @@ class ProdutoHelper extends BaseHelper {
 					if($obj->detalhes[0]['desconto']){
 						$desconto = $obj->detalhes[0]['desconto'];
 						$preco = 'R$ '.number_format($preco_total-$desconto,2,',','.');
-						$preco .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_container'].'"> R$ '.number_format($preco_total,2,',','.').'</'.$this->options['desconto_container'].'/>';
+						$preco .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_class'].'"> R$ '.number_format($preco_total,2,',','.').'</'.$this->options['desconto_container'].'/>';
 					}else{
 						$preco = 'R$ '.number_format($preco_total,2,',','.');
 					}
@@ -141,7 +141,7 @@ class ProdutoHelper extends BaseHelper {
 					if($obj->desconto){
 						$desconto = $obj->desconto;
 						$preco = 'R$ '.number_format($preco_total-$desconto,2,',','.');
-						$preco .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_container'].'"> R$ '.number_format($preco_total,2,',','.').'</'.$this->options['desconto_container'].'/>';
+						$preco .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_class'].'"> R$ '.number_format($preco_total,2,',','.').'</'.$this->options['desconto_container'].'/>';
 					}else{
 						$preco = 'R$ '.number_format($preco_total,2,',','.');
 					}

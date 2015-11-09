@@ -61,8 +61,8 @@
 									<br clear='all'/>
 								</div>
 							{% endfor %}
+						</div>
 						{% endif %}
-					</div>
 				</div>
 				<div class="form-group">
 					<div class="page-header">
@@ -114,8 +114,8 @@
 									<br clear='all'/>
 								</div>
 							{% endfor %}
-						{% endif %}
-					</div>
+						</div>
+					{% endif %}
 				</div>
 			   	{{ submit_button("Editar", "class": "btn btn-primary btn-lg")  }}
 			{{ endform() }}
