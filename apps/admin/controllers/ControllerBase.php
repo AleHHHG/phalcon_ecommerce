@@ -22,7 +22,10 @@ class ControllerBase extends Controller
 		}
 		$attrs = ($this->ecommerce_options->produto_detalhes == '1') ? unserialize($this->ecommerce_options->produto_detalhe_options) : array();
 		if($this->ecommerce_options->produto_options != ''){
-			$attrs = array_merge($attrs,unserialize($this->ecommerce_options->produto_options));
+			$produto_variacao = unserialize($this->ecommerce_options->produto_options);
+			if($produto_variacao[0]['referencia'] != ''){
+				$attrs = array_merge($attrs,$produto_variacao);
+			}
 		}
 		$this->atributos = $attrs;
 		$this->view->atributos = $this->atributos;

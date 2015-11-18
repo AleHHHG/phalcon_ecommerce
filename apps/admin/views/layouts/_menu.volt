@@ -62,20 +62,21 @@
                </li>
             </ul>
          </li>
-
-         <li>
-            <a href="#">
-               <i class="fa fa-sliders"></i>
-               <span class="title">Atributos</span>
-            </a>
-            <ul class="sub-menu" >
-               {% for attr in atributos %}
-                  <li>
-                     {{ link_to('admin/atributos/'~attr['label'],base_helper.pluralize(attr['label'])|capitalize)}}
-                  </li>
-               {% endfor %}
-            </ul>
-         </li>
+         {% if atributos is not empty %}
+            <li>
+               <a href="#">
+                  <i class="fa fa-sliders"></i>
+                  <span class="title">Atributos</span>
+               </a>
+               <ul class="sub-menu" >
+                  {% for attr in atributos %}
+                     <li>
+                        {{ link_to('admin/atributos/'~attr['label'],base_helper.pluralize(attr['label'])|capitalize)}}
+                     </li>
+                  {% endfor %}
+               </ul>
+            </li>
+         {% endif %}
 
          <li>
              {{ link_to('admin/relatorios',

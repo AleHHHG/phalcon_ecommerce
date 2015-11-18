@@ -208,7 +208,8 @@ class ProdutoHelper extends BaseHelper {
 		$html = '';
 		foreach ($array['overlay_options'] as $key => $value) {
 			if($value['content'] != ''){
-				$conteudo =  '<'.$value['content'].' class="'.$value['content_class'].'">'.constant('self::'.$key).'</'.$value['content'].'>';
+				$content_class = (isset($value['content_class'])) ? $value['content_class'] : '';
+				$conteudo =  '<'.$value['content'].' class="'.$content_class.'">'.constant('self::'.$key).'</'.$value['content'].'>';
 			}else{
 				$conteudo = constant('self::'.$key);
 			}

@@ -89,12 +89,16 @@ class BaseHelper extends Tag {
 
 
 	public function arrayMultiSearch($array,$posicao,$termo){
-		foreach ($array as $key => $value) {
-			if($value[$posicao] == $termo){
-				return $key;
+		if(is_array($array)){
+			foreach ($array as $key => $value) {
+				if($value[$posicao] == $termo){
+					return $key;
+				}
 			}
+			return null;
+		}else{
+			return null;
 		}
-		return null;
 	}
 
 	public function toFloat($num){
