@@ -76,7 +76,9 @@ class ProdutoHelper extends BaseHelper {
 		}
 		$html .= "</{$array['container']}>";
 		$html .= ($this->options['produto_container']) ? '</div>' : '';
-		$html .= $this->getPagination($array['categoria'],$array['pagina']);
+		if(!isset($array['relacionados'])){
+			$html .= $this->getPagination($array['categoria'],$array['pagina']);
+		}
 		return $html;
 	}
 
