@@ -160,10 +160,11 @@ class ProductInfoHelper extends SingleHelper {
 		if(!$estoque){
 			if($this->layout['options']['label']){
 				$label = ucwords(parent::pluralize($detalhes[1]['label']));
+				$label = "<".$this->layout['options']['label_container'].">$label</".$this->layout['options']['label_container'].">";
 			}else{
 				$label = '';
 			}
-			$html .= "<div class='".$this->layout['options']['container_size']." no-padding-left'><".$this->layout['options']['label_container'].">$label</".$this->layout['options']['label_container'].">";
+			$html .= "<div class='".$this->layout['options']['container_size']." no-padding-left'>$label";
 			$html .= '<select name="detalhe" id="detalhe" class="form-control detalhe">';
 			foreach ($array as $key => $value) {
 				$html .= "<option value='$key' data-estoque='{$value['estoque']}' data-detalhe='{$value['detalhe_id']}'>$key</option>";
@@ -174,10 +175,11 @@ class ProductInfoHelper extends SingleHelper {
 		}else{
 			if($this->layout['options']['label']){
 				$label = 'Quantidade';
+				$label = "<".$this->layout['options']['label_container'].">$label</".$this->layout['options']['label_container'].">";
 			}else{
 				$label = '';
 			}
-			$html .= "<div class='".$this->layout['options']['container_size']." no-padding-left'><".$this->layout['options']['label_container'].">$label</".$this->layout['options']['label_container'].">";
+			$html .= "<div class='".$this->layout['options']['container_size']." no-padding-left'>$label";
 			$html .= '<select name="quantidade" class="'.$this->layout['option_class'].' quantidade" id="quantidade" required>';
 			$array = array_values($array);
 			$total = (isset($array[0]['estoque'])) ? $array[0]['estoque'] : $array[0];
