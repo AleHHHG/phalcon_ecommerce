@@ -16,6 +16,7 @@ class MenuHelper extends BaseHelper{
 		'item_class' => '',
 		'item_link_class' => '',
 		'submenu' => true,
+		'submenu_item_wrap' => '',
 		'submenu_class' => '',
 		'submenu_id' => '',
 		'submenu_item_class' => '',
@@ -93,7 +94,8 @@ class MenuHelper extends BaseHelper{
 					$value['nome'],
 					'',
 				);
-				$submenu .= parent::replaceWraper(5,$replaces,$array['item_wrap']);
+				$wrap = ($array['submenu_item_wrap'] != "") ? $array['submenu_item_wrap'] : $array['item_wrap'];
+				$submenu .= parent::replaceWraper(5,$replaces,$wrap);
 			}
 		}
 		return $submenu;
