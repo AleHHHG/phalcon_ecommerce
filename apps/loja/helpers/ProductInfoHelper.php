@@ -4,12 +4,10 @@ use Ecommerce\Admin\Models\Avaliacoes;
 class ProductInfoHelper extends SingleHelper {
 	
 	protected $layout;
-
 	function __construct($layout){
 		parent::__construct();
 		$this->layout = $layout;
 	}
-
 	protected function getProductInfo(){
 		$html = "<div class='{$this->layout['size']}'>";
 		$html .= "<{$this->layout['container']}  class='{$this->layout['container_class']}'>";
@@ -20,27 +18,20 @@ class ProductInfoHelper extends SingleHelper {
 		}
 		// Seta a preço do produto
 		$html .= $this->setProductPrice($this->layout['produto']);
-
 		// Seta o descricao do produto
 		$html .= $this->setProductDescription($this->layout['produto']);
-
 		$html .= $this->getDetalhes();
-
 		$html .= $this->setAddCart();
-
 		if($this->layout['social']){
 			$html .= $this->setSocial();
 		}
-
 		$html .= "</{$this->layout['container']}>";
 		$html .= "</div>";
 		return $html;
 	}
-
 	protected function setProductTitle(){
 		return parent::replaceWraper(2,array($this->layout['title_class'],$this->layout['produto']->nome),$this->layout['title_wrap']);
 	}
-
 	protected function setProductPrice($produto){
 		if($this->ecommerce_options->produto_detalhes == '1'){
 			if($this->layout['detalhe'] == '0'){
@@ -72,14 +63,12 @@ class ProductInfoHelper extends SingleHelper {
 			$this->layout['preco_wrap']
 		);
 	}
-
 	protected function setProductDescription($produto){
 		$html = "<{$this->layout['descricao_container']} class='{$this->layout['descricao_class']}'>";
 		$html .= (isset($produto->resumo)) ? nl2br($produto->resumo) :$produto->descricao;
 		$html .= "</{$this->layout['descricao_container']}>";
 		return $html;
 	}
-
 	protected function setAvaliacao(){
 		$produto = (string)$this->layout['produto']->_id;
 		$stars = Avaliacoes::getStars(Avaliacoes::average(array(
@@ -89,7 +78,6 @@ class ProductInfoHelper extends SingleHelper {
 		);
 		return parent::replaceWraper(2,array($this->layout['avaliacao_class'],$stars),$this->layout['avaliacao_wrap']);
 	}
-
 	protected function getDetalhes(){
 		$html = '<div class="col-md-4 no-padding-left"><h5><strong>Quantidade:</strong></h5><select name="quantidade" class="form-control quantidade" id="quantidade">';
 		$html .= '<option value="0">Selecione a quantidade</option>';
@@ -109,7 +97,6 @@ class ProductInfoHelper extends SingleHelper {
 		}
 		return $html;
 	}
-
 	private function groupDetalhes($detalhe,$item,$produto_detalhes){
 		$array = array();
 		for ($i=0; $i < count($item) ; $i++) { 
@@ -123,7 +110,6 @@ class ProductInfoHelper extends SingleHelper {
 		}
 		return $array;
 	}
-
 	private function setDetalhes($itens,$detalhes,$posicao){
 		$label = ucwords(parent::pluralize($itens['label']));
 		$html = "<div class='col-md-12 no-padding-left'><h5><strong>$label </strong></h5>";
@@ -154,7 +140,6 @@ class ProductInfoHelper extends SingleHelper {
 		$html .= "<input type='hidden' name='produto_id' id='produto_id' value='{$this->layout['produto']->_id}' />";
 		return $html;
 	}
-
 	private function generateOptions($array,$detalhes,$estoque =false){
 		$html = '';
 		if(!$estoque){
@@ -190,7 +175,6 @@ class ProductInfoHelper extends SingleHelper {
 		}
 		return $html;
 	}	
-
 	protected function setSocial(){
 		$itens = '';
 		foreach ($this->layout['social_itens'] as $value) {
@@ -230,7 +214,6 @@ class ProductInfoHelper extends SingleHelper {
 				$this->layout['social_wrap']
 			);
 	}
-
 	protected function setAddCart(){
 		return parent::replaceWraper(3,array(
 			'addCart '.$this->layout['add_cart_class'],

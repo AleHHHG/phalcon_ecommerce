@@ -36,6 +36,7 @@ class ProdutoController extends ControllerBase
 	public function variacaoAction($produto,$id,$detalhe,$posicao){
 		$this->view->produto = Produtos::findById($id);
 		$this->view->categoria = Categorias::findById($this->view->produto->categoria);
+		$this->view->categoria_nome = $this->base->sanitizeString($this->view->categoria->nome);
 		$this->view->detalhe = $detalhe;
 		$this->view->posicao = $posicao;
 	}

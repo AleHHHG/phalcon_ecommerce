@@ -18,7 +18,7 @@ class ProdutoDetalheForm extends Form
     	foreach ($detalhes as $key => $value) {
     		$chave = $key;
 			$chave = new Select("detalhes[{$value['label']}][]", $value['referencia']::find(array('order' => 'nome ASC')), array(
-	            'using' => array('nome', 'nome')
+                'using' => array('nome', 'nome')
 	        ));
 	        $chave->setLabel($value['label']);
 	        $chave->setAttribute('class','form-control '.$value['label']);
