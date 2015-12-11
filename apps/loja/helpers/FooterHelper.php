@@ -77,7 +77,7 @@ class FooterHelper extends BaseHelper{
 
 	public function getSocial($layout){
 		$item = '';
-		$array = array('facebook','google_plus','twitter');
+		$array = array('facebook','google_plus','twitter','instagram');
 		foreach ($array as $value) {
 			if($layout['size'] == 'medium'){
 				$size = 'fa-3x';

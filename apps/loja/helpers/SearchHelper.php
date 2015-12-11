@@ -68,11 +68,15 @@ class SearchHelper extends BaseHelper{
 		return $html;
 	}
 
-	protected function getInput(){
-		$token = ($this->options['token_input']) ? 'id="input-search"' : '';
+	protected function getInput(){		
 		$html = '<div class="form-group">';
-		$html .= '<input '.$token.' type="text" class="search-fake '.$this->options['input_class'].'" data-url="'.$this->url_base.'produtos/search" placeholder="Digite o que procura" />';
-		$html .= '<input type="hidden" name="search" id="search-real"/>';
+		if($this->options['token_input']){		
+			$html .= '<input id="input-search" type="text" class="search-fake '.$this->options['input_class'].'" data-url="'.$this->url_base.'produtos/search" placeholder="Digite o que procura" />';
+			$html .= '<input type="hidden" name="search" id="search-real"/>';
+		}
+		else{
+			$html .= '<input type="text" class="form-control" name="search" id="search-real"/>';
+		}
 		$html .= '</div>';
 		return $html;
 	}
