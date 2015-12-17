@@ -23,6 +23,8 @@ class SingleHelper extends BaseHelper {
 			'avaliacao_wrap' => '<div class="%1Ss">%2Ss</div>',
 			'preco_wrap' => '<div class="%1Ss">%2Ss</div>',
 			'preco_class' => '',
+			'desconto_container' => 'span',
+			'desconto_class' => '',
 			'descricao_container' => 'div',
 			'descricao_class' => '',
 			'add_cart_wrap' => '<a href="javascript:;" class="%1Ss" data-url="%2Ss">%3Ss</a>',
@@ -41,8 +43,6 @@ class SingleHelper extends BaseHelper {
 				'label_class' => '',
 				'container_size' => 'col-md-4'
 			),
-			'desconto_container' => 'span',
-			'desconto_class' => ''
 		),
 		'PRODUCT_IMAGES_LAYOUT' => array(
 			'size' => 'col-md-6',

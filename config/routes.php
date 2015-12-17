@@ -17,7 +17,6 @@ $router->add("/newsletter", array(
 ));
 
 
-
 $router->add("/categoria/{categoria:[a-zA-Z0-9_-]+}/{id:[a-zA-Z0-9]+}", array(
     'module'     => 'loja',
     'controller' => 'categoria',

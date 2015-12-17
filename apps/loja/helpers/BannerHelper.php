@@ -25,12 +25,14 @@ class BannerHelper extends BaseHelper{
 		'link_wrap' => '<div %1Ss>%2Ss</div>',
 		'link_options' => array(),
 		'link_class' => 'btn btn-primary',
+		'link_text' => 'Mais Detalhes',
 		'navigation_container' => 'div',
 		'navigation_class' =>'',
 		'navigation_id' => '',
 		'navigation_wrapper' => '',
 		'posicao' => 1,
 		'categoria' => '',
+		'background' => false
 	);
 
 	public  function getHelper($options = array()){
@@ -59,16 +61,28 @@ class BannerHelper extends BaseHelper{
 		$criteria['order'] = 'ordem asc';
 		$banner = Banners::find($criteria);
 		foreach ($banner as $key => $value) {
-			$imagem = Imagens::findFirst("id in (".implode(',', unserialize($value->imagens)).")")->url;
+			$arr = array();
+			for ($i=0; $i < count(unserialize($value->imagens)) ; $i++) { 
+				$imagem = unserialize($value->imagens);
+				$img = Imagens::findFirst("id = ".$imagem[$i])->toArray();
+				$arr[] = $img;
+			};
+			if($this->options['background'] && count($arr) > 1){
+				$img = "<img src='".$this->url_base.$arr[1]['url']."' class='img-responsive'/>";
+			}else if(!$this->options['background']){
+				$img = "<img src='".$this->url_base.$arr[0]['url']."' class='img-responsive'/>";
+			}else{
+				$img = '';
+			}
 			$replaces = array(
 				$array['slide_item_id'],
 				$array['slide_item_class'],
-				"<img src='".$this->url_base.$imagem."' class='img-responsive'/>",
+				$img,
 				($array['caption'] ? $this->setCaption($value,$key) : '')
 			);
 			$itens .= parent::replaceWraper(4,
 				$replaces,
-				$array['slide_item_wrap']
+				str_replace('BACKGROUND', 'style="background-image:url('.$this->url_base.$arr[0]['url'].');"', $array['slide_item_wrap'])
 			);
 			
 		}
@@ -99,7 +113,7 @@ class BannerHelper extends BaseHelper{
 			$item = nl2br($dados->descricao);
 		}else if($param == 'link'){
 			if($dados->link != ''){
-				$item = "<a href='$dados->link' class='{$this->options['link_class']}'>Mais Detalhes</a>";
+				$item = "<a href='$dados->link' class='{$this->options['link_class']}'>{$this->options['link_text']}</a>";
 			}
 		}else{
 			$item = '';

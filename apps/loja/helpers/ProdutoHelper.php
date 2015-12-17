@@ -12,6 +12,7 @@ class ProdutoHelper extends BaseHelper {
 		'container'       => 'div',
 		'container_class' => '',
 		'container_id'    => '',
+		'container_attr' => array(),
 		'item_wrap' => '<li class="%1Ss">%2Ss<li>',
 		'item_class' => '',
 		'thumbnail_wrap' =>'<div class="%1Ss">%2Ss</div>',
@@ -60,7 +61,7 @@ class ProdutoHelper extends BaseHelper {
 		$produtos = $this->getData($array);
 		$html = '';
 		$html .= ($this->options['produto_container']) ? '<div id="produto_container">' : '';
-		$html .= "<{$array['container']} id='{$array['container_id']}' class='{$array['container_class']}'>";
+		$html .= "<{$array['container']} id='{$array['container_id']}' class='{$array['container_class']}' ".parent::setContainerAttrs($array['container_attr']).">";
 		foreach ($produtos as $key => $value) { 
 			$item = $this->setThumbnail($array,$value);
 			$item .= $this->setInfo($array,$value);
@@ -76,7 +77,7 @@ class ProdutoHelper extends BaseHelper {
 		}
 		$html .= "</{$array['container']}>";
 		$html .= ($this->options['produto_container']) ? '</div>' : '';
-		if(!isset($array['relacionados'])){
+		if(!isset($array['relacionados']) && !$this->options['destaque'] && !$this->options['lancamento'] ){
 			$html .= $this->getPagination($array['categoria'],$array['pagina']);
 		}
 		return $html;
@@ -143,7 +144,7 @@ class ProdutoHelper extends BaseHelper {
 					if($obj->desconto){
 						$desconto = $obj->desconto;
 						$preco = 'R$ '.number_format($preco_total-$desconto,2,',','.');
-						$preco .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_class'].'"> R$ '.number_format($preco_total,2,',','.').'</'.$this->options['desconto_container'].'/>';
+						$preco .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_class'].'">R$ '.number_format($preco_total,2,',','.').'</'.$this->options['desconto_container'].'/>';
 					}else{
 						$preco = 'R$ '.number_format($preco_total,2,',','.');
 					}

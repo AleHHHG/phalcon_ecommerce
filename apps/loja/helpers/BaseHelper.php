@@ -161,4 +161,12 @@ class BaseHelper extends Tag {
         return number_format($valor_final, 2, '.', '');
     }
 
+	public function setContainerAttrs($attrs){
+		$string = '';
+		foreach ($attrs as $key => $value) {
+			$string .= "$key='$value'";
+		}
+		return $string;
+	}
+
 }

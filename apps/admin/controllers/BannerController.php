@@ -23,7 +23,13 @@ class BannerController extends ControllerBase
 
     public function updateAction($id){
         $model = Banners::findFirst($id);
-        $this->view->imagens = Imagens::find("id in (".implode(',', unserialize($model->imagens)).")");
+        $arr = array();
+        for ($i=0; $i < count(unserialize($model->imagens)) ; $i++) { 
+            $imagem = unserialize($model->imagens);
+            $img = Imagens::findFirst("id = ".$imagem[$i]);
+            $arr[] = $img;
+        };
+        $this->view->imagens = $arr;
         $this->view->form = new BannerForm($model,array('edit' => true));
         $this->view->banner = $model;
         if($this->request->isPost()){

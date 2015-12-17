@@ -3,6 +3,7 @@ namespace Ecommerce\Loja\Controllers;
 use Ecommerce\Admin\Models\Paginas;
 use Ecommerce\Admin\Models\Newsletter;
 use Ecommerce\Admin\Models\Mailer;
+use Ecommerce\Admin\Models\Produtos;
 class IndexController extends ControllerBase
 {
 
