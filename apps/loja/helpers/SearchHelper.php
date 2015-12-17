@@ -16,6 +16,7 @@ class SearchHelper extends BaseHelper{
 		'input_class' => 'form-control',
 		'button_class' => '',
 		'button_text' => '<i class="fa fa-search"></i>',
+		'placeholder_input' => true,
 		'token_input' => true
 	);
 
@@ -68,14 +69,15 @@ class SearchHelper extends BaseHelper{
 		return $html;
 	}
 
-	protected function getInput(){		
+	protected function getInput(){	
+		if($this->options['placeholder_input']){$place = "Digite sua busca...";}else{$place = "";}	
 		$html = '<div class="form-group">';
-		if($this->options['token_input']){		
+		if($this->options['token_input']){				
 			$html .= '<input id="input-search" type="text" class="search-fake '.$this->options['input_class'].'" data-url="'.$this->url_base.'produtos/search" placeholder="Digite o que procura" />';
-			$html .= '<input type="hidden" name="search" id="search-real"/>';
+			$html .= '<input type="hidden" name="search" placeholder="'.$place.'" id="search-real"/>';
 		}
 		else{
-			$html .= '<input type="text" class="form-control" name="search" id="search-real"/>';
+			$html .= '<input type="text" class="form-control" placeholder="'.$place.'" name="search" id="search-real"/>';
 		}
 		$html .= '</div>';
 		return $html;
