@@ -78,15 +78,23 @@ class ProductInfoHelper extends SingleHelper {
 		);
 		return parent::replaceWraper(2,array($this->layout['avaliacao_class'],$stars),$this->layout['avaliacao_wrap']);
 	}
-	protected function getDetalhes(){
+
+
+	protected function getDetalhes(){		
+		$estoque = (isset($this->layout['produto']->estoque)) ? $this->layout['produto']->estoque : $this->layout['produto']->detalhes[0]['estoque'];	
+		if($estoque > 0){
 		$html = '<div class="col-md-4 no-padding-left"><h5><strong>Quantidade:</strong></h5><select name="quantidade" class="form-control quantidade" id="quantidade">';
 		$html .= '<option value="0">Selecione a quantidade</option>';
-		$estoque = (isset($this->layout['produto']->estoque)) ? $this->layout['produto']->estoque : $this->layout['produto']->detalhes[0]['estoque'];
+		//$estoque = (isset($this->layout['produto']->estoque)) ? $this->layout['produto']->estoque : $this->layout['produto']->detalhes[0]['estoque'];
 		for ($i=1; $i <=  $estoque; $i++) { 
 			$html .= "<option value='$i'>$i</option>";
 		}
 		$html .= '</select></div><br clear="all"/><br clear="all"/>';	
 		$html .= "<input type='hidden' name='produto_id' id='produto_id' value='{$this->layout['produto']->_id}' />";
+		}
+		else{
+			$html = "<div class=\"ps-stock-red\">Produto em falta no estoque</div>";
+		}
 		if($this->ecommerce_options->produto_detalhes == '1'){
 			$detalhes = unserialize($this->ecommerce_options->produto_detalhe_options);
 			$array = array_values(array_unique(array_column($this->layout['produto']->detalhes,$detalhes[0]['label'])));
@@ -97,6 +105,7 @@ class ProductInfoHelper extends SingleHelper {
 		}
 		return $html;
 	}
+
 	private function groupDetalhes($detalhe,$item,$produto_detalhes){
 		$array = array();
 		for ($i=0; $i < count($item) ; $i++) { 
@@ -215,12 +224,15 @@ class ProductInfoHelper extends SingleHelper {
 			);
 	}
 	protected function setAddCart(){
-		return parent::replaceWraper(3,array(
-			'addCart '.$this->layout['add_cart_class'],
-			$this->url_base.'cart/insert',
-			$this->layout['add_cart_text']
-			),
-			$this->layout['add_cart_wrap']
-		);
+		$estoque = (isset($this->layout['produto']->estoque)) ? $this->layout['produto']->estoque : $this->layout['produto']->detalhes[0]['estoque'];	
+		if($estoque > 0){
+			return parent::replaceWraper(3,array(
+				'addCart '.$this->layout['add_cart_class'],
+				$this->url_base.'cart/insert',
+				$this->layout['add_cart_text']
+				),
+				$this->layout['add_cart_wrap']
+			);
+		}
 	}
 }

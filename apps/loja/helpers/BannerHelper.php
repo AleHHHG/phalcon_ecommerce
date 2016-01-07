@@ -89,7 +89,7 @@ class BannerHelper extends BaseHelper{
 		return $itens;	
 	}
 
-	public function setCaption($dados,$chave){
+	public function setCaption($dados,$chave){	
 		$html = '';
 		foreach ($this->options['caption_options'] as $value) {
 			$html .= $this->getCaption($dados,strtolower($value),0);
@@ -97,7 +97,7 @@ class BannerHelper extends BaseHelper{
 		return $html;
 	}
 
-	public function getCaption($dados,$param,$chave){
+	public function getCaption($dados,$param,$chave){		
 		$item = '';
 		if($param == 'title'){
 			if($this->options['posicao'] == '1'){

@@ -70,10 +70,10 @@ class Categorias extends \Phalcon\Mvc\Collection
         return array_reverse($dados);
     }
 
-    public static function getChildrens($obj){
+    public static function getChildrens($obj){       
         $arr = array();
-        if(!empty($obj->subcategorias)){
-            for ($i=0; $i < count($obj->subcategorias) ; $i++) { 
+        if(!empty($obj->subcategorias)){           
+            for ($i=0; $i < count($obj->subcategorias) ; $i++) {                 
                 $filho = self::findById($obj->subcategorias[$i]);
                 if($filho){
                     $arr[$i]['nome'] = $filho->nome;

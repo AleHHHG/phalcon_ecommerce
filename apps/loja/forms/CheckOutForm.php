@@ -56,7 +56,7 @@ class CheckOutForm extends Form
 
         $numero = new Text("endereco[numero]");
         $numero->setAttribute('class','form-control');
-        $numero->setAttribute('required',true);
+        $numero->setAttribute('required','required');
         $numero->setAttribute('placeholder','Numero');
         $this->add($numero);
 

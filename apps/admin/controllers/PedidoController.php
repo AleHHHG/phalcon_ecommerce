@@ -15,6 +15,7 @@ class PedidoController extends ControllerBase
 
     public function showAction($id){
     	$this->view->pedido = Pedidos::findFirst("id = $id");
+        $this->view->pedido_itens = PedidoItens::find("pedido_id = $id");
     	$this->view->endereco = Enderecos::findFirst("id_relacao = $id and relacao = 'pedidos'");
     	$this->view->cliente = Clientes::findFirst("usuario_id = {$this->view->pedido->usuario_id}");
         $this->view->pedido_status = PedidoStatus::find(" id IN (4,5)");

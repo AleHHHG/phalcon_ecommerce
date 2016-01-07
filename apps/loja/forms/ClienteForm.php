@@ -18,25 +18,29 @@ class ClienteForm extends Form
 
         $nome = new Text("nome");
         $nome->setLabel('Nome');
-        $nome->setAttribute('class','form-control ');
+        $nome->setAttribute('class','form-control');
+        $nome->setAttribute('required','required');     
         $nome->setAttribute('value',$session->get('nome'));       
         $this->add($nome);
 
         $telefone = new Text("telefone");
         $telefone->setLabel('Telefone');
-        $telefone->setAttribute('class','form-control ');
+        $telefone->setAttribute('class','form-control');
+        $telefone->setAttribute('required','required');    
         $telefone->setAttribute('data-mask','(99)9999-9999');        
         $this->add($telefone);
 
         $celular = new Text("celular");
         $celular->setLabel('Celular');
         $celular->setAttribute('class','form-control ');
+        $celular->setAttribute('required','required');    
         $celular->setAttribute('data-mask','(99)9999-9999');        
         $this->add($celular);
 
      	$documento = new Text("documento");
         $documento->setLabel('CPF');
         $documento->setAttribute('class','form-control ');
+        $documento->setAttribute('required','required');    
         $documento->setAttribute('data-mask','999.999.999-99');        
         $this->add($documento);
 

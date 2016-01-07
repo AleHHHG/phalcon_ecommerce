@@ -143,6 +143,7 @@ class ProdutoHelper extends BaseHelper {
 					$preco_total = $obj->valor;
 					if($obj->desconto){
 						$desconto = $obj->desconto;
+						$desconto = substr_replace($desconto, '.', strpos($desconto, ","), 1);	
 						$preco = 'R$ '.number_format($preco_total-$desconto,2,',','.');
 						$preco .= '<'.$this->options['desconto_container'].' class="'.$this->options['desconto_class'].'">R$ '.number_format($preco_total,2,',','.').'</'.$this->options['desconto_container'].'/>';
 					}else{

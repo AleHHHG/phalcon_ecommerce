@@ -94,14 +94,16 @@
                            </thead>
                            <tbody>
                               <!-- foreach ($order->lineItems as $line) or some such thing here -->
-                              {% for item in pedido.itens%}
+                              {% for item in pedido_itens%}
                                  {% set produto = Utilitarios.getProduto(item.produto_id) %}
                                  <tr>
                                     <td>
                                        <strong>{{produto.nome}}</strong> <br/>
-                                       {% for detalhe in produto.detalhes if detalhe['detalhe_id'] == item.detalhe_id %}
-                                         {{ Utilitarios.getProdutoDetalhes(detalhe)}}
-                                       {% endfor %}
+                                       {% if this.ecommerce_options.produto_detalhes is '1'%}
+                                          {% for detalhe in produto.detalhes if detalhe['detalhe_id'] == item.detalhe_id %}
+                                            {{ Utilitarios.getProdutoDetalhes(detalhe)}}
+                                          {% endfor %}
+                                       {% endif %}
                                     </td>
                                     <td class="text-center">
                                        R$ {{ Utilitarios.toMoney(item.valor)}}

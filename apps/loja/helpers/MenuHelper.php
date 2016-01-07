@@ -30,6 +30,8 @@ class MenuHelper extends BaseHelper{
 		'mega_menu_class' => '',
 		'mega_menu_id' => '',
 		'mega_menu_wrap' => '',
+		'break_submenu' => false,
+		'break_limit' => 0,
 	);
 
 	public function getHelper($options = array()){
@@ -63,7 +65,7 @@ class MenuHelper extends BaseHelper{
 		foreach (Categorias::getDadosMenu() as $key => $value) {
 			
 			if($array['submenu']){
-				$submenu =  $this->setSubmenu($value->subcategorias,$array);
+				$submenu =  $this->setSubmenu($value->subcategorias,$array);				
 			}else{
 				$submenu = '';
 			}
@@ -78,26 +80,45 @@ class MenuHelper extends BaseHelper{
 				($submenu != '') ? parent::replaceWraper(3,$opcoes_sub,$array['menu_wrap']) : '',
 			);
 
-			$itens .= parent::replaceWraper(5,$replaces,$array['item_wrap']);
+			$itens .= parent::replaceWraper(5,$replaces,$array['item_wrap']);	
 		}
 		return $itens;
 	}
 
 	public function setSubmenu($dados,$array){
 		$submenu = '';
-		if(!empty($dados)){
-			foreach ($dados as $key => $value) {
-				$replaces = array(
-					$array['submenu_item_class'],
-					$array['submenu_item_link_class'],
-					parent::generateUrl($value['nome'],$value['id'],'categoria'),
-					$value['nome'],
-					'',
-				);
-				$wrap = ($array['submenu_item_wrap'] != "") ? $array['submenu_item_wrap'] : $array['item_wrap'];
-				$submenu .= parent::replaceWraper(5,$replaces,$wrap);
-			}
+		if(!empty($dados)){	
+			if($array['break_menu']){
+				$quebramenu = array_chunk($dados, $array['break_limit']);
+				for($i = 0; $i < count($quebramenu); $i++){
+					foreach ($quebramenu[$i] as $key => $value) {
+						$replaces = array(
+							$array['submenu_item_class'],
+							$array['submenu_item_link_class'],
+							parent::generateUrl($value['nome'],$value['id'],'categoria'),
+							$value['nome'],
+							'',
+						);				
+						$wrap = ($array['submenu_item_wrap'] != "") ? $array['submenu_item_wrap'] : $array['item_wrap'];				
+						$submenu .= parent::replaceWraper(5,$replaces,$wrap);						
+					}
+				}
+			}	
+			else{
+				foreach ($dados as $key => $value) {
+					$replaces = array(
+						$array['submenu_item_class'],
+						$array['submenu_item_link_class'],
+						parent::generateUrl($value['nome'],$value['id'],'categoria'),
+						$value['nome'],
+						'',
+					);				
+					$wrap = ($array['submenu_item_wrap'] != "") ? $array['submenu_item_wrap'] : $array['item_wrap'];				
+					$submenu .= parent::replaceWraper(5,$replaces,$wrap);						
+				}
+			}	
+		
 		}
-		return $submenu;
+		return $submenu;		
 	}
 }

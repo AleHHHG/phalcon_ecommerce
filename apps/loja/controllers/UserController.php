@@ -133,7 +133,7 @@ class UserController extends ControllerBase
 		}
 		$usuario = new Usuarios;
 		$usuario->email = $this->request->getPost('email');
-		$usuario->nome = $this->request->getPost('nome');
+		$usuario->nome = $this->request->getPost('nome') ." ". $this->request->getPost('sobrenome');		
 		$usuario->nivel_id = 3;
 		$usuario->senha = $this->security->hash($this->request->getPost('senha'));
 		if($usuario->save()){
@@ -196,6 +196,7 @@ class UserController extends ControllerBase
 	public function detalhesAction($id){
 		$this->view->selecionado == 'Meus Pedidos';
 		$this->view->pedido = Pedidos::findFirst("id = $id");
+		$this->view->pedido_itens = PedidoItens::find("pedido_id = $id");
     	$this->view->endereco = Enderecos::findFirst("id_relacao = $id and relacao = 'pedidos'");
 	}
 
